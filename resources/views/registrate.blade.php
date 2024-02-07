@@ -5,11 +5,11 @@
         <title></title>
     </head>
     <body>
-    <h1 class="registration">Registration</h1>
+
         <form action="{{route('registrate')}}" method="post">
+            <h1 class="registration">Registration</h1>
 
             @csrf
-
 
             <label for="name">Name:</label>
             @error('name')

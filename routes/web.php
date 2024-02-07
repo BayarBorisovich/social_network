@@ -3,6 +3,7 @@
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\RegistrateController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,12 +20,15 @@ use Illuminate\Support\Facades\Route;
 //Route::get('/', function () {
 //    return view('welcome');
 //});
-
-Route::get('/registrate', [RegistrateController::class, 'getForm'])->name('registrate');
-Route::post('/registrate', [RegistrateController::class, 'postRegistrate']);
-
-Route::get('/login', [LoginController::class, 'getForm'])->name('login');
-Route::post('/login', [LoginController::class, 'postLogin']);
-
 Route::get('/main', [MainController::class, 'getForm'])->name('main');
-//Route::post('/login', [LoginController::class, 'postLogin']);
+Route::post('/main', [MainController::class, 'post']);
+
+Route::get('/registrate', [UserController::class, 'getFormRegistrate'])->name('registrate');
+Route::post('/registrate', [UserController::class, 'postRegistrate']);
+
+Route::get('/login', [UserController::class, 'getFormLogin'])->name('login');
+Route::post('/login', [UserController::class, 'postLogin']);
+
+Route::get('/friend', [UserController::class, 'friends'])->name('friend');
+
+Route::get('/post', [UserController::class, 'getPost'])->name('post');;
