@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 //    return view('welcome');
 //});
 Route::get('/main', [MainController::class, 'getForm'])->name('main');
-Route::post('/main', [MainController::class, 'post']);
+//Route::post('/main', [MainController::class, 'post']);
 
 Route::get('/registrate', [UserController::class, 'getFormRegistrate'])->name('registrate');
 Route::post('/registrate', [UserController::class, 'postRegistrate']);
@@ -29,6 +29,6 @@ Route::post('/registrate', [UserController::class, 'postRegistrate']);
 Route::get('/login', [UserController::class, 'getFormLogin'])->name('login');
 Route::post('/login', [UserController::class, 'postLogin']);
 
-Route::get('/friend', [UserController::class, 'friends'])->name('friend');
+Route::get('/friends', [UserController::class, 'friends'])->name('friends');
 
-Route::get('/post', [UserController::class, 'getPost'])->name('post');;
+Route::get('/post', [UserController::class, 'getPosts'])->name('post');;

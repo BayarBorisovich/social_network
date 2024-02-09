@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\User;
-use App\Models\UserFriends;
+use App\Models\Friend;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -81,22 +81,22 @@ class UserController
         return view('post');
     }
 
-    public function getPost()
+    public function getPosts()
     {
-        $userId = Auth::id();
-        if (!$userId) {
+
+        if (!Auth::check()) {
             return redirect()->route('login');
         }
-        $users = User::all();
 
-        $userFriends = User::find($userId)->userFriends;
-        foreach ($userFriends as $key => $elem) {
+
+        $friends = User::find(Auth::id())->friends;
+        foreach ($friends as $key => $elem) {
             $arrFriendId[] = $elem['friend_id'];
         }
 
-        $posts = Post::all();
+        $friendPosts = Post::all()->whereIn('user_id', $arrFriendId);
 
-        $friendPosts = $posts->intersect(Post::whereIn('user_id', $arrFriendId)->get());
+        $users = User::all();
 
         return view('post', compact('friendPosts', 'users'));
 
@@ -104,33 +104,24 @@ class UserController
 
     public function friends()
     {
-        $userId = Auth::id();
-
-        if (!$userId) {
+        if (!Auth::check()) {
             return redirect()->route('login');
         }
-        $user = User::all()->find($userId);
 
-        $userFriends = User::find($userId)->userFriends;
+        $friends = User::find(Auth::id())->friends;
 
-        foreach ($userFriends as $key => $elem) {
+        foreach ($friends as $key => $elem) {
             $arrFriendId[] = $elem['friend_id'];
         }
         $friends = User::all()->find($arrFriendId);
 
-        $userFriendsAll = UserFriends::all();
+        $user = Auth::user();
 
-        $friendsOfFriends = $userFriendsAll->intersect(UserFriends::whereIn('user_id', $arrFriendId)->get());
-////        dd($friendsOfFriends);
-//        foreach ($friendsOfFriends as $key => $friendsOfFriend) {
-//            foreach ($friends as $key => $friend) {
-//                if ($friend->id === $friendsOfFriend['user_id']) {
-//                    echo $friend->id;
-//                }
-//            }
-//        }
-//
-//        die();
-        return view('friend', compact('user', 'friends', 'friendsOfFriends'));
+        return view('friends', compact('user', 'friends'));
     }
+
+//    public function likes()
+//    {
+//        auth()->user()
+//    }
 }

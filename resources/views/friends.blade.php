@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 
 
-    <title>POSTS</title>
+    <title>bs4 profile friend list - Bootdey.com</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
@@ -19,7 +19,7 @@
         }
 
         .profile-header .profile-header-cover {
-            background-image: url(https://bootdey.com/img/Content/bg1.jpg);
+            background-image: url(https://www.bootdey.com/image/600x100/);
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -417,253 +417,12 @@
             display: table-cell;
             vertical-align: top;
         }
-
-        select.form-control:not([size]):not([multiple]) {
-            height: 34px;
-        }
-
-        .form-control.input-inline {
-            display: inline;
-            width: auto;
-            padding: 0 7px;
-        }
-
-
-        .timeline {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            position: relative
-        }
-
-        .timeline:before {
-            content: '';
-            position: absolute;
-            top: 5px;
-            bottom: 5px;
-            width: 5px;
-            background: #2d353c;
-            left: 20%;
-            margin-left: -2.5px
-        }
-
-        .timeline > li {
-            position: relative;
-            min-height: 50px;
-            padding: 20px 0
-        }
-
-        .timeline .timeline-time {
-            position: absolute;
-            left: 0;
-            width: 18%;
-            text-align: right;
-            top: 30px
-        }
-
-        .timeline .timeline-time .date,
-        .timeline .timeline-time .time {
-            display: block;
-            font-weight: 600
-        }
-
-        .timeline .timeline-time .date {
-            line-height: 16px;
-            font-size: 12px
-        }
-
-        .timeline .timeline-time .time {
-            line-height: 24px;
-            font-size: 20px;
-            color: #242a30
-        }
-
-        .timeline .timeline-icon {
-            left: 15%;
-            position: absolute;
-            width: 10%;
-            text-align: center;
-            top: 40px
-        }
-
-        .timeline .timeline-icon a {
-            text-decoration: none;
-            width: 20px;
-            height: 20px;
-            display: inline-block;
-            border-radius: 20px;
-            background: #d9e0e7;
-            line-height: 10px;
-            color: #fff;
-            font-size: 14px;
-            border: 5px solid #2d353c;
-            transition: border-color .2s linear
-        }
-
-        .timeline .timeline-body {
-            margin-left: 23%;
-            margin-right: 17%;
-            background: #fff;
-            position: relative;
-            padding: 20px 25px;
-            border-radius: 6px
-        }
-
-        .timeline .timeline-body:before {
-            content: '';
-            display: block;
-            position: absolute;
-            border: 10px solid transparent;
-            border-right-color: #fff;
-            left: -20px;
-            top: 20px
-        }
-
-        .timeline .timeline-body > div + div {
-            margin-top: 15px
-        }
-
-        .timeline .timeline-body > div + div:last-child {
-            margin-bottom: -20px;
-            padding-bottom: 20px;
-            border-radius: 0 0 6px 6px
-        }
-
-        .timeline-header {
-            padding-bottom: 10px;
-            border-bottom: 1px solid #e2e7eb;
-            line-height: 30px
-        }
-
-        .timeline-header .userimage {
-            float: left;
-            width: 34px;
-            height: 34px;
-            border-radius: 40px;
-            overflow: hidden;
-            margin: -2px 10px -2px 0
-        }
-
-        .timeline-header .username {
-            font-size: 16px;
-            font-weight: 600
-        }
-
-        .timeline-header .username,
-        .timeline-header .username a {
-            color: #2d353c
-        }
-
-        .timeline img {
-            max-width: 100%;
-            display: block
-        }
-
-        .timeline-content {
-            letter-spacing: .25px;
-            line-height: 18px;
-            font-size: 13px
-        }
-
-        .timeline-content:after,
-        .timeline-content:before {
-            content: '';
-            display: table;
-            clear: both
-        }
-
-        .timeline-title {
-            margin-top: 0
-        }
-
-        .timeline-footer {
-            background: #fff;
-            border-top: 1px solid #e2e7ec;
-            padding-top: 15px
-        }
-
-        .timeline-footer a:not(.btn) {
-            color: #575d63
-        }
-
-        .timeline-footer a:not(.btn):focus,
-        .timeline-footer a:not(.btn):hover {
-            color: #2d353c
-        }
-
-        .timeline-likes {
-            color: #6d767f;
-            font-weight: 600;
-            font-size: 12px
-        }
-
-        .timeline-likes .stats-right {
-            float: right
-        }
-
-        .timeline-likes .stats-total {
-            display: inline-block;
-            line-height: 20px
-        }
-
-        .timeline-likes .stats-icon {
-            float: left;
-            margin-right: 5px;
-            font-size: 9px
-        }
-
-        .timeline-likes .stats-icon + .stats-icon {
-            margin-left: -2px
-        }
-
-        .timeline-likes .stats-text {
-            line-height: 20px
-        }
-
-        .timeline-likes .stats-text + .stats-text {
-            margin-left: 15px
-        }
-
-        .timeline-comment-box {
-            background: #f2f3f4;
-            margin-left: -25px;
-            margin-right: -25px;
-            padding: 20px 25px
-        }
-
-        .timeline-comment-box .user {
-            float: left;
-            width: 34px;
-            height: 34px;
-            overflow: hidden;
-            border-radius: 30px
-        }
-
-        .timeline-comment-box .user img {
-            max-width: 100%;
-            max-height: 100%
-        }
-
-        .timeline-comment-box .user + .input {
-            margin-left: 44px
-        }
-
-        .lead {
-            margin-bottom: 20px;
-            font-size: 21px;
-            font-weight: 300;
-            line-height: 1.4;
-        }
-
-        .text-danger, .text-red {
-            color: #ff5b57 !important;
-        }
     </style>
 </head>
 <body>
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-<div class="container">
-    <form action="{{ route('post') }}" method="get">
+<form action="{{ route('friends') }}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div id="content" class="content content-full-width">
@@ -677,14 +436,14 @@
                             <div class="profile-header-content">
 
                                 <div class="profile-header-img">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt>
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt>
                                 </div>
 
 
                                 <div class="profile-header-info">
-                                    <h4 class="m-t-10 m-b-5">Sean Ngu</h4>
-                                    <p class="m-b-10">UXUI + Frontend Developer</p>
-                                    <a href="{{ route('main') }}" class="btn btn-sm btn-info mb-2">In Profile</a>
+                                    <h4 class="m-t-10 m-b-5">{{ $user->name }}</h4>
+                                    <p class="m-b-10">{{ $user->about_of_me }}</p>
+                                    <a href="{{ route('main') }}" class="btn btn-xs btn-yellow">In Profile</a>
                                 </div>
 
                             </div>
@@ -694,14 +453,14 @@
                                 <li class="nav-item"><a
                                         href="{{ route('post') }}"
                                         target="__blank" class="nav-link_">POSTS</a></li>
-                                <li class="nav-item"><a href="#"
+                                <li class="nav-item"><a href="https://www.bootdey.com/snippets/view/bs4-profile-about"
                                                         target="__blank" class="nav-link_">ABOUT</a></li>
-                                <li class="nav-item"><a href="#"
+                                <li class="nav-item"><a href="https://www.bootdey.com/snippets/view/profile-photos"
                                                         target="__blank" class="nav-link_">PHOTOS</a></li>
-                                <li class="nav-item"><a href="#"
+                                <li class="nav-item"><a href="https://www.bootdey.com/snippets/view/profile-videos"
                                                         target="__blank" class="nav-link_">VIDEOS</a></li>
                                 <li class="nav-item"><a
-                                        href="{{ route('friends') }}"
+                                        href="https://www.bootdey.com/snippets/view/bs4-profile-friend-list"
                                         target="__blank" class="nav-link_ active show">FRIENDS</a></li>
                             </ul>
 
@@ -713,55 +472,45 @@
 
                         <div class="tab-content p-0">
 
-                            <div class="tab-pane fade active show" id="profile-post">
+                            <div class="tab-pane fade in active show" id="profile-friends">
+                                <h4 class="m-t-0 m-b-20">Friend List ({{ count($friends) }})</h4>
 
-                                <ul class="timeline">
-
-                                    @foreach($users as $key => $user)
-                                        @foreach($friendPosts as $key => $post)
-                                            @if($user['id'] === $post['user_id'])
-                                                <li>
-                                                    <div class="timeline-time">
-                                                        <span class="date">{{ $post['created_at'] }}</span>
-                                                        {{--                                                        <span class="time">20:17</span>--}}
+                                <div class="row row-space-2">
+                                    @foreach($friends as $friend)
+                                        <div class="col-md-6 m-b-2">
+                                            <div class="p-10 bg-white">
+                                                <div class="media media-xs overflow-visible">
+                                                    <a class="media-left" href="javascript:;">
+                                                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                                                             alt
+                                                             class="media-object img-circle">
+                                                    </a>
+                                                    <div class="media-body valign-middle">
+                                                        <b class="text-inverse">{{ $friend->name . ' id ' . $friend->id }}</b>
                                                     </div>
-
-
-                                                    <div class="timeline-icon">
-                                                        <a href="javascript:;">&nbsp;</a>
-                                                    </div>
-
-
-                                                    <div class="timeline-body">
-                                                        <div class="timeline-header">
-                                                <span class="userimage"><img
-                                                        src="https://bootdey.com/img/Content/avatar/avatar3.png"
-                                                        alt></span>
-                                                            <span class="username">{{ $user['name'] }}</span>
-                                                            {{--                                                            <span class="pull-right text-muted">82 Views</span>--}}
-                                                        </div>
-                                                        <div class="timeline-content">
-                                                            <p>{{ $post['content'] }}</p>
-                                                        </div>
-                                                        <div class="timeline-footer">
-                                                            <a href="javascript:;"
-                                                               class="m-r-15 text-inverse-lighter"><i
-                                                                    class="fa fa-thumbs-up fa-fw fa-lg m-r-3"></i> Like</a>
-                                                            <a href="javascript:;"
-                                                               class="m-r-15 text-inverse-lighter"><i
-                                                                    class="fa fa-comments fa-fw fa-lg m-r-3"></i>
-                                                                Comment</a>
-                                                            <a href="javascript:;"
-                                                               class="m-r-15 text-inverse-lighter"><i
-                                                                    class="fa fa-share fa-fw fa-lg m-r-3"></i> Share</a>
+                                                    <div class="media-body valign-middle text-right overflow-visible">
+                                                        <div class="btn-group dropdown">
+                                                            <a href="javascript:;" class="btn btn-default">Friends</a>
+                                                            <a href="javascript:;" data-toggle="dropdown"
+                                                               class="btn btn-default dropdown-toggle"
+                                                               aria-expanded="false"></a>
+                                                            <ul class="dropdown-menu dropdown-menu-right"
+                                                                x-placement="bottom-end"
+                                                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(101px, 34px, 0px);">
+                                                                <li><a href="javascript:;">Action 1</a></li>
+                                                                <li><a href="javascript:;">Action 2</a></li>
+                                                                <li><a href="javascript:;">Action 3</a></li>
+                                                                <li class="divider"></li>
+                                                                <li><a href="javascript:;">Action 4</a></li>
+                                                            </ul>
                                                         </div>
                                                     </div>
-                                                </li>
-                                            @endif
-                                        @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
                                     @endforeach
 
-                                </ul>
+                                </div>
 
                             </div>
 
@@ -772,8 +521,8 @@
                 </div>
             </div>
         </div>
-    </form>
-</div>
+    </div>
+</form>
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript">
