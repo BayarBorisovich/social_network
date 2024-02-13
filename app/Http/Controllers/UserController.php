@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Friend;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -97,8 +100,9 @@ class UserController
         $friendPosts = Post::all()->whereIn('user_id', $arrFriendId);
 
         $users = User::all();
+        $user = Auth::user();
 
-        return view('post', compact('friendPosts', 'users'));
+        return view('post', compact('friendPosts', 'users', 'user'));
 
     }
 
@@ -120,8 +124,46 @@ class UserController
         return view('friends', compact('user', 'friends'));
     }
 
-//    public function likes()
-//    {
-//        auth()->user()
-//    }
+    public function getFormUpdateUser()
+    {
+        $user = Auth::user();
+        return view('updateUser', compact('user'));
+    }
+
+    public function updateUser(Request $request)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $user = Auth::user();
+
+        $user->update([
+            'name' => $request->name,
+            'surname' => $request->surname,
+            'patronymic' => $request->patronymic,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'date_of_birth' => $request->date_of_birth,
+            'about_of_me' => $request->about_of_me,
+        ]);
+
+        return view('updateUser', compact('user'));
+    }
+
+    public function getFormUsers()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+        $users = User::all();
+        return view('user', compact('users'));
+    }
+    public function addFriend(Request $request)
+    {
+
+
+        dd($request);
+
+    }
 }

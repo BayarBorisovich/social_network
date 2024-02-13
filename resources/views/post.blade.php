@@ -677,13 +677,13 @@
                             <div class="profile-header-content">
 
                                 <div class="profile-header-img">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt>
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt>
                                 </div>
 
 
                                 <div class="profile-header-info">
-                                    <h4 class="m-t-10 m-b-5">Sean Ngu</h4>
-                                    <p class="m-b-10">UXUI + Frontend Developer</p>
+                                    <h4 class="m-t-10 m-b-5">{{ $user->name }}</h4>
+                                    <p class="m-b-10">{{ $user->about_of_me }}</p>
                                     <a href="{{ route('main') }}" class="btn btn-sm btn-info mb-2">In Profile</a>
                                 </div>
 
@@ -695,11 +695,7 @@
                                         href="{{ route('post') }}"
                                         target="__blank" class="nav-link_">POSTS</a></li>
                                 <li class="nav-item"><a href="#"
-                                                        target="__blank" class="nav-link_">ABOUT</a></li>
-                                <li class="nav-item"><a href="#"
                                                         target="__blank" class="nav-link_">PHOTOS</a></li>
-                                <li class="nav-item"><a href="#"
-                                                        target="__blank" class="nav-link_">VIDEOS</a></li>
                                 <li class="nav-item"><a
                                         href="{{ route('friends') }}"
                                         target="__blank" class="nav-link_ active show">FRIENDS</a></li>
@@ -707,7 +703,6 @@
 
                         </div>
                     </div>
-
 
                     <div class="profile-content">
 

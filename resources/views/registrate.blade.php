@@ -8,7 +8,6 @@
 
         <form action="{{route('registrate')}}" method="post">
             <h1 class="registration">Registration</h1>
-
             @csrf
 
             <label for="name">Name:</label>

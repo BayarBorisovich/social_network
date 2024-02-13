@@ -436,7 +436,7 @@
                             <div class="profile-header-content">
 
                                 <div class="profile-header-img">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt>
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt>
                                 </div>
 
 
@@ -453,14 +453,10 @@
                                 <li class="nav-item"><a
                                         href="{{ route('post') }}"
                                         target="__blank" class="nav-link_">POSTS</a></li>
-                                <li class="nav-item"><a href="https://www.bootdey.com/snippets/view/bs4-profile-about"
-                                                        target="__blank" class="nav-link_">ABOUT</a></li>
-                                <li class="nav-item"><a href="https://www.bootdey.com/snippets/view/profile-photos"
+                                <li class="nav-item"><a href="#"
                                                         target="__blank" class="nav-link_">PHOTOS</a></li>
-                                <li class="nav-item"><a href="https://www.bootdey.com/snippets/view/profile-videos"
-                                                        target="__blank" class="nav-link_">VIDEOS</a></li>
                                 <li class="nav-item"><a
-                                        href="https://www.bootdey.com/snippets/view/bs4-profile-friend-list"
+                                        href="{{ route('friends') }}"
                                         target="__blank" class="nav-link_ active show">FRIENDS</a></li>
                             </ul>
 
@@ -487,23 +483,6 @@
                                                     </a>
                                                     <div class="media-body valign-middle">
                                                         <b class="text-inverse">{{ $friend->name . ' id ' . $friend->id }}</b>
-                                                    </div>
-                                                    <div class="media-body valign-middle text-right overflow-visible">
-                                                        <div class="btn-group dropdown">
-                                                            <a href="javascript:;" class="btn btn-default">Friends</a>
-                                                            <a href="javascript:;" data-toggle="dropdown"
-                                                               class="btn btn-default dropdown-toggle"
-                                                               aria-expanded="false"></a>
-                                                            <ul class="dropdown-menu dropdown-menu-right"
-                                                                x-placement="bottom-end"
-                                                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(101px, 34px, 0px);">
-                                                                <li><a href="javascript:;">Action 1</a></li>
-                                                                <li><a href="javascript:;">Action 2</a></li>
-                                                                <li><a href="javascript:;">Action 3</a></li>
-                                                                <li class="divider"></li>
-                                                                <li><a href="javascript:;">Action 4</a></li>
-                                                            </ul>
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

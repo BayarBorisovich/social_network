@@ -17,9 +17,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
+
+Route::get('/', function () {
+    return view('app');
+});
+
 Route::get('/main', [MainController::class, 'getForm'])->name('main');
 //Route::post('/main', [MainController::class, 'post']);
 
@@ -32,3 +34,10 @@ Route::post('/login', [UserController::class, 'postLogin']);
 Route::get('/friends', [UserController::class, 'friends'])->name('friends');
 
 Route::get('/post', [UserController::class, 'getPosts'])->name('post');;
+
+Route::get('/updateUser', [UserController::class, 'getFormUpdateUser'])->name('updateUser');
+Route::post('/updateUser', [UserController::class, 'updateUser']);
+
+Route::get('/user', [UserController::class, 'getFormUsers'])->name('user');
+Route::post('/user', [UserController::class, 'addFriend'])->name('user');
+
