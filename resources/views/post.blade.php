@@ -7,6 +7,7 @@
     <title>POSTS</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    {{--    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/fontawesome.min.css" rel="stylesheet">--}}
     <style type="text/css">
         body {
             margin-top: 20px;
@@ -663,85 +664,87 @@
 <body>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container">
-    <form action="{{ route('post') }}" method="get">
-        <div class="row">
-            <div class="col-md-12">
-                <div id="content" class="content content-full-width">
 
-                    <div class="profile">
-                        <div class="profile-header">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="content" class="content content-full-width">
 
-                            <div class="profile-header-cover"></div>
+                <div class="profile">
+                    <div class="profile-header">
 
-
-                            <div class="profile-header-content">
-
-                                <div class="profile-header-img">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt>
-                                </div>
+                        <div class="profile-header-cover"></div>
 
 
-                                <div class="profile-header-info">
-                                    <h4 class="m-t-10 m-b-5">{{ $user->name }}</h4>
-                                    <p class="m-b-10">{{ $user->about_of_me }}</p>
-                                    <a href="{{ route('main') }}" class="btn btn-sm btn-info mb-2">In Profile</a>
-                                </div>
+                        <div class="profile-header-content">
 
+                            <div class="profile-header-img">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt>
                             </div>
 
 
-                            <ul class="profile-header-tab nav nav-tabs">
-                                <li class="nav-item"><a
-                                        href="{{ route('post') }}"
-                                        target="__blank" class="nav-link_">POSTS</a></li>
-                                <li class="nav-item"><a href="#"
-                                                        target="__blank" class="nav-link_">PHOTOS</a></li>
-                                <li class="nav-item"><a
-                                        href="{{ route('friends') }}"
-                                        target="__blank" class="nav-link_ active show">FRIENDS</a></li>
-                            </ul>
+                            <div class="profile-header-info">
+                                <h4 class="m-t-10 m-b-5">{{ $user->name }}</h4>
+                                <p class="m-b-10">{{ $user->about_of_me }}</p>
+                                <a href="{{ route('main') }}" class="btn btn-sm btn-info mb-2">In Profile</a>
+                            </div>
 
                         </div>
+
                     </div>
+                </div>
 
-                    <div class="profile-content">
+                <div class="profile-content">
 
-                        <div class="tab-content p-0">
+                    <div class="tab-content p-0">
 
-                            <div class="tab-pane fade active show" id="profile-post">
+                        <div class="tab-pane fade active show" id="profile-post">
 
-                                <ul class="timeline">
+                            <ul class="timeline">
 
-                                    @foreach($users as $key => $user)
-                                        @foreach($friendPosts as $key => $post)
-                                            @if($user['id'] === $post['user_id'])
-                                                <li>
-                                                    <div class="timeline-time">
-                                                        <span class="date">{{ $post['created_at'] }}</span>
-                                                        {{--                                                        <span class="time">20:17</span>--}}
-                                                    </div>
-
-
-                                                    <div class="timeline-icon">
-                                                        <a href="javascript:;">&nbsp;</a>
-                                                    </div>
+                                @foreach($users as $key => $user)
+                                    @foreach($friendPosts as $key => $post)
+                                        @if($user['id'] === $post['user_id'])
+                                            <li>
+                                                <div class="timeline-time">
+                                                    <span class="date">{{ $post['created_at'] }}</span>
+                                                    {{--                                                        <span class="time">20:17</span>--}}
+                                                </div>
 
 
-                                                    <div class="timeline-body">
-                                                        <div class="timeline-header">
+                                                <div class="timeline-icon">
+                                                    <a href="javascript:;">&nbsp;</a>
+                                                </div>
+
+
+                                                <div class="timeline-body">
+                                                    <div class="timeline-header">
                                                 <span class="userimage"><img
                                                         src="https://bootdey.com/img/Content/avatar/avatar3.png"
                                                         alt></span>
-                                                            <span class="username">{{ $user['name'] }}</span>
-                                                            {{--                                                            <span class="pull-right text-muted">82 Views</span>--}}
-                                                        </div>
-                                                        <div class="timeline-content">
-                                                            <p>{{ $post['content'] }}</p>
-                                                        </div>
+                                                        <span class="username">{{ $user['name'] }}</span>
+                                                        {{--                                                            <span class="pull-right text-muted">82 Views</span>--}}
+                                                    </div>
+                                                    <div class="timeline-content">
+                                                        <p>{{ $post['content'] }}</p>
+                                                    </div>
+                                                    <form action="{{ route('post') }}" method="post">
                                                         <div class="timeline-footer">
-                                                            <a href="javascript:;"
-                                                               class="m-r-15 text-inverse-lighter"><i
-                                                                    class="fa fa-thumbs-up fa-fw fa-lg m-r-3"></i> Like</a>
+
+                                                            @csrf
+
+                                                            <input type="text" id="id"
+                                                                   class="fa fa-thumbs-up fa-fw fa-lg m-r-3"
+                                                                   name="post_id"
+                                                                   placeholder="id" hidden=""
+                                                                   value="{{ $post->id }}">
+{{--                                                            <input type="submit" class="btn btn-sm btn-outline-primary"--}}
+{{--                                                                   value="like">--}}
+                                                            @if(!isset($like[$post->id]))
+                                                            <button type="submit" class="border-0 bg-transparent">
+                                                                    <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                                                    <i class="fa fa-heart" aria-hidden="true"></i>
+                                                            </button>
+                                                            @endif
                                                             <a href="javascript:;"
                                                                class="m-r-15 text-inverse-lighter"><i
                                                                     class="fa fa-comments fa-fw fa-lg m-r-3"></i>
@@ -750,24 +753,25 @@
                                                                class="m-r-15 text-inverse-lighter"><i
                                                                     class="fa fa-share fa-fw fa-lg m-r-3"></i> Share</a>
                                                         </div>
-                                                    </div>
-                                                </li>
-                                            @endif
-                                        @endforeach
+                                                    </form>
+                                                </div>
+                                            </li>
+                                        @endif
                                     @endforeach
+                                @endforeach
 
-                                </ul>
-
-                            </div>
+                            </ul>
 
                         </div>
 
                     </div>
 
                 </div>
+
             </div>
         </div>
-    </form>
+    </div>
+
 </div>
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/js/bootstrap.bundle.min.js"></script>

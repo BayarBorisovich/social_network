@@ -379,19 +379,20 @@
     </style>
 </head>
 <body>
-<form action="{{ route('user') }}" method="post">
-    @csrf
-    <div class="container">
-        <div id="content" class="content p-0">
-            <div class="profile-container">
-                <div class="row row-space-20">
-                    <div class="col-md-8">
-                        <div class="tab-content p-0">
-                            <div class="tab-pane fade active show" id="profile-friends">
-                                <a href="{{ route('main') }}" class="btn btn-xs btn-primary mb-2">In Profile</a>
-                                <div class="m-b-10"><b>Users List ({{ count($users) }})</b></div>
-                                <ul class="friend-list clearfix">
-                                    @foreach($users as $user)
+
+
+<div class="container">
+    <div id="content" class="content p-0">
+        <div class="profile-container">
+            <div class="row row-space-20">
+                <div class="col-md-8">
+                    <div class="tab-content p-0">
+                        <div class="tab-pane fade active show" id="profile-friends">
+                            <a href="{{ route('main') }}" class="btn btn-xs btn-primary mb-2">In Profile</a>
+                            <div class="m-b-10"><b>Users List ({{ count($users) }})</b></div>
+                            <ul class="friend-list clearfix">
+                                @foreach($users as $user)
+{{--                                    @if($user->id != $id)--}}
                                         <li>
                                             <a href="#">
                                                 <div class="friend-img"><img
@@ -399,24 +400,42 @@
                                                 </div>
                                                 <div class="friend-info">
                                                     <h4>{{ $user->name }}</h4>
-                                                    <p>392 friends {{ $user->id }}</p>
-                                                    <input type="text" id="user_id" class="form-control" name="user_id"
-                                                           placeholder="id" hidden="" value="{{ $user->id }}">
-                                                    <input type="submit" class="btn btn-sm btn-outline-primary"
-                                                           value="Add to friends">
+                                                    <p> id {{ $user->id }}</p>
+                                                    <form action="{{ route('user') }}" method="post">
+                                                        @csrf
+                                                        @if(!isset($friendsId[$user->id]) || empty($friendsId))
+                                                            <input type="text" id="id" class="form-control"
+                                                                   name="id"
+                                                                   placeholder="id" hidden=""
+                                                                   value="{{ $user->id }}">
+                                                            <input type="submit"
+                                                                   class="btn btn-sm btn-outline-primary"
+                                                                   value="Add to friends">
+                                                        @else
+                                                            <input type="text" id="id" class="form-control"
+                                                                   name="id"
+                                                                   placeholder="id" hidden=""
+                                                                   value="{{ $user->id }}">
+                                                            <input type="button"
+                                                                   class="btn btn-icon btn-sm waves-effect waves-light btn-success"
+                                                                   value="Friend">
+                                                        @endif
+                                                    </form>
                                                 </div>
                                             </a>
                                         </li>
-                                    @endforeach
-                                </ul>
-                            </div>
+{{--                                    @else--}}
+{{--                                    @endif--}}
+                                @endforeach
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</form>
+</div>
+
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript">

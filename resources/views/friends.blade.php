@@ -420,58 +420,58 @@
     </style>
 </head>
 <body>
-<form action="{{ route('friends') }}">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div id="content" class="content content-full-width">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="content" class="content content-full-width">
 
-                    <div class="profile">
-                        <div class="profile-header">
+                <div class="profile">
+                    <div class="profile-header">
 
-                            <div class="profile-header-cover"></div>
-
-
-                            <div class="profile-header-content">
-
-                                <div class="profile-header-img">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt>
-                                </div>
+                        <div class="profile-header-cover"></div>
 
 
-                                <div class="profile-header-info">
-                                    <h4 class="m-t-10 m-b-5">{{ $user->name }}</h4>
-                                    <p class="m-b-10">{{ $user->about_of_me }}</p>
-                                    <a href="{{ route('main') }}" class="btn btn-xs btn-yellow">In Profile</a>
-                                </div>
+                        <div class="profile-header-content">
 
+                            <div class="profile-header-img">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt>
                             </div>
 
 
-                            <ul class="profile-header-tab nav nav-tabs">
-                                <li class="nav-item"><a
-                                        href="{{ route('post') }}"
-                                        target="__blank" class="nav-link_">POSTS</a></li>
-                                <li class="nav-item"><a href="#"
-                                                        target="__blank" class="nav-link_">PHOTOS</a></li>
-                                <li class="nav-item"><a
-                                        href="{{ route('friends') }}"
-                                        target="__blank" class="nav-link_ active show">FRIENDS</a></li>
-                            </ul>
+                            <div class="profile-header-info">
+                                <h4 class="m-t-10 m-b-5">{{ $user->name }}</h4>
+                                <p class="m-b-10">{{ $user->about_of_me }}</p>
+                                <a href="{{ route('main') }}" class="btn btn-xs btn-yellow">In Profile</a>
+                            </div>
 
                         </div>
+
+
+                        <ul class="profile-header-tab nav nav-tabs">
+                            <li class="nav-item"><a
+                                    href="{{ route('post') }}"
+                                    target="__blank" class="nav-link_">POSTS</a></li>
+                            <li class="nav-item"><a href="#"
+                                                    target="__blank" class="nav-link_">PHOTOS</a></li>
+                            <li class="nav-item"><a
+                                    href="{{ route('friends') }}"
+                                    target="__blank" class="nav-link_ active show">FRIENDS</a></li>
+                        </ul>
+
                     </div>
+                </div>
 
 
-                    <div class="profile-content">
+                <div class="profile-content">
 
-                        <div class="tab-content p-0">
+                    <div class="tab-content p-0">
 
-                            <div class="tab-pane fade in active show" id="profile-friends">
-                                <h4 class="m-t-0 m-b-20">Friend List ({{ count($friends) }})</h4>
+                        <div class="tab-pane fade in active show" id="profile-friends">
+                            <h4 class="m-t-0 m-b-20">Friend List ({{ count($friends) }})</h4>
 
-                                <div class="row row-space-2">
+                            <div class="row row-space-2">
+                                @if(isset($friends))
                                     @foreach($friends as $friend)
                                         <div class="col-md-6 m-b-2">
                                             <div class="p-10 bg-white">
@@ -484,13 +484,22 @@
                                                     <div class="media-body valign-middle">
                                                         <b class="text-inverse">{{ $friend->name . ' id ' . $friend->id }}</b>
                                                     </div>
+                                                    <form action="{{ route('friends') }}" method="post">
+                                                        @csrf
+                                                        <input type="text" id="friend_id" class="form-control"
+                                                               name="friend_id"
+                                                               placeholder="friend_id" hidden=""
+                                                               value="{{ $friend->id }}">
+                                                        <input type="submit" class="btn btn-sm btn-outline-primary"
+                                                               value="Delete">
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
                                     @endforeach
-
-                                </div>
-
+                                @else
+                                    <h4> "You don't have any friends" </h4>
+                                @endif
                             </div>
 
                         </div>
@@ -498,10 +507,11 @@
                     </div>
 
                 </div>
+
             </div>
         </div>
     </div>
-</form>
+</div>
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript">

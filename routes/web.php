@@ -32,8 +32,14 @@ Route::get('/login', [UserController::class, 'getFormLogin'])->name('login');
 Route::post('/login', [UserController::class, 'postLogin']);
 
 Route::get('/friends', [UserController::class, 'friends'])->name('friends');
+Route::post('/friends', [UserController::class, 'deletingFromFriends']);
 
-Route::get('/post', [UserController::class, 'getPosts'])->name('post');;
+Route::get('/post', [UserController::class, 'getPosts'])->name('post');
+Route::post('/post', [UserController::class, 'likePosts'])->name('post');
+
+
+Route::get('/creatPost', [UserController::class, 'getFormCreatPost'])->name('creatPost');
+Route::post('/creatPost', [UserController::class, 'creatPost']);
 
 Route::get('/updateUser', [UserController::class, 'getFormUpdateUser'])->name('updateUser');
 Route::post('/updateUser', [UserController::class, 'updateUser']);

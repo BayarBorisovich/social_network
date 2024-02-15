@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Friend;
+use App\Models\UserPostLike;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -12,6 +13,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
 
 class UserController
@@ -79,7 +81,7 @@ class UserController
 
     }
 
-    public function getFormPost(): \Illuminate\View\View
+    public function getFormPost()
     {
         return view('post');
     }
@@ -102,26 +104,32 @@ class UserController
         $users = User::all();
         $user = Auth::user();
 
-        return view('post', compact('friendPosts', 'users', 'user'));
+        $likes = UserPostLike::all()->where('user_id', Auth::id());
+
+        foreach ($likes as $lik) {
+            $like[$lik['post_id']] = $lik['post_id'];
+        }
+
+        return view('post', compact('friendPosts', 'users', 'user', 'like'));
 
     }
 
-    public function friends()
+    public function likePosts(Request $request)
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
+        $like = User::find(Auth::id())->posts()->toggle($request->post_id);
 
         $friends = User::find(Auth::id())->friends;
-
         foreach ($friends as $key => $elem) {
             $arrFriendId[] = $elem['friend_id'];
         }
-        $friends = User::all()->find($arrFriendId);
+
+        $friendPosts = Post::all()->whereIn('user_id', $arrFriendId);
+
+        $users = User::all();
 
         $user = Auth::user();
 
-        return view('friends', compact('user', 'friends'));
+        return view('post', compact('friendPosts', 'users', 'user', 'like'));
     }
 
     public function getFormUpdateUser()
@@ -150,20 +158,96 @@ class UserController
 
         return view('updateUser', compact('user'));
     }
+    public function getFormCreatPost()
+    {
+        return view('creatPost');
+    }
+    public function creatPost(Request $request)
+    {
+        Post::create([
+            'user_id' => Auth::id(),
+            'content' => $request['content'],
+        ]);
+        return redirect()->route('creatPost');
+    }
 
     public function getFormUsers()
     {
         if (!Auth::check()) {
             return redirect()->route('login');
         }
+        $friends = User::find(Auth::id())->friends;
+
+        foreach ($friends as $friend) {
+            $friendsId[$friend['friend_id']] = $friend['friend_id'];
+        }
+
         $users = User::all();
-        return view('user', compact('users'));
+
+        $id = Auth::id();
+
+        if (!isset($friendsId)) {
+            return view('user', compact('users', 'id'));
+        }
+
+        return view('user', compact('users', 'friendsId', 'id'));
     }
+
     public function addFriend(Request $request)
     {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
 
+        $users = User::all();
 
-        dd($request);
+        Friend::create([
+            'user_id' => Auth::id(),
+            'friend_id' => $request['id'],
+        ]);
+
+        $friends = User::find(Auth::id())->friends;
+        foreach ($friends as $friend) {
+            $friendsId[$friend['friend_id']] = $friend['friend_id'];
+        }
+
+        return view('user', compact('users', 'friendsId'));
+
+    }
+
+    public function friends()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $friends = User::find(Auth::id())->friends;
+
+        foreach ($friends as $key => $elem) {
+            $arrFriendId[] = $elem['friend_id'];
+
+        }
+        $user = Auth::user();
+
+        if (!isset($arrFriendId)) {
+            return view('friends', compact('user', 'friends'));
+        }
+
+        $friends = User::all()->find($arrFriendId);
+
+        return view('friends', compact('user', 'friends'));
+    }
+
+    public function deletingFromFriends(Request $request)
+    {
+        $friends = Friend::where('user_id', Auth::id())->where('friend_id', $request['friend_id'])->get();
+
+        foreach ($friends as $key => $friend) {
+            $del = Friend::find($friend['id']);
+            $del->delete();
+        }
+
+        return $this->friends();
 
     }
 }
