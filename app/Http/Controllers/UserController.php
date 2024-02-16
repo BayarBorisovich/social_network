@@ -81,57 +81,6 @@ class UserController
 
     }
 
-    public function getFormPost()
-    {
-        return view('post');
-    }
-
-    public function getPosts()
-    {
-
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-
-
-        $friends = User::find(Auth::id())->friends;
-        foreach ($friends as $key => $elem) {
-            $arrFriendId[] = $elem['friend_id'];
-        }
-
-        $friendPosts = Post::all()->whereIn('user_id', $arrFriendId);
-
-        $users = User::all();
-        $user = Auth::user();
-
-        $likes = UserPostLike::all()->where('user_id', Auth::id());
-
-        foreach ($likes as $lik) {
-            $like[$lik['post_id']] = $lik['post_id'];
-        }
-
-        return view('post', compact('friendPosts', 'users', 'user', 'like'));
-
-    }
-
-    public function likePosts(Request $request)
-    {
-        $like = User::find(Auth::id())->posts()->toggle($request->post_id);
-
-        $friends = User::find(Auth::id())->friends;
-        foreach ($friends as $key => $elem) {
-            $arrFriendId[] = $elem['friend_id'];
-        }
-
-        $friendPosts = Post::all()->whereIn('user_id', $arrFriendId);
-
-        $users = User::all();
-
-        $user = Auth::user();
-
-        return view('post', compact('friendPosts', 'users', 'user', 'like'));
-    }
-
     public function getFormUpdateUser()
     {
         $user = Auth::user();
@@ -158,18 +107,7 @@ class UserController
 
         return view('updateUser', compact('user'));
     }
-    public function getFormCreatPost()
-    {
-        return view('creatPost');
-    }
-    public function creatPost(Request $request)
-    {
-        Post::create([
-            'user_id' => Auth::id(),
-            'content' => $request['content'],
-        ]);
-        return redirect()->route('creatPost');
-    }
+
 
     public function getFormUsers()
     {
@@ -249,5 +187,10 @@ class UserController
 
         return $this->friends();
 
+    }
+    public function getMainPageUser()
+    {
+
+        return view('mainPageUser');
     }
 }

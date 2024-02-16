@@ -722,29 +722,31 @@
                                                         src="https://bootdey.com/img/Content/avatar/avatar3.png"
                                                         alt></span>
                                                         <span class="username">{{ $user['name'] }}</span>
-                                                        {{--                                                            <span class="pull-right text-muted">82 Views</span>--}}
                                                     </div>
                                                     <div class="timeline-content">
                                                         <p>{{ $post['content'] }}</p>
                                                     </div>
-                                                    <form action="{{ route('post') }}" method="post">
-                                                        <div class="timeline-footer">
-
+                                                    <div class="timeline-footer">
+                                                        {{$post['id']}}
+                                                        <form action="{{ route('post') }}" method="post">
                                                             @csrf
-
-                                                            <input type="text" id="id"
-                                                                   class="fa fa-thumbs-up fa-fw fa-lg m-r-3"
-                                                                   name="post_id"
-                                                                   placeholder="id" hidden=""
-                                                                   value="{{ $post->id }}">
-{{--                                                            <input type="submit" class="btn btn-sm btn-outline-primary"--}}
-{{--                                                                   value="like">--}}
-                                                            @if(!isset($like[$post->id]))
-                                                            <button type="submit" class="border-0 bg-transparent">
-                                                                    <i class="fa fa-heart-o" aria-hidden="true"></i>
-                                                                    <i class="fa fa-heart" aria-hidden="true"></i>
-                                                            </button>
-                                                            @endif
+                                                            <a href="javascript:;" class="m-r-15 text-inverse-lighter">
+                                                                <input type="hidden" id="id"
+                                                                       class="fa fa-thumbs-up fa-fw fa-lg m-r-3"
+                                                                       name="post_id"
+                                                                       placeholder="id" value="{{ $post['id'] }}">
+{{--                                                                @if($like[$post['id']] )--}}
+                                                                    <button type="submit"
+                                                                            class="border-0 bg-transparent">
+                                                                        <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                                                    </button>
+{{--                                                                @else--}}
+{{--                                                                    <button type="submit"--}}
+{{--                                                                            class="border-0 bg-transparent">--}}
+{{--                                                                        <i class="fa fa-heart" aria-hidden="true"></i>--}}
+{{--                                                                    </button>--}}
+{{--                                                                @endif--}}
+                                                            </a>
                                                             <a href="javascript:;"
                                                                class="m-r-15 text-inverse-lighter"><i
                                                                     class="fa fa-comments fa-fw fa-lg m-r-3"></i>
@@ -752,8 +754,8 @@
                                                             <a href="javascript:;"
                                                                class="m-r-15 text-inverse-lighter"><i
                                                                     class="fa fa-share fa-fw fa-lg m-r-3"></i> Share</a>
-                                                        </div>
-                                                    </form>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </li>
                                         @endif
