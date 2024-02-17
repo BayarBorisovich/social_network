@@ -136,6 +136,9 @@ class UserController
         if (!Auth::check()) {
             return redirect()->route('login');
         }
+        if (isset($_POST['user_d'])) {
+            return $this->postMainPageUser($request);
+        }
 
         $users = User::all();
 
@@ -190,7 +193,16 @@ class UserController
     }
     public function getMainPageUser()
     {
-
         return view('mainPageUser');
+    }
+    public function postMainPageUser(Request $request)
+    {
+        if(isset($_POST['id'])) {
+            return $this->addFriend($request);
+        }
+        $id = $request->user_id;
+        $user = User::find($id);
+        $myPosts = Post::all()->where('user_id', $id);
+        return view('mainPageUser', compact('user', 'myPosts'));
     }
 }

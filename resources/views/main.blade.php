@@ -419,10 +419,10 @@
                                                     <circle cx="5" cy="12" r="1"></circle>
                                                 </svg>
                                             </button>
-                                            <form action="{{ route('main') }}" method="post">
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
-                                                    <a class="dropdown-item d-flex align-items-center" >
-                                                        @csrf
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+                                                <form action="{{ route('main') }}" method="post">
+                                                    @csrf
+                                                    <a class="dropdown-item d-flex align-items-center">
                                                         <input type="text" id="post_id" class="form-control"
                                                                name="delete"
                                                                placeholder="post_id" hidden=""
@@ -431,6 +431,9 @@
                                                                class="btn btn-icon btn-sm waves-effect waves-light btn-success"
                                                                value="Delete Post">
                                                     </a>
+                                                </form>
+                                                <form action="{{ route('main') }}" method="post">
+                                                    @csrf
                                                     <a class="dropdown-item d-flex align-items-center">
                                                         <input type="text" id="update" class="form-control"
                                                                name="update"
@@ -447,8 +450,8 @@
                                                                class="btn btn-sm btn-outline-primary"
                                                                value="Update Post">
                                                     </a>
-                                                </div>
-                                            </form>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

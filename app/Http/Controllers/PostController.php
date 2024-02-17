@@ -97,18 +97,20 @@ class PostController extends Controller
 
     public function deletePost(Request $request)
     {
+        if (isset($_POST['update'])) {
+            return $this->deletePost($request);
+        }
         $post = Post::find($request->delete);
 
         $post->delete();
 
         return redirect()->route('main');
     }
-    public function getUpdatePost()
-    {
-        return view('updatePost');
-    }
     public function updatePost(Request $request)
     {
+        if (isset($_POST['delete'])) {
+            return $this->deletePost($request);
+        }
         $post = Post::find($request->update);
 
         $post->update([

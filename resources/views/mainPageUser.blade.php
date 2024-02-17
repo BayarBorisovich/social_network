@@ -256,31 +256,13 @@
                                             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                                             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                                         </svg>
-                                        <a class="" href="{{ route('updateUser') }}">Edit profile</a>
+                                        <a class="" href="{{ route('main') }}">In Profile</a>
                                     </button>
                                 </div>
                             </div>
                         </div>
                         <div class="header-links">
                             <ul class="links d-flex align-items-center mt-3 mt-md-0">
-                                <li class="header-link-item d-flex align-items-center active">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                         stroke-linejoin="round" class="feather feather-columns mr-1 icon-md">
-                                        <path
-                                            d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7m0-18H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7m0-18v18"></path>
-                                    </svg>
-                                    <a class="pt-1px d-none d-md-block" href="{{ route('creatPost') }}">Creat Post</a>
-                                </li>
-                                <li class="header-link-item d-flex align-items-center active">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                         stroke-linejoin="round" class="feather feather-columns mr-1 icon-md">
-                                        <path
-                                            d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7m0-18H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7m0-18v18"></path>
-                                    </svg>
-                                    <a class="pt-1px d-none d-md-block" href="{{ route('post') }}">Posts</a>
-                                </li>
                                 <li class="header-link-item ml-3 pl-3 border-left d-flex align-items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"

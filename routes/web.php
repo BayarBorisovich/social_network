@@ -44,6 +44,7 @@ Route::get('/allUser', [UserController::class, 'getFormUsers'])->name('user');
 Route::post('/allUser', [UserController::class, 'addFriend'])->name('user');
 
 Route::get('/mainUser', [UserController::class, 'getMainPageUser'])->name('mainUser');
+Route::post('/allUser', [UserController::class, 'postMainPageUser'])->name('user');
 
 
 
@@ -53,7 +54,7 @@ Route::post('/post', [PostController::class, 'likePosts'])->name('post');
 Route::get('/creatPost', [PostController::class, 'getFormCreatPost'])->name('creatPost');
 Route::post('/creatPost', [PostController::class, 'creatPost']);
 Route::post('/main', [PostController::class, 'deletePost']);
-//Route::get('/updatePost', [PostController::class, 'getUpdatePost'])->name('updatePost');
+
 Route::post('/main', [PostController::class, 'updatePost']);
 
 
