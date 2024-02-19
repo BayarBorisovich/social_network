@@ -374,7 +374,7 @@
                         <p>{{ $user->about_of_me }}</p>
                         <div class="mt-3">
                             <label class="tx-11 font-weight-bold mb-0 text-uppercase">Joined:</label>
-                            <p class="text-muted">{{ $user->created_at }}</p>
+                            <p class="text-muted">{{ $user->created_at->toDayDateTimeString() }}</p>
                         </div>
                         <div class="mt-3">
                             <label class="tx-11 font-weight-bold mb-0 text-uppercase">Lives:</label>
@@ -403,7 +403,7 @@
                                                  src="https://bootdey.com/img/Content/avatar/avatar6.png" alt>
                                             <div class="ml-2">
                                                 <p>{{ $user->name }}</p>
-                                                <p class="tx-11 text-muted">{{ $myPost->created_at }}</p>
+                                                <p class="tx-11 text-muted">{{ $myPost->created_at->diffForHumans() }}</p>
                                             </div>
                                         </div>
                                         <div class="dropdown">

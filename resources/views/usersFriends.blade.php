@@ -422,7 +422,7 @@
 <body>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container">
-    <form action="{{ route('friends') }}" method="post">
+    <form action="{{ route('usersFriends') }}">
         <div class="row">
             <div class="col-md-12">
                 <div id="content" class="content content-full-width">
@@ -438,8 +438,6 @@
                                 <div class="profile-header-img">
                                     <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt>
                                 </div>
-
-
                                 <div class="profile-header-info">
                                     <h4 class="m-t-10 m-b-5">{{ $user->name }}</h4>
                                     <p class="m-b-10">{{ $user->about_of_me }}</p>
@@ -447,18 +445,6 @@
                                 </div>
 
                             </div>
-
-
-                            <ul class="profile-header-tab nav nav-tabs">
-                                <li class="nav-item"><a
-                                        href="{{ route('post') }}"
-                                        target="__blank" class="nav-link_">POSTS</a></li>
-                                <li class="nav-item"><a href="#"
-                                                        target="__blank" class="nav-link_">PHOTOS</a></li>
-                                <li class="nav-item"><a
-                                        href="{{ route('friends') }}"
-                                        target="__blank" class="nav-link_ active show">FRIENDS</a></li>
-                            </ul>
 
                         </div>
                     </div>
@@ -484,38 +470,8 @@
                                                                 alt
                                                                 class="media-object img-circle">
                                                         </a>
-                                                        <form action="{{ route('friends') }}" method="post">
-                                                            <div class="media-body valign-middle">
-                                                                @csrf
-                                                                <input type="text" id="user_id" class="form-control"
-                                                                       name="user_id"
-                                                                       placeholder="user_id" hidden=""
-                                                                       value="{{ $friend->id }}">
-                                                                <button type="submit"
-
-                                                                        class="border-0 bg-transparent">
-                                                                    <b class="text-inverse">{{ $friend->name . ' id ' . $friend->id }}</b>
-                                                                </button>
-
-                                                            </div>
-                                                        </form>
-                                                        <div
-                                                            class="media-body valign-middle text-right overflow-visible">
-                                                            <div class="btn-group dropdown">
-                                                                <form action="{{ route('friends') }}" method="post">
-                                                                    <div class="media-body valign-middle">
-                                                                        @csrf
-                                                                        <input type="text" id="friend_id"
-                                                                               class="form-control"
-                                                                               name="friend_id"
-                                                                               placeholder="friend_id" hidden=""
-                                                                               value="{{ $friend->id }}">
-                                                                        <input type="submit"
-                                                                               class="btn btn-sm btn-outline-primary"
-                                                                               value="Delete">
-                                                                    </div>
-                                                                </form>
-                                                            </div>
+                                                        <div class="media-body valign-middle">
+                                                            <b class="text-inverse">{{ $friend->name }}</b>
                                                         </div>
                                                     </div>
                                                 </div>

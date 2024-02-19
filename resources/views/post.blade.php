@@ -706,8 +706,7 @@
                                         @if($user['id'] === $post['user_id'])
                                             <li>
                                                 <div class="timeline-time">
-                                                    <span class="date">{{ $post['created_at'] }}</span>
-                                                    {{--                                                        <span class="time">20:17</span>--}}
+                                                    <span class="date">{{ $post->created_at->diffForHumans() }}</span>
                                                 </div>
 
 
@@ -727,7 +726,7 @@
                                                         <p>{{ $post['content'] }}</p>
                                                     </div>
                                                     <div class="timeline-footer">
-                                                        {{$post['id']}}
+                                                        {{'id ' . $post['id']}}
                                                         <form action="{{ route('post') }}" method="post">
                                                             @csrf
                                                             <a href="javascript:;" class="m-r-15 text-inverse-lighter">
@@ -775,6 +774,11 @@
     </div>
 
 </div>
+<script>
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+</script>
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript">

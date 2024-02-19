@@ -24,17 +24,16 @@ class PostController extends Controller
             'user_id' => Auth::id(),
             'content' => $request['content'],
         ]);
-        return redirect()->route('creatPost');
+
+        return redirect()->route('main');
     }
 
 
     public function getPosts()
     {
-
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-
 
         $friends = User::find(Auth::id())->friends;
         foreach ($friends as $key => $elem) {
@@ -61,19 +60,12 @@ class PostController extends Controller
 
     public function likePosts(Request $request)
     {
-//        $like = User::find(Auth::id())->posts()->toggle($request->post_id);
-        $postId= $request->post_id;
-        $user = Auth::user();
-        if($user->posts->contains($postId)) {
-            $like = UserPostLike::where('post_id', $postId)->where('user_id', Auth::id());
-            $like->delete();
 
-        } else {
-            UserPostLike::create([
-                'user_id' => Auth::id(),
-                'post_id' => $request->post_id,
-            ]);
-        }
+        $like = User::find(Auth::id())->post()->toggle($request->post_id);
+
+        $user = Auth::user();
+//        $user->posts->contains($postId)
+
         $friends = User::find(Auth::id())->friends;
         foreach ($friends as $key => $elem) {
             $arrFriendId[] = $elem['friend_id'];
@@ -100,7 +92,7 @@ class PostController extends Controller
         if (isset($_POST['update'])) {
             return $this->deletePost($request);
         }
-        $post = Post::find($request->delete);
+        $post = Post::find($request['delete']);
 
         $post->delete();
 
@@ -111,10 +103,10 @@ class PostController extends Controller
         if (isset($_POST['delete'])) {
             return $this->deletePost($request);
         }
-        $post = Post::find($request->update);
+        $post = Post::find($request['update']);
 
         $post->update([
-            'content' => $request->content,
+            'content' => $request['content'],
         ]);
         return redirect()->route('main');
     }
