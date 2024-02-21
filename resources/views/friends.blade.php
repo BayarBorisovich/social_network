@@ -423,6 +423,7 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container">
     <form action="{{ route('friends') }}" method="post">
+        @csrf
         <div class="row">
             <div class="col-md-12">
                 <div id="content" class="content content-full-width">
@@ -470,7 +471,6 @@
 
                             <div class="tab-pane fade in active show" id="profile-friends">
                                 <h4 class="m-t-0 m-b-20">Friend List ({{ count($friends) }})</h4>
-
                                 <div class="row row-space-2">
                                     @if(isset($friends))
                                         @foreach($friends as $friend)
@@ -484,25 +484,16 @@
                                                                 alt
                                                                 class="media-object img-circle">
                                                         </a>
-                                                        <form action="{{ route('friends') }}" method="post">
-                                                            <div class="media-body valign-middle">
-                                                                @csrf
-                                                                <input type="text" id="user_id" class="form-control"
-                                                                       name="user_id"
-                                                                       placeholder="user_id" hidden=""
-                                                                       value="{{ $friend->id }}">
-                                                                <button type="submit"
+                                                        {{ $friend->id }}
+                                                        <div class="media-body valign-middle">
+                                                            <a href="{{ route('mainUser', $friend) }}"
+                                                               class="btn btn-xs btn-yellow">{{ $friend->name }}</a>
+                                                        </div>
 
-                                                                        class="border-0 bg-transparent">
-                                                                    <b class="text-inverse">{{ $friend->name . ' id ' . $friend->id }}</b>
-                                                                </button>
-
-                                                            </div>
-                                                        </form>
                                                         <div
                                                             class="media-body valign-middle text-right overflow-visible">
                                                             <div class="btn-group dropdown">
-                                                                <form action="{{ route('friends') }}" method="post">
+                                                                <form action="{{ route('friends')}}" method="post">
                                                                     <div class="media-body valign-middle">
                                                                         @csrf
                                                                         <input type="text" id="friend_id"

@@ -392,48 +392,40 @@
                             <div class="m-b-10"><b>Users List ({{ count($users) }})</b></div>
                             <ul class="friend-list clearfix">
                                 @foreach($users as $user)
-                                    {{--                                    @if($user->id != $id)--}}
                                     <li>
                                         <a href="#">
                                             <div class="friend-img"><img
                                                     src="https://bootdey.com/img/Content/avatar/avatar2.png" alt/>
                                             </div>
-
-
                                             <div class="friend-info">
-                                                <form action="{{ route('user') }}" method="post">
-                                                    @csrf
-                                                    <input type="text" id="user_id" class="form-control"
-                                                           name="user_id"
-                                                           placeholder="user_id" hidden=""
-                                                           value="{{ $user->id }}">
-                                                    <button type="submit"
-                                                            class="border-0 bg-transparent">
-                                                        <h4>{{ $user->name }}</h4>
-                                                    </button>
-                                                </form>
-                                                <p> id {{ $user->id }}</p>
-                                                <form action="{{ route('user') }}" method="post">
-                                                    @csrf
-                                                    @if(!isset($friendsId[$user->id]) || empty($friendsId))
-                                                        <input type="text" id="id" class="form-control"
-                                                               name="id"
-                                                               placeholder="id" hidden=""
-                                                               value="{{ $user->id }}">
-                                                        <input type="submit"
-                                                               class="btn btn-sm btn-outline-primary"
-                                                               value="Add to friends">
-                                                    @else
-                                                        <input type="text" id="id" class="form-control"
-                                                               name="id"
-                                                               placeholder="id" hidden=""
-                                                               value="{{ $user->id }}">
-                                                        <input type="button"
-                                                               class="btn btn-icon btn-sm waves-effect waves-light btn-success"
-                                                               value="Friend">
-                                                    @endif
-                                                </form>
+                                                <div class="media-body valign-middle">
+                                                    <a href="{{ route('mainUser', $user->id) }}"
+                                                       class="text-inverse">{{ $user->name }}</a>
+                                                    <p> id {{ $user->id }}</p>
+                                                    <form action="{{ route('user') }}" method="post">
+                                                        @csrf
+                                                        @if(!isset($friendsId[$user->id]) || empty($friendsId))
+                                                            <input type="text" id="id" class="form-control"
+                                                                   name="id"
+                                                                   placeholder="id" hidden=""
+                                                                   value="{{ $user->id }}">
+                                                            <input type="submit"
+                                                                   class="btn btn-sm btn-outline-primary"
+                                                                   value="Add to friends">
+                                                        @else
+                                                            <input type="text" id="id" class="form-control"
+                                                                   name="id"
+                                                                   placeholder="id" hidden=""
+                                                                   value="{{ $user->id }}">
+                                                            <input type="button"
+                                                                   class="btn btn-icon btn-sm waves-effect waves-light btn-success"
+                                                                   value="Friend">
+                                                        @endif
+                                                    </form>
+
+                                                </div>
                                             </div>
+
 
                                         </a>
                                     </li>

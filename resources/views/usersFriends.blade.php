@@ -422,7 +422,7 @@
 <body>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container">
-    <form action="{{ route('usersFriends') }}">
+    <form action="{{ route('usersFriends', $userId) }}">
         <div class="row">
             <div class="col-md-12">
                 <div id="content" class="content content-full-width">

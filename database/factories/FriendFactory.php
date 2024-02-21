@@ -18,8 +18,8 @@ class FriendFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => random_int(1, 5),
-            'friend_id' => random_int(5, 10),
+            'user_id' => random_int(1, 50),
+            'friend_id' => random_int(1, 50),
         ];
     }
 }

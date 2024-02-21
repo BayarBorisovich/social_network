@@ -700,67 +700,72 @@
                         <div class="tab-pane fade active show" id="profile-post">
 
                             <ul class="timeline">
-
-                                @foreach($users as $key => $user)
-                                    @foreach($friendPosts as $key => $post)
-                                        @if($user['id'] === $post['user_id'])
-                                            <li>
-                                                <div class="timeline-time">
-                                                    <span class="date">{{ $post->created_at->diffForHumans() }}</span>
-                                                </div>
-
-
-                                                <div class="timeline-icon">
-                                                    <a href="javascript:;">&nbsp;</a>
-                                                </div>
+                                @if(empty($friendPosts))
+                                    <p> Ваши друзья не опубликовали посты</p>
+                                @else
+                                    @foreach($users as $key => $user)
+                                        @foreach($friendPosts as $key => $post)
+                                            @if($user['id'] === $post['user_id'])
+                                                <li>
+                                                    <div class="timeline-time">
+                                                        <span
+                                                            class="date">{{ $post->created_at->diffForHumans() }}</span>
+                                                    </div>
 
 
-                                                <div class="timeline-body">
-                                                    <div class="timeline-header">
+                                                    <div class="timeline-icon">
+                                                        <a href="javascript:;">&nbsp;</a>
+                                                    </div>
+
+
+                                                    <div class="timeline-body">
+                                                        <div class="timeline-header">
                                                 <span class="userimage"><img
                                                         src="https://bootdey.com/img/Content/avatar/avatar3.png"
                                                         alt></span>
-                                                        <span class="username">{{ $user['name'] }}</span>
-                                                    </div>
-                                                    <div class="timeline-content">
-                                                        <p>{{ $post['content'] }}</p>
-                                                    </div>
-                                                    <div class="timeline-footer">
-                                                        {{'id ' . $post['id']}}
-                                                        <form action="{{ route('post') }}" method="post">
-                                                            @csrf
-                                                            <a href="javascript:;" class="m-r-15 text-inverse-lighter">
-                                                                <input type="hidden" id="id"
-                                                                       class="fa fa-thumbs-up fa-fw fa-lg m-r-3"
-                                                                       name="post_id"
-                                                                       placeholder="id" value="{{ $post['id'] }}">
-{{--                                                                @if($like[$post['id']] )--}}
+                                                            <span class="username">{{ $user['name'] }}</span>
+                                                        </div>
+                                                        <div class="timeline-content">
+                                                            <p>{{ $post['content'] }}</p>
+                                                        </div>
+                                                        <div class="timeline-footer">
+                                                            {{'id ' . $post['id']}}
+                                                            <form action="{{ route('post') }}" method="post"
+                                                                  id="formLike">
+                                                                @csrf
+                                                                <a href="javascript:;"
+                                                                   class="m-r-15 text-inverse-lighter">
+                                                                    <input type="hidden" id="id"
+                                                                           class="fa fa-thumbs-up fa-fw fa-lg m-r-3"
+                                                                           name="post_id"
+                                                                           placeholder="id" value="{{ $post['id'] }}">
+
                                                                     <button type="submit"
                                                                             class="border-0 bg-transparent">
-                                                                        <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                                                        @if(isset($like[$post['id']]))
+                                                                            <i class="fa fa-heart"
+                                                                               aria-hidden="true" id="{{}}$post['id']"></i>
+                                                                        @else
+                                                                            <i class="fa fa-heart-o"
+                                                                               aria-hidden="true" id="disLike"></i>
+                                                                        @endif
                                                                     </button>
-{{--                                                                @else--}}
-{{--                                                                    <button type="submit"--}}
-{{--                                                                            class="border-0 bg-transparent">--}}
-{{--                                                                        <i class="fa fa-heart" aria-hidden="true"></i>--}}
-{{--                                                                    </button>--}}
-{{--                                                                @endif--}}
-                                                            </a>
-                                                            <a href="javascript:;"
-                                                               class="m-r-15 text-inverse-lighter"><i
-                                                                    class="fa fa-comments fa-fw fa-lg m-r-3"></i>
-                                                                Comment</a>
-                                                            <a href="javascript:;"
-                                                               class="m-r-15 text-inverse-lighter"><i
-                                                                    class="fa fa-share fa-fw fa-lg m-r-3"></i> Share</a>
-                                                        </form>
+                                                                </a>
+                                                                <a href="javascript:;"
+                                                                   class="m-r-15 text-inverse-lighter"><i
+                                                                        class="fa fa-comments fa-fw fa-lg m-r-3"></i>
+                                                                    Comment</a>
+                                                                <a href="javascript:;"
+                                                                   class="m-r-15 text-inverse-lighter"><i
+                                                                        class="fa fa-share fa-fw fa-lg m-r-3"></i> Share</a>
+                                                            </form>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </li>
-                                        @endif
+                                                </li>
+                                            @endif
+                                        @endforeach
                                     @endforeach
-                                @endforeach
-
+                                @endif
                             </ul>
 
                         </div>
@@ -774,15 +779,35 @@
     </div>
 
 </div>
-<script>
-    if ( window.history.replaceState ) {
-        window.history.replaceState( null, null, window.location.href );
-    }
-</script>
+{{--<script>--}}
+{{--    if (window.history.replaceState) {--}}
+{{--        window.history.replaceState(null, null, window.location.href);--}}
+{{--    }--}}
+{{--</script>--}}
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript">
 
+</script>
+<script>
+    $(document).ready(function () {
+        $("#formLike").on('submit', function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: '/post',
+                dataType: 'html',
+                data: $(this).serialize(),
+                success: function()
+                {
+                    console.log('done');
+                    var s = document.getElementById("like");
+                    // s.classList.add('fa-heart')
+                    element.classList.remove('fa-heart o');
+                }
+            });
+        });
+    });
 </script>
 </body>
 </html>

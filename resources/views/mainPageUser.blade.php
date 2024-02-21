@@ -230,7 +230,7 @@
 <body>
 
 <div class="container">
-    <form action="{{ route('mainUser') }}" method="post">
+    <form action="{{ route('mainUser', $friendId) }}" method="post">
         @csrf
         <div class="profile-page tx-13">
             <div class="row">
@@ -273,16 +273,8 @@
                                         <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
                                         <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                                     </svg>
-                                    <form action="{{ route('mainUser') }}" method="post">
-                                        <input type="text" id="friend" class="form-control"
-                                               name="friend"
-                                               placeholder="friend" hidden=""
-                                               value="{{ $user->id }}">
-                                        <button type="submit"
-                                                class="border-0 bg-transparent">
-                                            <a> Friends </a>
-                                        </button>
-                                    </form>
+                                    <a class="pt-1px d-none d-md-block" href="{{ route('usersFriends', $user->id) }}">Friends<span
+                                            class="text-muted tx-12"></span></a>
                                 </li>
                                 <li class="header-link-item ml-3 pl-3 border-left d-flex align-items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -517,17 +509,7 @@
                         <div class="col-md-12 grid-margin">
                             <div class="card rounded">
                                 <div class="card-body">
-{{--                                    <a class="pt-1px d-none d-md-block" href="{{ route('messages', $user->id) }}">write a message</a>--}}
-                                    <form action="{{ route('mainUser') }}" method="post">
-                                        @csrf
-                                        <input type="text" id="messages" class="form-control"
-                                               name="messages"
-                                               placeholder="messages" hidden=""
-                                               value="{{ $user->id }}">
-                                        <input type="submit"
-                                               class="btn btn-icon btn-sm waves-effect waves-light btn-success"
-                                               value="write a message">
-                                    </form>
+                                    <a class="pt-1px d-none d-md-block" href="{{ route('messages', $user->id) }}">write a message</a>
                                 </div>
                             </div>
                         </div>

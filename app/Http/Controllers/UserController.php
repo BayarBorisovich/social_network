@@ -106,7 +106,7 @@ class UserController extends Controller
             'about_of_me' => $request->about_of_me,
         ]);
 
-        return view('updateUser', compact('user'));
+        return redirect()->route('updateUser');
     }
 
 
@@ -117,8 +117,14 @@ class UserController extends Controller
         }
         $friends = User::find(Auth::id())->friends;
 
+        $myFriends = Friend::where('friend_id', Auth::id())->get();
+
         foreach ($friends as $friend) {
             $friendsId[$friend['friend_id']] = $friend['friend_id'];
+        }
+
+        foreach ($myFriends as $myFriend) {
+            $friendsId[$myFriend['user_id']] = $myFriend['user_id'];
         }
 
         $users = User::all();
@@ -137,9 +143,6 @@ class UserController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        if (isset($_POST['user_id'])) {
-            return $this->postMainPageUser($request);
-        }
 
         $users = User::all();
 
@@ -157,7 +160,7 @@ class UserController extends Controller
 
     }
 
-    public function friends()
+    public function getFormFriends()
     {
         if (!Auth::check()) {
             return redirect()->route('login');
@@ -165,10 +168,16 @@ class UserController extends Controller
 
         $friends = User::find(Auth::id())->friends;
 
-        foreach ($friends as $key => $elem) {
-            $arrFriendId[] = $elem['friend_id'];
+        $myFriends = Friend::where('friend_id', Auth::id())->get();
+
+        foreach ($friends as $friend) {
+            $arrFriendId[] = $friend['friend_id'];
 
         }
+        foreach ($myFriends as $myFriend) {
+            $arrFriendId[] = $myFriend['user_id'];
+        }
+
         $user = Auth::user();
 
         if (!isset($arrFriendId)) {
@@ -176,125 +185,103 @@ class UserController extends Controller
         }
 
         $friends = User::all()->find($arrFriendId);
-
+//        dd($friends);
         return view('friends', compact('user', 'friends'));
     }
 
     public function deletingFromFriends(Request $request)
     {
-        if (isset($_POST['user_id'])) {
-            return $this->postTheUsersHomePage($request);
-        }
-        $friends = Friend::where('user_id', Auth::id())->where('friend_id', $request['friend_id'])->get();
 
-        foreach ($friends as $key => $friend) {
-            $del = Friend::find($friend['id']);
+        $friends = Friend::where('user_id', Auth::id())->where('friend_id', $request['friend_id'])->first();
+        $myFriends = Friend::where('user_id', $request['friend_id'])->where('friend_id', Auth::id())->first();
+
+        if (isset($friends->user_id)) {
+
+            $del = Friend::find($friends->id);
+            $del->delete();
+
+        } else {
+
+            $del = Friend::find($myFriends->id);
             $del->delete();
         }
-
-        return $this->friends();
-
+        return redirect()->route('friends');
     }
-    public function getTheUsersHomePage($user, $myPosts)
+
+    public function getTheUsersHomePage($friendId)
     {
-//        return view('mainPageUser');
-        return view('mainPageUser', compact('user', 'myPosts'));
-    }
-    public function postTheUsersHomePage(Request $request)
-    {
-        if(isset($_POST['id'])) {
-            return $this->addFriend($request);
-        }
-        if(isset($_POST['friend_id'])) {
-            return $this->deletingFromFriends($request);
+        if (!Auth::check()) {
+            return redirect()->route('login');
         }
 
-        $id = $request->user_id;
-        $user = User::find($id);
-        $myPosts = Post::all()->where('user_id', $id);
+        $user = User::find($friendId);
+        $myPosts = Post::all()->where('user_id', $friendId);
 
-        return $this->getTheUsersHomePage($user, $myPosts);
-//        return view('mainPageUser', compact('user', 'myPosts'));
+        return view('mainPageUser', compact('user', 'myPosts', 'friendId'));
     }
-    public function getFormUsersFriends()
+
+    public function getFormUsersFriends(int $userId)
     {
-        return view('usersFriends');
-    }
-    public function postUsersFriends(Request $request)
-    {
-        if (isset($_POST['messages'])) {
-            return $this->postMessages($request);
+        if (!Auth::check()) {
+            return redirect()->route('login');
         }
-        $id = $request->friend;
-        $friends = User::find($id)->friends;
+        $friends = User::find($userId)->friends;
 
         foreach ($friends as $key => $elem) {
             $arrFriendId[] = $elem['friend_id'];
 
         }
-        $user = User::find($id);
+        $user = User::find($userId);
 
         if (!isset($arrFriendId)) {
-            return view('friends', compact('user', 'friends'));
+            return view('friends', compact('user', 'friends', 'userId'));
         }
 
         $friends = User::all()->find($arrFriendId);
 
-        return view('usersFriends', compact('user', 'friends'));
+        return view('usersFriends', compact('user', 'friends', 'userId'));
 
     }
-    public function getFormMessages()
+
+    public function getFormMessages(Request $request, int $userId)
     {
-
-//        $sender = Auth::user();
-//
-//        $receiver = User::find($receiverId);
-//
-//        $myMessages = Message::where('sender_id', Auth::id())->where('receiver_id', $receiverId)->get();
-//
-//        $iNeedMessages = Message::where('sender_id', $receiverId)->where('receiver_id', Auth::id())->get();
-
-
-
-//        return view('messages', compact('sender', 'receiver', 'myMessages', 'iNeedMessages'));
-
-        return view('messages');
-    }
-
-    public function postMessages(Request $request)
-    {
-        if (isset($_POST['friend'])) {
-            return $this->postUsersFriends($request);
+        if (!Auth::check()) {
+            return redirect()->route('login');
         }
-        $sender = Auth::user();
-        $receiverId = $request->messages;
-        $receiver = User::find($receiverId);
-
-        $myMessages = Message::where('sender_id', Auth::id())->where('receiver_id', $receiverId)->get();
-
-        $iNeedMessages = Message::where('sender_id', $receiverId)->where('receiver_id', Auth::id())->get();
-
-
-
-        return view('messages', compact('sender', 'receiver', 'myMessages', 'iNeedMessages'));
-    }
-    public function creatMessages(Request $request)
-    {
-        if (isset($_POST['textMessage']) && isset($_POST['receiver_id'])) {
-            $sender = Auth::user();
-            $receiverId = $request['receiver_id'];
-            $receiver = User::find($receiverId);
+        if (isset($request->textMessage)) {
             Message::create([
-                'content' => $request['textMessage'],
+                'content' => $request->textMessage,
                 'sender_id' => Auth::id(),
-                'receiver_id' => $receiverId,
+                'receiver_id' => $userId,
             ]);
-            $myMessages = Message::where('sender_id', Auth::id())->where('receiver_id', $receiverId)->get();
-            $iNeedMessages = Message::where('sender_id', $receiverId)->where('receiver_id', Auth::id())->get();
 
-            return view('messages', compact('sender', 'receiver', 'myMessages', 'iNeedMessages'));
+            return redirect()->route('messages', compact('userId'));
         }
-        dd('no');
-    }
 
+        $sender = Auth::user();
+
+        $receiver = User::find($userId);
+
+        $myMessages = Message::where('sender_id', Auth::id())->where('receiver_id', $userId)->get();
+
+        foreach ($myMessages as $myMessage) {
+            $arrMessages[] = $myMessage;
+        }
+
+        $iNeedMessages = Message::where('sender_id', $userId)->where('receiver_id', Auth::id())->get();
+
+        foreach ($iNeedMessages as $iNeedMessage) {
+            $arrMessages[] = $iNeedMessage;
+        }
+
+        if (empty($arrMessages)) {
+            return view('messages', compact('sender', 'receiver', 'iNeedMessages', 'userId'));
+        }
+
+        $collect = collect($arrMessages);
+
+        $messages = $collect->sortBy('created_at');
+
+        return view('messages', compact('sender', 'receiver', 'messages', 'userId'));
+    }
 }
