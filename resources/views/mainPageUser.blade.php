@@ -230,7 +230,7 @@
 <body>
 
 <div class="container">
-    <form action="{{ route('mainUser', $friendId) }}" method="post">
+    <form action="{{ route('mainUser', $friendId) }}" method="get">
         @csrf
         <div class="profile-page tx-13">
             <div class="row">
@@ -249,14 +249,7 @@
                                     <span class="profile-name">{{ $user->name }}</span>
                                 </div>
                                 <div class="d-none d-md-block">
-                                    <button class="btn btn-primary btn-icon-text btn-edit-profile">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                             stroke-linecap="round" stroke-linejoin="round"
-                                             class="feather feather-edit btn-icon-prepend">
-                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                        </svg>
+                                    <button class="btn btn-outline-warning">
                                         <a class="" href="{{ route('main') }}">In Profile</a>
                                     </button>
                                 </div>
@@ -508,8 +501,8 @@
                     <div class="row">
                         <div class="col-md-12 grid-margin">
                             <div class="card rounded">
-                                <div class="card-body">
-                                    <a class="pt-1px d-none d-md-block" href="{{ route('messages', $user->id) }}">write a message</a>
+                                <div class="btn btn-outline-info">
+                                    <a class="" href="{{ route('messages', $user->id) }}">write a message</a>
                                 </div>
                             </div>
                         </div>

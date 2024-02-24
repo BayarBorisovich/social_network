@@ -26,6 +26,7 @@ class MainController extends Controller
         $myPosts = Post::all()->where('user_id', Auth::id());
         $likes = UserPostLike::all()->where('user_id', Auth::id());
 
+        $like = [];
         foreach ($likes as $lik) {
             $like[$lik['post_id']] = $lik['post_id'];
         }

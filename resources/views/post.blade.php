@@ -659,6 +659,10 @@
         .text-danger, .text-red {
             color: #ff5b57 !important;
         }
+
+        /*#liked {*/
+        /*    color: red;*/
+        /*}*/
     </style>
 </head>
 <body>
@@ -701,10 +705,11 @@
 
                             <ul class="timeline">
                                 @if(empty($friendPosts))
+
                                     <p> Ваши друзья не опубликовали посты</p>
                                 @else
                                     @foreach($users as $key => $user)
-                                        @foreach($friendPosts as $key => $post)
+                                        @foreach($friendPosts as $ke => $post)
                                             @if($user['id'] === $post['user_id'])
                                                 <li>
                                                     <div class="timeline-time">
@@ -738,26 +743,62 @@
                                                                     <input type="hidden" id="id"
                                                                            class="fa fa-thumbs-up fa-fw fa-lg m-r-3"
                                                                            name="post_id"
-                                                                           placeholder="id" value="{{ $post['id'] }}">
+                                                                           placeholder="id"
+                                                                           value="{{ $post['id'] }}">
 
                                                                     <button type="submit"
-                                                                            class="border-0 bg-transparent">
+                                                                            class="border-0 bg-transparent mb-3">
                                                                         @if(isset($like[$post['id']]))
                                                                             <i class="fa fa-heart"
-                                                                               aria-hidden="true" id="{{}}$post['id']"></i>
+                                                                               aria-hidden="true"
+                                                                               id="disLike"></i>
                                                                         @else
                                                                             <i class="fa fa-heart-o"
-                                                                               aria-hidden="true" id="disLike"></i>
+                                                                               aria-hidden="true" id="like"></i>
                                                                         @endif
                                                                     </button>
                                                                 </a>
-                                                                <a href="javascript:;"
-                                                                   class="m-r-15 text-inverse-lighter"><i
-                                                                        class="fa fa-comments fa-fw fa-lg m-r-3"></i>
-                                                                    Comment</a>
-                                                                <a href="javascript:;"
-                                                                   class="m-r-15 text-inverse-lighter"><i
-                                                                        class="fa fa-share fa-fw fa-lg m-r-3"></i> Share</a>
+
+                                                                @foreach($comments as $key => $comment)
+                                                                    @if ($post->id === $comment->post_id)
+                                                                        <div class="chat-messages p-8">
+                                                                            <div class="chat-message-left">
+                                                                                <div>
+                                                                                    <img
+                                                                                        src="https://bootdey.com/img/Content/avatar/avatar3.png"
+                                                                                        class="rounded-circle mr-1"
+                                                                                        alt="Sharon Lessman" width="25"
+                                                                                        height="25">
+                                                                                    <div
+                                                                                        class="text-muted small text-nowrap mt-2">
+
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3 ">
+                                                                                    <div
+                                                                                        class="font-weight-bold mb-1">
+                                                                                       Name
+                                                                                    </div>
+                                                                                    {{ $comment->comment }}
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    @endif
+                                                                @endforeach
+                                                                <div class="text-right">
+                                                                    <div class="form-floating">
+                                                                            <textarea class="form-control mb-3"
+                                                                                      name="comment"
+                                                                                      placeholder="Leave a comment here"
+                                                                                      id="floatingTextarea"></textarea>
+                                                                        {{--                                                                        <label for="floatingTextarea">Comments</label>--}}
+                                                                        <input type="submit"
+                                                                               class="btn btn-sm btn-outline-primary md-3"
+                                                                               value="send">
+                                                                    </div>
+                                                                </div>
                                                             </form>
                                                         </div>
                                                     </div>
@@ -791,6 +832,15 @@
 </script>
 <script>
     $(document).ready(function () {
+        var likeButtons = document.querySelectorAll('.fa');
+
+        likeButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                this.classList.toggle('fa-heart');
+                this.classList.toggle('fa-heart-o');
+            });
+        });
+
         $("#formLike").on('submit', function (event) {
             event.preventDefault();
             $.ajax({
@@ -798,12 +848,8 @@
                 url: '/post',
                 dataType: 'html',
                 data: $(this).serialize(),
-                success: function()
-                {
+                success: function () {
                     console.log('done');
-                    var s = document.getElementById("like");
-                    // s.classList.add('fa-heart')
-                    element.classList.remove('fa-heart o');
                 }
             });
         });

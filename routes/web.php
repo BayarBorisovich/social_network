@@ -32,7 +32,7 @@ Route::post('/registrate', [UserController::class, 'postRegistrate']);
 Route::get('/login', [UserController::class, 'getFormLogin'])->name('login');
 Route::post('/login', [UserController::class, 'postLogin']);
 
-Route::get('/friends/', [UserController::class, 'getFormFriends'])->name('friends');
+Route::get('/friends', [UserController::class, 'getFormFriends'])->name('friends');
 Route::post('/friends', [UserController::class, 'deletingFromFriends']);
 
 
@@ -50,14 +50,16 @@ Route::get('/mainUser/{friendId}', [UserController::class, 'getTheUsersHomePage'
 Route::match(['get', 'post'],'/messages/{userId}', [UserController::class, 'getFormMessages'])->name('messages');
 //Route::post('/messages/', [UserController::class, 'creatMessages']);
 
-
 Route::get('/post', [PostController::class, 'getPosts'])->name('post');
 Route::post('/post', [PostController::class, 'likePosts']);
+Route::post('/post', [PostController::class, 'creatComment']);
 
 Route::get('/creatPost', [PostController::class, 'getFormCreatPost'])->name('creatPost');
 Route::post('/creatPost', [PostController::class, 'creatPost']);
 Route::post('/main', [PostController::class, 'deletePost']);
 Route::post('/main', [PostController::class, 'updatePost']);
+
+Route::post('/main', [PostController::class, 'logout'])->name('logout');
 
 
 

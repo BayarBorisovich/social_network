@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 
 
-    <title>bs4 profile friend list - Bootdey.com</title>
+    <title>Friends</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
@@ -444,7 +444,7 @@
                                 <div class="profile-header-info">
                                     <h4 class="m-t-10 m-b-5">{{ $user->name }}</h4>
                                     <p class="m-b-10">{{ $user->about_of_me }}</p>
-                                    <a href="{{ route('main') }}" class="btn btn-xs btn-yellow">In Profile</a>
+                                    <a href="{{ route('main') }}" class="btn btn-outline-warning">In Profile</a>
                                 </div>
 
                             </div>
@@ -475,25 +475,25 @@
                                     @if(isset($friends))
                                         @foreach($friends as $friend)
                                             <div class="col-md-6 m-b-2">
-                                                <div class="p-10 bg-white">
-                                                    <div class="media media-xs overflow-visible">
+                                                <form action="{{ route('friends')}}" method="post" class="delete">
+                                                    <div class="p-10 bg-white" id="main">
+                                                        <div class="media media-xs overflow-visible">
+                                                            <a class="media-left" href="javascript:;">
+                                                                <img
+                                                                    src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                                                                    alt
+                                                                    class="media-object img-circle">
+                                                            </a>
+                                                            {{ $friend->id }}
+                                                            <div class="media-body valign-middle">
+                                                                <a href="{{ route('mainUser', $friend) }}"
+                                                                   class="btn btn-xs btn-yellow">{{ $friend->name }}</a>
+                                                            </div>
 
-                                                        <a class="media-left" href="javascript:;">
-                                                            <img
-                                                                src="https://bootdey.com/img/Content/avatar/avatar1.png"
-                                                                alt
-                                                                class="media-object img-circle">
-                                                        </a>
-                                                        {{ $friend->id }}
-                                                        <div class="media-body valign-middle">
-                                                            <a href="{{ route('mainUser', $friend) }}"
-                                                               class="btn btn-xs btn-yellow">{{ $friend->name }}</a>
-                                                        </div>
+                                                            <div
+                                                                class="media-body valign-middle text-right overflow-visible">
+                                                                <div class="btn-group dropdown">
 
-                                                        <div
-                                                            class="media-body valign-middle text-right overflow-visible">
-                                                            <div class="btn-group dropdown">
-                                                                <form action="{{ route('friends')}}" method="post">
                                                                     <div class="media-body valign-middle">
                                                                         @csrf
                                                                         <input type="text" id="friend_id"
@@ -502,14 +502,14 @@
                                                                                placeholder="friend_id" hidden=""
                                                                                value="{{ $friend->id }}">
                                                                         <input type="submit"
-                                                                               class="btn btn-sm btn-outline-primary"
+                                                                               class="btn btn-danger"
                                                                                value="Delete">
                                                                     </div>
-                                                                </form>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </form>
                                             </div>
                                         @endforeach
                                     @else
@@ -529,5 +529,31 @@
 <script type="text/javascript">
 
 </script>
+{{--<script>--}}
+{{--    $(document).ready(function () {--}}
+
+{{--        var deleteFriend = document.querySelectorAll(".delete");--}}
+
+{{--        deleteFriend.forEach(function (button) {--}}
+{{--            button.addEventListener('click', function () {--}}
+{{--                this.classList.remove('#main');--}}
+{{--                // this.classList.add('btn-success');--}}
+{{--            });--}}
+{{--        });--}}
+
+{{--        $(".delete").on('submit', function (event) {--}}
+{{--            event.preventDefault();--}}
+{{--            $.ajax({--}}
+{{--                type: "POST",--}}
+{{--                url: '/friends',--}}
+{{--                dataType: 'html',--}}
+{{--                data: $(this).serialize(),--}}
+{{--                success: function () {--}}
+{{--                    console.log('done');--}}
+{{--                }--}}
+{{--            });--}}
+{{--        });--}}
+{{--    });--}}
+{{--</script>--}}
 </body>
 </html>

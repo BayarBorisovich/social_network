@@ -119,6 +119,7 @@ class UserController extends Controller
 
         $myFriends = Friend::where('friend_id', Auth::id())->get();
 
+        $friendsId = [];
         foreach ($friends as $friend) {
             $friendsId[$friend['friend_id']] = $friend['friend_id'];
         }
@@ -131,32 +132,17 @@ class UserController extends Controller
 
         $id = Auth::id();
 
-        if (!isset($friendsId)) {
-            return view('user', compact('users', 'id'));
-        }
-
         return view('user', compact('users', 'friendsId', 'id'));
     }
 
     public function addFriend(Request $request)
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-
-        $users = User::all();
-
         Friend::create([
             'user_id' => Auth::id(),
             'friend_id' => $request['id'],
         ]);
 
-        $friends = User::find(Auth::id())->friends;
-        foreach ($friends as $friend) {
-            $friendsId[$friend['friend_id']] = $friend['friend_id'];
-        }
-
-        return view('user', compact('users', 'friendsId'));
+        return redirect()->route('user');
 
     }
 
@@ -170,6 +156,7 @@ class UserController extends Controller
 
         $myFriends = Friend::where('friend_id', Auth::id())->get();
 
+        $arrFriendId = [];
         foreach ($friends as $friend) {
             $arrFriendId[] = $friend['friend_id'];
 
@@ -180,10 +167,6 @@ class UserController extends Controller
 
         $user = Auth::user();
 
-        if (!isset($arrFriendId)) {
-            return view('friends', compact('user', 'friends'));
-        }
-
         $friends = User::all()->find($arrFriendId);
 //        dd($friends);
         return view('friends', compact('user', 'friends'));
@@ -192,18 +175,20 @@ class UserController extends Controller
     public function deletingFromFriends(Request $request)
     {
 
-        $friends = Friend::where('user_id', Auth::id())->where('friend_id', $request['friend_id'])->first();
-        $myFriends = Friend::where('user_id', $request['friend_id'])->where('friend_id', Auth::id())->first();
+        $friends = Friend::where('user_id', Auth::id())->where('friend_id', $request['friend_id'])->get();
+        $myFriends = Friend::where('user_id', $request['friend_id'])->where('friend_id', Auth::id())->get();
 
-        if (isset($friends->user_id)) {
 
-            $del = Friend::find($friends->id);
-            $del->delete();
+        if (count($friends) > 0) {
+
+            foreach ($friends as $friend) {
+                $friend->delete();
+            }
 
         } else {
-
-            $del = Friend::find($myFriends->id);
-            $del->delete();
+            foreach ($myFriends as $myFriend) {
+                $myFriend->delete();
+            }
         }
         return redirect()->route('friends');
     }
@@ -227,15 +212,12 @@ class UserController extends Controller
         }
         $friends = User::find($userId)->friends;
 
+        $arrFriendId = [];
         foreach ($friends as $key => $elem) {
             $arrFriendId[] = $elem['friend_id'];
 
         }
         $user = User::find($userId);
-
-        if (!isset($arrFriendId)) {
-            return view('friends', compact('user', 'friends', 'userId'));
-        }
 
         $friends = User::all()->find($arrFriendId);
 
@@ -264,6 +246,8 @@ class UserController extends Controller
 
         $myMessages = Message::where('sender_id', Auth::id())->where('receiver_id', $userId)->get();
 
+        $arrMessages = [];
+
         foreach ($myMessages as $myMessage) {
             $arrMessages[] = $myMessage;
         }
@@ -274,13 +258,11 @@ class UserController extends Controller
             $arrMessages[] = $iNeedMessage;
         }
 
-        if (empty($arrMessages)) {
-            return view('messages', compact('sender', 'receiver', 'iNeedMessages', 'userId'));
-        }
-
         $collect = collect($arrMessages);
 
         $messages = $collect->sortBy('created_at');
+
+//        dd($messages);
 
         return view('messages', compact('sender', 'receiver', 'messages', 'userId'));
     }

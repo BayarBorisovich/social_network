@@ -4,447 +4,538 @@
     <meta charset="utf-8">
 
 
-    <title>friend list - Bootdey.com</title>
+    <title>All Users</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
         body {
-            background: #eaeaea;
             margin-top: 20px;
-        }
-
-        .profile-info-list {
-            padding: 0;
-            margin: 0;
-            list-style-type: none;
-        }
-
-        .friend-list,
-        .img-grid-list {
-            margin: -1px;
-            list-style-type: none;
-        }
-
-        .profile-info-list > li.title {
-            font-size: 0.625rem;
-            font-weight: 700;
-            color: #8a8a8f;
-            padding: 0 0 0.3125rem;
-        }
-
-        .profile-info-list > li + li.title {
-            padding-top: 1.5625rem;
-        }
-
-        .profile-info-list > li {
-            padding: 0.625rem 0;
-        }
-
-        .profile-info-list > li .field {
-            font-weight: 700;
-        }
-
-        .profile-info-list > li .value {
-            color: #666;
-        }
-
-        .profile-info-list > li.img-list a {
-            display: inline-block;
-        }
-
-        .profile-info-list > li.img-list a img {
-            max-width: 2.25rem;
-            -webkit-border-radius: 2.5rem;
-            -moz-border-radius: 2.5rem;
-            border-radius: 2.5rem;
-        }
-
-        .coming-soon-cover img,
-        .email-detail-attachment .email-attachment .document-file img,
-        .email-sender-img img,
-        .friend-list .friend-img img,
-        .profile-header-img img {
-            max-width: 100%;
-        }
-
-        .table.table-profile th {
-            border: none;
-            color: #000;
-            padding-bottom: 0.3125rem;
-            padding-top: 0;
-        }
-
-        .table.table-profile td {
-            border-color: #c8c7cc;
-        }
-
-        .table.table-profile tbody + thead > tr > th {
-            padding-top: 1.5625rem;
-        }
-
-        .table.table-profile .field {
-            color: #666;
-            font-weight: 600;
-            width: 25%;
-            text-align: right;
-        }
-
-        .table.table-profile .value {
-            font-weight: 500;
+            background: #eee;
         }
 
         .profile-header {
             position: relative;
-            overflow: hidden;
+            overflow: hidden
         }
 
         .profile-header .profile-header-cover {
-            background: url(https://bootdey.com/img/Content/bg1.jpg) center no-repeat;
-            background-size: 100% auto;
+            background-image: url(https://www.bootdey.com/image/600x100/);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             position: absolute;
             left: 0;
             right: 0;
             top: 0;
-            bottom: 0;
+            bottom: 0
         }
 
         .profile-header .profile-header-cover:before {
-            content: "";
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.25) 0, rgba(0, 0, 0, 0.85) 100%);
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, .75) 100%)
+        }
+
+        .profile-header .profile-header-content {
+            color: #fff;
+            padding: 25px
+        }
+
+        .profile-header-img {
+            float: left;
+            width: 120px;
+            height: 120px;
+            overflow: hidden;
+            position: relative;
+            z-index: 10;
+            margin: 0 0 -20px;
+            padding: 3px;
+            border-radius: 4px;
+            background: #fff
+        }
+
+        .profile-header-img img {
+            max-width: 100%
+        }
+
+        .profile-header-info h4 {
+            font-weight: 500;
+            color: #fff
+        }
+
+        .profile-header-img + .profile-header-info {
+            margin-left: 140px
         }
 
         .profile-header .profile-header-content,
-        .profile-header .profile-header-tab,
-        .profile-header-img,
-        body .fc-icon {
-            position: relative;
+        .profile-header .profile-header-tab {
+            position: relative
+        }
+
+        .b-minus-1,
+        .b-minus-10,
+        .b-minus-2,
+        .b-minus-3,
+        .b-minus-4,
+        .b-minus-5,
+        .b-minus-6,
+        .b-minus-7,
+        .b-minus-8,
+        .b-minus-9,
+        .b-plus-1,
+        .b-plus-10,
+        .b-plus-2,
+        .b-plus-3,
+        .b-plus-4,
+        .b-plus-5,
+        .b-plus-6,
+        .b-plus-7,
+        .b-plus-8,
+        .b-plus-9,
+        .l-minus-1,
+        .l-minus-2,
+        .l-minus-3,
+        .l-minus-4,
+        .l-minus-5,
+        .l-minus-6,
+        .l-minus-7,
+        .l-minus-8,
+        .l-minus-9,
+        .l-plus-1,
+        .l-plus-10,
+        .l-plus-2,
+        .l-plus-3,
+        .l-plus-4,
+        .l-plus-5,
+        .l-plus-6,
+        .l-plus-7,
+        .l-plus-8,
+        .l-plus-9,
+        .r-minus-1,
+        .r-minus-10,
+        .r-minus-2,
+        .r-minus-3,
+        .r-minus-4,
+        .r-minus-5,
+        .r-minus-6,
+        .r-minus-7,
+        .r-minus-8,
+        .r-minus-9,
+        .r-plus-1,
+        .r-plus-10,
+        .r-plus-2,
+        .r-plus-3,
+        .r-plus-4,
+        .r-plus-5,
+        .r-plus-6,
+        .r-plus-7,
+        .r-plus-8,
+        .r-plus-9,
+        .t-minus-1,
+        .t-minus-10,
+        .t-minus-2,
+        .t-minus-3,
+        .t-minus-4,
+        .t-minus-5,
+        .t-minus-6,
+        .t-minus-7,
+        .t-minus-8,
+        .t-minus-9,
+        .t-plus-1,
+        .t-plus-10,
+        .t-plus-2,
+        .t-plus-3,
+        .t-plus-4,
+        .t-plus-5,
+        .t-plus-6,
+        .t-plus-7,
+        .t-plus-8,
+        .t-plus-9 {
+            position: relative !important
         }
 
         .profile-header .profile-header-tab {
             background: #fff;
             list-style-type: none;
-            margin: -1.25rem 0 0;
-            padding: 0 0 0 8.75rem;
-            border-bottom: 1px solid #c8c7cc;
+            margin: -10px 0 0;
+            padding: 0 0 0 140px;
             white-space: nowrap;
+            border-radius: 0
+        }
+
+        .text-ellipsis,
+        .text-nowrap {
+            white-space: nowrap !important
         }
 
         .profile-header .profile-header-tab > li {
             display: inline-block;
-            margin: 0;
+            margin: 0
         }
 
         .profile-header .profile-header-tab > li > a {
             display: block;
-            color: #000;
-            line-height: 1.25rem;
-            padding: 0.625rem 1.25rem;
+            color: #929ba1;
+            line-height: 20px;
+            padding: 10px 20px;
             text-decoration: none;
             font-weight: 700;
-            font-size: 0.75rem;
-            border: none;
+            font-size: 12px;
+            border: none
         }
 
         .profile-header .profile-header-tab > li.active > a,
         .profile-header .profile-header-tab > li > a.active {
-            color: #007aff;
+            color: #242a30
         }
 
-        .profile-header .profile-header-content:after,
-        .profile-header .profile-header-content:before {
-            content: "";
+        .profile-content {
+            padding: 25px;
+            border-radius: 4px
+        }
+
+        .profile-content:after,
+        .profile-content:before {
+            content: '';
             display: table;
-            clear: both;
+            clear: both
         }
 
-        .profile-header .profile-header-content {
-            color: #fff;
-            padding: 1.25rem;
+        .profile-content .tab-content,
+        .profile-content .tab-pane {
+            background: 0 0
         }
 
-        body .fc th a,
-        body .fc-ltr .fc-basic-view .fc-day-top .fc-day-number,
-        body .fc-widget-header a {
-            color: #000;
+        .profile-left {
+            width: 200px;
+            float: left
         }
 
-        .profile-header-img {
-            float: left;
-            width: 7.5rem;
-            height: 7.5rem;
+        .profile-right {
+            margin-left: 240px;
+            padding-right: 20px
+        }
+
+        .profile-image {
+            height: 175px;
+            line-height: 175px;
+            text-align: center;
+            font-size: 72px;
+            margin-bottom: 10px;
+            border: 2px solid #E2E7EB;
             overflow: hidden;
-            z-index: 10;
-            margin: 0 1.25rem -1.25rem 0;
-            padding: 0.1875rem;
-            -webkit-border-radius: 0.25rem;
-            -moz-border-radius: 0.25rem;
-            border-radius: 0.25rem;
-            background: #fff;
+            border-radius: 4px
         }
 
-        .profile-header-info h4 {
-            font-weight: 500;
-            margin-bottom: 0.3125rem;
-        }
-
-        .profile-container {
-            padding: 1.5625rem;
-        }
-
-        @media (max-width: 967px) {
-            .profile-header-img {
-                width: 5.625rem;
-                height: 5.625rem;
-                margin: 0;
-            }
-
-            .profile-header-info {
-                margin-left: 6.5625rem;
-                padding-bottom: 0.9375rem;
-            }
-
-            .profile-header .profile-header-tab {
-                padding-left: 0;
-            }
-        }
-
-        @media (max-width: 767px) {
-            .profile-header .profile-header-cover {
-                background-position: top;
-            }
-
-            .profile-header-img {
-                width: 3.75rem;
-                height: 3.75rem;
-                margin: 0;
-            }
-
-            .profile-header-info {
-                margin-left: 4.6875rem;
-                padding-bottom: 0.9375rem;
-            }
-
-            .profile-header-info h4 {
-                margin: 0 0 0.3125rem;
-            }
-
-            .profile-header .profile-header-tab {
-                white-space: nowrap;
-                overflow: scroll;
-                padding: 0;
-            }
-
-            .profile-container {
-                padding: 0.9375rem 0.9375rem 3.6875rem;
-            }
-
-            .friend-list > li {
-                float: none;
-                width: auto;
-            }
-        }
-
-        .profile-info-list {
-            padding: 0;
-            margin: 0;
-            list-style-type: none;
-        }
-
-        .friend-list,
-        .img-grid-list {
-            margin: -1px;
-            list-style-type: none;
-        }
-
-        .profile-info-list > li.title {
-            font-size: 0.625rem;
-            font-weight: 700;
-            color: #8a8a8f;
-            padding: 0 0 0.3125rem;
-        }
-
-        .profile-info-list > li + li.title {
-            padding-top: 1.5625rem;
-        }
-
-        .profile-info-list > li {
-            padding: 0.625rem 0;
-        }
-
-        .profile-info-list > li .field {
-            font-weight: 700;
-        }
-
-        .profile-info-list > li .value {
-            color: #666;
-        }
-
-        .profile-info-list > li.img-list a {
-            display: inline-block;
-        }
-
-        .profile-info-list > li.img-list a img {
-            max-width: 2.25rem;
-            -webkit-border-radius: 2.5rem;
-            -moz-border-radius: 2.5rem;
-            border-radius: 2.5rem;
-        }
-
-        .coming-soon-cover img,
-        .email-detail-attachment .email-attachment .document-file img,
-        .email-sender-img img,
-        .friend-list .friend-img img,
-        .profile-header-img img {
-            max-width: 100%;
-        }
-
-        .table.table-profile th {
-            border: none;
-            color: #000;
-            padding-bottom: 0.3125rem;
-            padding-top: 0;
-        }
-
-        .table.table-profile td {
-            border-color: #c8c7cc;
-        }
-
-        .table.table-profile tbody + thead > tr > th {
-            padding-top: 1.5625rem;
-        }
-
-        .table.table-profile .field {
-            color: #666;
-            font-weight: 600;
-            width: 25%;
-            text-align: right;
-        }
-
-        .table.table-profile .value {
-            font-weight: 500;
-        }
-
-        .friend-list {
-            padding: 0;
-        }
-
-        .friend-list > li {
-            float: left;
-            width: 50%;
-        }
-
-        .friend-list > li > a {
+        .profile-image img {
             display: block;
-            text-decoration: none;
-            color: #000;
-            padding: 0.625rem;
-            margin: 1px;
-            background: #fff;
+            max-width: 100%
         }
 
-        .friend-list > li > a:after,
-        .friend-list > li > a:before {
-            content: "";
-            display: table;
-            clear: both;
+        .profile-highlight {
+            padding: 12px 15px;
+            background: #FEFDE1;
+            border-radius: 4px
         }
 
-        .friend-list .friend-img {
-            float: left;
-            width: 3rem;
-            height: 3rem;
-            overflow: hidden;
-            background: #efeff4;
+        .profile-highlight h4 {
+            margin: 0 0 7px;
+            font-size: 12px;
+            font-weight: 700
         }
 
-        .friend-list .friend-info {
-            margin-left: 3.625rem;
+        .table.table-profile > thead > tr > th {
+            border-bottom: none !important
         }
 
-        .friend-list .friend-info h4 {
-            margin: 0.3125rem 0;
-            font-size: 0.875rem;
+        .table.table-profile > thead > tr > th h4 {
+            font-size: 20px;
+            margin-top: 0
+        }
+
+        .table.table-profile > thead > tr > th h4 small {
+            display: block;
+            font-size: 12px;
+            font-weight: 400;
+            margin-top: 5px
+        }
+
+        .table.table-profile > tbody > tr > td,
+        .table.table-profile > thead > tr > th {
+            border: none;
+            padding-top: 7px;
+            padding-bottom: 7px;
+            color: #242a30;
+            background: 0 0
+        }
+
+        .table.table-profile > tbody > tr > td.field {
+            width: 20%;
+            text-align: right;
             font-weight: 600;
+            color: #2d353c
         }
 
-        .friend-list .friend-info p {
-            color: #666;
-            margin: 0;
+        .table.table-profile > tbody > tr.highlight > td {
+            border-top: 1px solid #b9c3ca;
+            border-bottom: 1px solid #b9c3ca
+        }
+
+        .table.table-profile > tbody > tr.divider > td {
+            padding: 0 !important;
+            height: 10px
+        }
+
+        .profile-section + .profile-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #b9c3ca
+        }
+
+        .profile-section:after,
+        .profile-section:before {
+            content: '';
+            display: table;
+            clear: both
+        }
+
+        .profile-section .title {
+            font-size: 20px;
+            margin: 0 0 15px
+        }
+
+        .profile-section .title small {
+            font-weight: 400
+        }
+
+        body.flat-black {
+            background: #E7E7E7
+        }
+
+        .flat-black .navbar.navbar-inverse {
+            background: #212121
+        }
+
+        .flat-black .navbar.navbar-inverse .navbar-form .form-control {
+            background: #4a4a4a;
+            border-color: #4a4a4a
+        }
+
+        .flat-black .sidebar,
+        .flat-black .sidebar-bg {
+            background: #3A3A3A
+        }
+
+        .flat-black .page-with-light-sidebar .sidebar,
+        .flat-black .page-with-light-sidebar .sidebar-bg {
+            background: #fff
+        }
+
+        .flat-black .sidebar .nav > li > a {
+            color: #b2b2b2
+        }
+
+        .flat-black .sidebar.sidebar-grid .nav > li > a {
+            border-bottom: 1px solid #474747;
+            border-top: 1px solid #474747
+        }
+
+        .flat-black .sidebar .active .sub-menu > li.active > a,
+        .flat-black .sidebar .nav > li.active > a,
+        .flat-black .sidebar .nav > li > a:focus,
+        .flat-black .sidebar .nav > li > a:hover,
+        .flat-black .sidebar .sub-menu > li > a:focus,
+        .flat-black .sidebar .sub-menu > li > a:hover,
+        .sidebar .nav > li.nav-profile > a {
+            color: #fff
+        }
+
+        .flat-black .sidebar .sub-menu > li > a,
+        .flat-black .sidebar .sub-menu > li > a:before {
+            color: #999
+        }
+
+        .flat-black .page-with-light-sidebar .sidebar .active .sub-menu > li.active > a,
+        .flat-black .page-with-light-sidebar .sidebar .active .sub-menu > li.active > a:focus,
+        .flat-black .page-with-light-sidebar .sidebar .active .sub-menu > li.active > a:hover,
+        .flat-black .page-with-light-sidebar .sidebar .nav > li.active > a,
+        .flat-black .page-with-light-sidebar .sidebar .nav > li.active > a:focus,
+        .flat-black .page-with-light-sidebar .sidebar .nav > li.active > a:hover {
+            color: #000
+        }
+
+        .flat-black .page-sidebar-minified .sidebar .nav > li.has-sub:focus > a,
+        .flat-black .page-sidebar-minified .sidebar .nav > li.has-sub:hover > a {
+            background: #323232
+        }
+
+        .flat-black .page-sidebar-minified .sidebar .nav li.has-sub > .sub-menu,
+        .flat-black .sidebar .nav > li.active > a,
+        .flat-black .sidebar .nav > li.active > a:focus,
+        .flat-black .sidebar .nav > li.active > a:hover,
+        .flat-black .sidebar .nav > li.nav-profile,
+        .flat-black .sidebar .sub-menu > li.has-sub > a:before,
+        .flat-black .sidebar .sub-menu > li:before,
+        .flat-black .sidebar .sub-menu > li > a:after {
+            background: #2A2A2A
+        }
+
+        .flat-black .page-sidebar-minified .sidebar .sub-menu > li:before,
+        .flat-black .page-sidebar-minified .sidebar .sub-menu > li > a:after {
+            background: #3e3e3e
+        }
+
+        .flat-black .sidebar .nav > li.nav-profile .cover.with-shadow:before {
+            background: rgba(42, 42, 42, .75)
+        }
+
+        .bg-white {
+            background-color: #fff !important;
+        }
+
+        .p-10 {
+            padding: 10px !important;
+        }
+
+        .media.media-xs .media-object {
+            width: 32px;
+        }
+
+        .m-b-2 {
+            margin-bottom: 2px !important;
+        }
+
+        .media > .media-left, .media > .pull-left {
+            padding-right: 15px;
+        }
+
+        .media-body, .media-left, .media-right {
+            display: table-cell;
+            vertical-align: top;
         }
     </style>
 </head>
 <body>
-
-
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container">
-    <div id="content" class="content p-0">
-        <div class="profile-container">
-            <div class="row row-space-20">
-                <div class="col-md-8">
-                    <div class="tab-content p-0">
-                        <div class="tab-pane fade active show" id="profile-friends">
-                            <a href="{{ route('main') }}" class="btn btn-xs btn-primary mb-2">In Profile</a>
-                            <div class="m-b-10"><b>Users List ({{ count($users) }})</b></div>
-                            <ul class="friend-list clearfix">
-                                @foreach($users as $user)
-                                    <li>
-                                        <a href="#">
-                                            <div class="friend-img"><img
-                                                    src="https://bootdey.com/img/Content/avatar/avatar2.png" alt/>
-                                            </div>
-                                            <div class="friend-info">
-                                                <div class="media-body valign-middle">
-                                                    <a href="{{ route('mainUser', $user->id) }}"
-                                                       class="text-inverse">{{ $user->name }}</a>
-                                                    <p> id {{ $user->id }}</p>
-                                                    <form action="{{ route('user') }}" method="post">
-                                                        @csrf
-                                                        @if(!isset($friendsId[$user->id]) || empty($friendsId))
-                                                            <input type="text" id="id" class="form-control"
-                                                                   name="id"
-                                                                   placeholder="id" hidden=""
-                                                                   value="{{ $user->id }}">
-                                                            <input type="submit"
-                                                                   class="btn btn-sm btn-outline-primary"
-                                                                   value="Add to friends">
-                                                        @else
-                                                            <input type="text" id="id" class="form-control"
-                                                                   name="id"
-                                                                   placeholder="id" hidden=""
-                                                                   value="{{ $user->id }}">
-                                                            <input type="button"
-                                                                   class="btn btn-icon btn-sm waves-effect waves-light btn-success"
-                                                                   value="Friend">
-                                                        @endif
-                                                    </form>
+    <div class="row">
+        <div class="col-md-12">
+            <div id="content" class="content content-full-width">
 
+                <div class="profile-content">
+                    <div class="btn btn-outline-warning">
+                        <a href="{{ route('main') }}">In Profile</a>
+                    </div>
+
+                    <div class="tab-content p-0">
+
+                        <div class="tab-pane fade in active show" id="profile-friends">
+                            <h4 class="m-t-0 m-b-20">Users List ({{ count($users) }})</h4>
+
+                            <div class="row row-space-2">
+
+                                @foreach($users as $user)
+                                    <div class="col-md-6 m-b-2">
+                                        <div class="p-10 bg-white">
+                                            <div class="media media-xs overflow-visible">
+
+                                                <a class="media-left" href="javascript:;">
+                                                    <img
+                                                        src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                                                        alt
+                                                        class="media-object img-circle">
+                                                </a>
+                                                {{ $user->id }}
+                                                <div class="media-body valign-middle">
+                                                    <a href="{{ route('mainUser', $user) }}"
+                                                       class="btn btn-xs btn-yellow">{{ $user->name }}</a>
+                                                </div>
+
+                                                <div
+                                                    class="media-body valign-middle text-right overflow-visible">
+                                                    <div class="btn-group dropdown">
+                                                        <form action="{{ route('user')}}" method="post"
+                                                              class="addFriend">
+                                                            <div class="media-body valign-middle">
+                                                                @csrf
+                                                                <input type="text" id="" class="form-control"
+                                                                       name="id"
+                                                                       placeholder="id" hidden=""
+                                                                       value="{{ $user->id }}">
+                                                                {{--                                                        <button type="submit"--}}
+                                                                {{--                                                                class="border-0 bg-transparent">--}}
+                                                                {{--                                                            @if(!isset($friendsId[$user->id]))--}}
+                                                                {{--                                                                <i class="btn btn-primary"--}}
+                                                                {{--                                                                   aria-hidden="true" id="disLike">Add to friends</i>--}}
+                                                                {{--                                                            @else--}}
+                                                                {{--                                                                <i class="btn btn-success"--}}
+                                                                {{--                                                                   aria-hidden="true" id="like">friend</i>--}}
+                                                                {{--                                                            @endif--}}
+                                                                {{--                                                        </button>--}}
+                                                                @if(!isset($friendsId[$user->id]))
+                                                                    <input type="submit"
+                                                                           class="btn btn-primary"
+                                                                           name="submit_form" value="Add to friends">
+                                                                @else
+                                                                    <input type="button"
+                                                                           class="btn btn-success"
+                                                                           value="Friend" id="friend">
+                                                                @endif
+                                                            </div>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
-
-
-                                        </a>
-                                    </li>
-                                    {{--                                    @else--}}
-                                    {{--                                    @endif--}}
+                                        </div>
+                                    </div>
                                 @endforeach
-                            </ul>
+
+                            </div>
+
                         </div>
+
                     </div>
+
                 </div>
+
             </div>
         </div>
     </div>
 </div>
-
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript">
 
 </script>
+{{--<script>--}}
+{{--    $(document).ready(function () {--}}
+
+{{--        var addFriend = document.querySelectorAll(".btn");--}}
+
+{{--        addFriend.forEach(function (button) {--}}
+{{--            button.addEventListener('click', function () {--}}
+{{--                this.classList.remove('btn-primary');--}}
+{{--                this.classList.add('btn-success');--}}
+{{--            });--}}
+{{--        });--}}
+
+{{--        $(".addFriend").on('submit', function (event) {--}}
+{{--            event.preventDefault();--}}
+{{--            $.ajax({--}}
+{{--                type: "POST",--}}
+{{--                url: '/allUser',--}}
+{{--                dataType: 'html',--}}
+{{--                data: $(this).serialize(),--}}
+{{--                success: function () {--}}
+{{--                    console.log('done');--}}
+{{--                }--}}
+{{--            });--}}
+{{--        });--}}
+{{--    });--}}
+{{--</script>--}}
 </body>
 </html>

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 
 
-    <title>social network</title>
+    <title>Main</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
@@ -230,12 +230,18 @@
 <body>
 
 <div class="container">
+    <div class="text-right">
+        <form method="post" action="{{ route('main') }}">
+            @csrf
+            <button type="submit" class="btn btn-primary">Logout</button>
+        </form>
+{{--        <a href="{{ route('login') }}" class="btn btn-danger"> logout </a>--}}
+    </div>
     <div class="profile-page tx-13">
         <div class="row">
             <div class="col-12 grid-margin">
                 <div class="profile-header">
                     <div class="cover">
-                        <a href="{{ route('login') }}"> logout </a>
                         <div class="gray-shade"></div>
                         <figure>
                             <img src="https://bootdey.com/img/Content/bg1.jpg" class="img-fluid"
@@ -248,7 +254,7 @@
                                 <span class="profile-name">{{ $user->name }}</span>
                             </div>
                             <div class="d-none d-md-block">
-                                <button class="btn btn-primary btn-icon-text btn-edit-profile">
+                                <button class="btn btn-outline-primary">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                          stroke-linecap="round" stroke-linejoin="round"
@@ -471,24 +477,7 @@
                                                 <path
                                                     d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                                             </svg>
-                                            <form action="{{ route('main') }}" method="post">
-                                                @csrf
-                                                <input type="hidden" id="id"
-                                                       class="fa fa-thumbs-up fa-fw fa-lg m-r-3"
-                                                       name="post_id"
-                                                       placeholder="id" value="{{ $myPost['id'] }}">
-
-                                                <button type="submit"
-                                                        class="border-0 bg-transparent">
-                                                    @if(isset($like[$myPost['id']]))
-                                                        <i class="fa fa-heart-o"
-                                                           aria-hidden="true"></i>
-                                                    @else
-                                                        <i class="fa fa-heart"
-                                                           aria-hidden="true"></i>
-                                                    @endif
-                                                </button>
-                                            </form>
+                                            <p class="d-none d-md-block ml-2">Comment</p>
                                         </a>
                                         <a href="javascript:;" class="d-flex align-items-center text-muted mr-4">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -522,56 +511,56 @@
             </div>
 
 
-{{--            <div class="d-none d-xl-block col-xl-3 right-wrapper">--}}
-{{--                <div class="row">--}}
-{{--                    <div class="col-md-12 grid-margin">--}}
-{{--                        <div class="card rounded">--}}
-{{--                            <div class="card-body">--}}
-{{--                                <h6 class="card-title">latest photos</h6>--}}
-{{--                                <div class="latest-photos">--}}
-{{--                                    <div class="row">--}}
-{{--                                        <div class="col-md-4">--}}
-{{--                                            <figure>--}}
-{{--                                                <img class="img-fluid"--}}
-{{--                                                     src="https://bootdey.com/img/Content/avatar/avatar1.png" alt>--}}
-{{--                                            </figure>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <div class="col-md-12 grid-margin">--}}
-{{--                        <div class="card rounded">--}}
-{{--                            <div class="card-body">--}}
-{{--                                <h6 class="card-title">suggestions for you</h6>--}}
-{{--                                <div class="d-flex justify-content-between mb-2 pb-2 border-bottom">--}}
-{{--                                    <div class="d-flex align-items-center hover-pointer">--}}
-{{--                                        <img class="img-xs rounded-circle"--}}
-{{--                                             src="https://bootdey.com/img/Content/avatar/avatar2.png" alt>--}}
-{{--                                        <div class="ml-2">--}}
-{{--                                            <p>Mike Popescu</p>--}}
-{{--                                            <p class="tx-11 text-muted">12 Mutual Friends</p>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                    <button class="btn btn-icon">--}}
-{{--                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"--}}
-{{--                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"--}}
-{{--                                             stroke-linecap="round" stroke-linejoin="round"--}}
-{{--                                             class="feather feather-user-plus" data-toggle="tooltip" title--}}
-{{--                                             data-original-title="Connect">--}}
-{{--                                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>--}}
-{{--                                            <circle cx="8.5" cy="7" r="4"></circle>--}}
-{{--                                            <line x1="20" y1="8" x2="20" y2="14"></line>--}}
-{{--                                            <line x1="23" y1="11" x2="17" y2="11"></line>--}}
-{{--                                        </svg>--}}
-{{--                                    </button>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
+            {{--            <div class="d-none d-xl-block col-xl-3 right-wrapper">--}}
+            {{--                <div class="row">--}}
+            {{--                    <div class="col-md-12 grid-margin">--}}
+            {{--                        <div class="card rounded">--}}
+            {{--                            <div class="card-body">--}}
+            {{--                                <h6 class="card-title">latest photos</h6>--}}
+            {{--                                <div class="latest-photos">--}}
+            {{--                                    <div class="row">--}}
+            {{--                                        <div class="col-md-4">--}}
+            {{--                                            <figure>--}}
+            {{--                                                <img class="img-fluid"--}}
+            {{--                                                     src="https://bootdey.com/img/Content/avatar/avatar1.png" alt>--}}
+            {{--                                            </figure>--}}
+            {{--                                        </div>--}}
+            {{--                                    </div>--}}
+            {{--                                </div>--}}
+            {{--                            </div>--}}
+            {{--                        </div>--}}
+            {{--                    </div>--}}
+            {{--                    <div class="col-md-12 grid-margin">--}}
+            {{--                        <div class="card rounded">--}}
+            {{--                            <div class="card-body">--}}
+            {{--                                <h6 class="card-title">suggestions for you</h6>--}}
+            {{--                                <div class="d-flex justify-content-between mb-2 pb-2 border-bottom">--}}
+            {{--                                    <div class="d-flex align-items-center hover-pointer">--}}
+            {{--                                        <img class="img-xs rounded-circle"--}}
+            {{--                                             src="https://bootdey.com/img/Content/avatar/avatar2.png" alt>--}}
+            {{--                                        <div class="ml-2">--}}
+            {{--                                            <p>Mike Popescu</p>--}}
+            {{--                                            <p class="tx-11 text-muted">12 Mutual Friends</p>--}}
+            {{--                                        </div>--}}
+            {{--                                    </div>--}}
+            {{--                                    <button class="btn btn-icon">--}}
+            {{--                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"--}}
+            {{--                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"--}}
+            {{--                                             stroke-linecap="round" stroke-linejoin="round"--}}
+            {{--                                             class="feather feather-user-plus" data-toggle="tooltip" title--}}
+            {{--                                             data-original-title="Connect">--}}
+            {{--                                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>--}}
+            {{--                                            <circle cx="8.5" cy="7" r="4"></circle>--}}
+            {{--                                            <line x1="20" y1="8" x2="20" y2="14"></line>--}}
+            {{--                                            <line x1="23" y1="11" x2="17" y2="11"></line>--}}
+            {{--                                        </svg>--}}
+            {{--                                    </button>--}}
+            {{--                                </div>--}}
+            {{--                            </div>--}}
+            {{--                        </div>--}}
+            {{--                    </div>--}}
+            {{--                </div>--}}
+            {{--            </div>--}}
 
         </div>
     </div>
