@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('images', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('image');
+            $table->text('patch');
             $table->integer('user_id');
 
             $table->index('user_id', 'image_user_idx');

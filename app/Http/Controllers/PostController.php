@@ -6,7 +6,6 @@ use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\UserPostLike;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,7 +27,7 @@ class PostController extends Controller
             'content' => $request['content'],
         ]);
 
-        return redirect()->route('main');
+        return redirect('creatPost')->withSuccess('The post was created successfully');
     }
 
 
@@ -74,6 +73,7 @@ class PostController extends Controller
 
         return redirect()->back();
     }
+
     public function creatComment(Request $request)
     {
 
@@ -117,14 +117,20 @@ class PostController extends Controller
             ]);
 
             return redirect()->route('main');
-        }
-        else {
+        } else {
             return $this->logout($request);
         }
 
     }
+
     public function logout(Request $request)
     {
+        if (isset($request->update)) {
+            return $this->updatePost($request);
+        }
+        if (isset($request->delete)) {
+            return $this->deletePost($request);
+        }
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

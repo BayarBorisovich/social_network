@@ -123,9 +123,9 @@
     </style>
 </head>
 <body>
-<form action="{{ route('creatPost') }}" method="post">
-    @csrf
-    <div class="container light-style flex-grow-1 container-p-y">
+<div class="container light-style flex-grow-1 container-p-y">
+    <form action="{{ route('creatPost') }}" method="post">
+        @csrf
         <h4 class="font-weight-bold py-3 mb-4">
             Creat Post
         </h4>
@@ -141,6 +141,11 @@
                 <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt
                      class="d-block ui-w-80">
             </div>
+            @if(Session::has('success'))
+                <div class="alert alert-success">
+                    {{Session::get('success')}}
+                </div>
+            @endif
 
             <hr class="border-light m-0">
             <div class="card-body">
@@ -157,13 +162,14 @@
             <input type="submit" class="btn btn-primary"
                    value="Creat">
         </div>
-    </div>
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript">
+    </form>
+</div>
+{{--    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>--}}
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript">
 
-    </script>
-</form>
+</script>
+
 </body>
 </html>

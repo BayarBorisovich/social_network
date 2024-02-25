@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\PostController;
@@ -19,12 +20,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/', function () {
-    return view('app');
-});
+//Route::get('/', function () {
+//    return view('app');
+//});
 
 Route::get('/main', [MainController::class, 'getForm'])->name('main');
 Route::post('/main', [PostController::class, 'likePosts']);
+
+Route::get('/image', [ImageController::class, 'getFormImages'])->name('image');
+Route::post('/image', [ImageController::class, 'postImage']);
+
+Route::get('/photo', [ImageController::class, 'getPhoto'])->name('photo');
 
 Route::get('/registrate', [UserController::class, 'getFormRegistrate'])->name('registrate');
 Route::post('/registrate', [UserController::class, 'postRegistrate']);
@@ -59,7 +65,7 @@ Route::post('/creatPost', [PostController::class, 'creatPost']);
 Route::post('/main', [PostController::class, 'deletePost']);
 Route::post('/main', [PostController::class, 'updatePost']);
 
-Route::post('/main', [PostController::class, 'logout'])->name('logout');
+Route::post('/main', [PostController::class, 'logout']);
 
 
 
