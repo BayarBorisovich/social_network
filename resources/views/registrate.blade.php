@@ -70,6 +70,7 @@
             <input type="text" id="about of me" name="about of me" value="{{old('about_of_me')}}" placeholder="about of me" >
 
             <input type="submit" value="Register">
+            <a href="{{ route('login') }}" class="login">Login</a>
         </form>
     </body>
 </html>
@@ -110,6 +111,7 @@
         margin-bottom: 16px;
     }
 
+    .login,
     input[type="submit"] {
         background-color: #4CAF50;
         color: #fff;

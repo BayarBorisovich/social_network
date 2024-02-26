@@ -705,7 +705,6 @@
 
                             <ul class="timeline">
                                 @if(empty($friendPosts))
-
                                     <p> Ваши друзья не опубликовали посты</p>
                                 @else
                                     @foreach($users as $key => $user)
@@ -725,16 +724,17 @@
 
                                                     <div class="timeline-body">
                                                         <div class="timeline-header">
-                                                <span class="userimage"><img
-                                                        src="https://bootdey.com/img/Content/avatar/avatar3.png"
-                                                        alt></span>
+                                                        <span class="userimage"><img
+                                                                src="https://bootdey.com/img/Content/avatar/avatar3.png"
+                                                                alt>
+                                                        </span>
                                                             <span class="username">{{ $user['name'] }}</span>
                                                         </div>
                                                         <div class="timeline-content">
                                                             <p>{{ $post['content'] }}</p>
                                                         </div>
                                                         <div class="timeline-footer">
-                                                            {{'id ' . $post['id']}}
+                                                            {{'id ' . $post->id}}
                                                             <form action="{{ route('post') }}" method="post"
                                                                   id="formLike">
                                                                 @csrf
@@ -744,7 +744,7 @@
                                                                            class="fa fa-thumbs-up fa-fw fa-lg m-r-3"
                                                                            name="post_id"
                                                                            placeholder="id"
-                                                                           value="{{ $post['id'] }}">
+                                                                           value="{{ $post->id }}">
 
                                                                     <button type="submit"
                                                                             class="border-0 bg-transparent mb-3">
@@ -758,42 +758,50 @@
                                                                         @endif
                                                                     </button>
                                                                 </a>
+                                                            </form>
 
-                                                                @foreach($comments as $key => $comment)
-                                                                    @if ($post->id === $comment->post_id)
-                                                                        <div class="chat-messages p-8">
-                                                                            <div class="chat-message-left">
-                                                                                <div>
-                                                                                    <img
-                                                                                        src="https://bootdey.com/img/Content/avatar/avatar3.png"
-                                                                                        class="rounded-circle mr-1"
-                                                                                        alt="Sharon Lessman" width="25"
-                                                                                        height="25">
-                                                                                    <div
-                                                                                        class="text-muted small text-nowrap mt-2">
-
-                                                                                    </div>
-                                                                                </div>
+                                                            @foreach($comments as $key => $comment)
+                                                                @if ($post->id === $comment->post_id)
+                                                                    <div class="chat-messages p-8">
+                                                                        <div class="chat-message-left">
+                                                                            <div>
+                                                                                <img
+                                                                                    src="https://bootdey.com/img/Content/avatar/avatar3.png"
+                                                                                    class="rounded-circle mr-1"
+                                                                                    alt="Sharon Lessman" width="25"
+                                                                                    height="25">
                                                                                 <div
-                                                                                    class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3 ">
-                                                                                    <div
-                                                                                        class="font-weight-bold mb-1">
-                                                                                       Name
-                                                                                    </div>
-                                                                                    {{ $comment->comment }}
+                                                                                    class="text-muted small text-nowrap mt-2">
+
                                                                                 </div>
                                                                             </div>
-
+                                                                            <div
+                                                                                class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3 ">
+                                                                                <div
+                                                                                    class="font-weight-bold mb-1">
+                                                                                    Name
+                                                                                </div>
+                                                                                {{ $comment->comment }}
+                                                                            </div>
                                                                         </div>
-                                                                    @endif
-                                                                @endforeach
+
+                                                                    </div>
+                                                                @endif
+                                                            @endforeach
+                                                            <form action="{{ route('post') }}" method="post">
+                                                                @csrf
                                                                 <div class="text-right">
+                                                                    <input type="hidden" id="id"
+                                                                           class="fa fa-thumbs-up fa-fw fa-lg m-r-3"
+                                                                           name="post_id"
+                                                                           placeholder="id"
+                                                                           value="{{ $post->id }}">
                                                                     <div class="form-floating">
                                                                             <textarea class="form-control mb-3"
                                                                                       name="comment"
                                                                                       placeholder="Leave a comment here"
                                                                                       id="floatingTextarea"></textarea>
-                                                                        {{--                                                                        <label for="floatingTextarea">Comments</label>--}}
+                                                                        <label for="floatingTextarea">Comments</label>
                                                                         <input type="submit"
                                                                                class="btn btn-sm btn-outline-primary md-3"
                                                                                value="send">
@@ -830,30 +838,30 @@
 <script type="text/javascript">
 
 </script>
-<script>
-    $(document).ready(function () {
-        var likeButtons = document.querySelectorAll('.fa');
+{{--<script>--}}
+{{--    $(document).ready(function () {--}}
+{{--        var likeButtons = document.querySelectorAll('.fa');--}}
 
-        likeButtons.forEach(function (button) {
-            button.addEventListener('click', function () {
-                this.classList.toggle('fa-heart');
-                this.classList.toggle('fa-heart-o');
-            });
-        });
+{{--        likeButtons.forEach(function (button) {--}}
+{{--            button.addEventListener('click', function () {--}}
+{{--                this.classList.toggle('fa-heart');--}}
+{{--                this.classList.toggle('fa-heart-o');--}}
+{{--            });--}}
+{{--        });--}}
 
-        $("#formLike").on('submit', function (event) {
-            event.preventDefault();
-            $.ajax({
-                type: "POST",
-                url: '/post',
-                dataType: 'html',
-                data: $(this).serialize(),
-                success: function () {
-                    console.log('done');
-                }
-            });
-        });
-    });
-</script>
+{{--        $("#formLike").on('submit', function (event) {--}}
+{{--            event.preventDefault();--}}
+{{--            $.ajax({--}}
+{{--                type: "POST",--}}
+{{--                url: '/post',--}}
+{{--                dataType: 'html',--}}
+{{--                data: $(this).serialize(),--}}
+{{--                success: function () {--}}
+{{--                    console.log('done');--}}
+{{--                }--}}
+{{--            });--}}
+{{--        });--}}
+{{--    });--}}
+{{--</script>--}}
 </body>
 </html>

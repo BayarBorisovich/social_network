@@ -9,15 +9,19 @@ use Illuminate\View\View;
 
 class ImageController extends Controller
 {
-    public function getFormImages(): View
+    public function getFormImages()
     {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
         return view('image');
     }
 
     public function postImage(Request $request)
     {
 
-        $validatedData = $request->validate([
+        $request->validate([
             'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
 
         ]);
@@ -39,7 +43,10 @@ class ImageController extends Controller
     }
     public function getPhoto()
     {
-//        $image = Image::where('user_id', Auth::id())->find(7);
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
         $imageAll = Image::all()->where('user_id', Auth::id());
 
         return view('photo', compact('imageAll'));

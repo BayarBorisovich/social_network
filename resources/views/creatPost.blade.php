@@ -118,6 +118,9 @@
             padding: 0.85rem 1.5rem;
             border-color: rgba(24, 28, 33, 0.03) !important;
         }
+        .error{
+            color: red;
+        }
 
 
     </style>
@@ -151,6 +154,9 @@
             <div class="card-body">
                 <div class="form-group">
                     <label class="form-label">New post</label>
+                    @error('content')
+                    <p class="error">{{$message}}</p>
+                    @enderror
                     <input type="text" id="content" class="form-control mb-1"
                            name="content"
                            placeholder="content"

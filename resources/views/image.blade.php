@@ -385,18 +385,6 @@
                         {{Session::get('success')}}
                     </div>
                 @endif
-                @if(Session::has('fail'))
-                    <script type="text/javascript">
-                        swal({
-                            title: 'Oops!',
-                            text: "{{Session::get('fail')}}",
-                            type: 'error',
-                            timer: 5000
-                        }).then((value) => {
-                            //location.reload();
-                        }).catch(swal.noop);
-                    </script>
-                @endif
                 <form action="{{ route('image') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">

@@ -22,6 +22,10 @@ class PostController extends Controller
 
     public function creatPost(Request $request)
     {
+        $request->validate([
+            'content' => 'required|string',
+        ]);
+
         Post::create([
             'user_id' => Auth::id(),
             'content' => $request['content'],
@@ -55,7 +59,6 @@ class PostController extends Controller
         foreach ($likes as $lik) {
             $like[$lik['post_id']] = $lik['post_id'];
         }
-
         $comments = Comment::all();
 
         return view('post', compact('friendPosts', 'users', 'user', 'like', 'comments'));
@@ -76,13 +79,15 @@ class PostController extends Controller
 
     public function creatComment(Request $request)
     {
-
-        Comment::create([
-            'post_id' => $request->post_id,
-            'comment' => $request->comment,
-            'user_id' => Auth::id(),
-        ]);
-        return redirect()->back();
+        if (isset($request->comment)) {
+            Comment::create([
+                'post_id' => $request->post_id,
+                'comment' => $request->comment,
+                'user_id' => Auth::id(),
+            ]);
+            return redirect()->back();
+        }
+        return $this->likePosts($request);
     }
 
 

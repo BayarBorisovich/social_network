@@ -21,6 +21,7 @@
             <input type="password" id="password" name="password" placeholder="password" >
 
             <input type="submit" value="Log In">
+            <a href="{{ route('registrate') }}" class="registrate">Registrate</a>
         </form>
     </body>
 </html>
@@ -55,7 +56,7 @@
         box-sizing: border-box;
         margin-bottom: 16px;
     }
-
+    .registrate,
     input[type="submit"] {
         background-color: #4CAF50;
         color: #fff;

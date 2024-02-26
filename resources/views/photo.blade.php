@@ -401,7 +401,7 @@
                                     @foreach($imageAll as $image)
                                         <li>
                                             {{ $image->id }}
-                                            <a href="#"><img src="{{ asset('/storage/app' . $image->patch) }}" alt=""
+                                            <a href="#"><img src="{{ asset($image->patch) }}" alt=""
                                                              class="img-portrait"/></a>
                                         </li>
                                     @endforeach
