@@ -24,10 +24,10 @@ use Illuminate\Support\Facades\Route;
 //    return view('app');
 //});
 
-Route::get('/main', [MainController::class, 'getForm'])->name('main');
+Route::get('/main', [MainController::class, 'getMain'])->name('main');
 Route::post('/main', [PostController::class, 'likePosts']);
 
-Route::get('/image', [ImageController::class, 'getFormImages'])->name('image');
+Route::get('/image', [ImageController::class, 'getImages'])->name('image');
 Route::post('/image', [ImageController::class, 'postImage']);
 
 Route::get('/photo', [ImageController::class, 'getPhoto'])->name('photo');
@@ -38,34 +38,45 @@ Route::post('/registrate', [UserController::class, 'postRegistrate']);
 Route::get('/login', [UserController::class, 'getFormLogin'])->name('login');
 Route::post('/login', [UserController::class, 'postLogin']);
 
-Route::get('/friends', [UserController::class, 'getFormFriends'])->name('friends');
+Route::get('/friends', [UserController::class, 'getFriends'])->name('friends');
 Route::post('/friends', [UserController::class, 'deletingFromFriends']);
 
 
 Route::get('/usersFriends/{userId}', [UserController::class, 'getFormUsersFriends'])->name('usersFriends');
 
-Route::get('/updateUser', [UserController::class, 'getFormUpdateUser'])->name('updateUser');
+Route::get('/updateUser', [UserController::class, 'getUpdateUser'])->name('updateUser');
 Route::post('/updateUser', [UserController::class, 'updateUser']);
 
-Route::get('/allUser', [UserController::class, 'getFormUsers'])->name('user');
+Route::get('/allUser', [UserController::class, 'getAllUsers'])->name('user');
 Route::post('/allUser', [UserController::class, 'addFriend']);
 
 Route::get('/mainUser/{friendId}', [UserController::class, 'getTheUsersHomePage'])->name('mainUser');
 
 
 Route::match(['get', 'post'],'/messages/{userId}', [UserController::class, 'getFormMessages'])->name('messages');
-//Route::post('/messages/', [UserController::class, 'creatMessages']);
+//Route::get('/messages/{userId}', [UserController::class, 'getFormMessages'])->name('messages');
+//Route::post('/messages/create', [UserController::class, 'createMessages'])->name('messages.create'
 
-Route::get('/post', [PostController::class, 'getPosts'])->name('post');
-Route::post('/post', [PostController::class, 'likePosts']);
-Route::post('/post', [PostController::class, 'creatComment']);
+Route::group(['prefix' => 'post'], function (){
+    Route::get('/', [PostController::class, 'getPosts'])->name('post');
+    Route::post('/like', [PostController::class, 'likePosts'])->name('post.like');
+    Route::post('/comment', [PostController::class, 'creatComment'])->name('post.comment');
+    Route::get('/create', [PostController::class, 'getCreatPost'])->name('post.create');
+    Route::post('/create', [PostController::class, 'createPost'])->name('post.create');
+    Route::post('/delete', [PostController::class, 'deletePost'])->name('post.delete');
+    Route::post('/update', [PostController::class, 'updatePost'])->name('post.update');
+});
 
-Route::get('/creatPost', [PostController::class, 'getFormCreatPost'])->name('creatPost');
-Route::post('/creatPost', [PostController::class, 'creatPost']);
-Route::post('/main', [PostController::class, 'deletePost']);
-Route::post('/main', [PostController::class, 'updatePost']);
+//Route::get('/post', [PostController::class, 'getPosts'])->name('post');
+//Route::post('/post/like', [PostController::class, 'likePosts'])->name('post.like');
+//Route::post('/post/comment', [PostController::class, 'creatComment'])->name('post.comment');
+//
+//Route::get('/post/create', [PostController::class, 'getCreatPost'])->name('post.create');
+//Route::post('/post/create', [PostController::class, 'createPost'])->name('post.create');
+//Route::post('/post/delete', [PostController::class, 'deletePost'])->name('post.delete');
+//Route::post('/post/update', [PostController::class, 'updatePost'])->name('post.update');
 
-Route::post('/main', [PostController::class, 'logout']);
+Route::post('/logout', [PostController::class, 'logout'])->name('logout');
 
 
 

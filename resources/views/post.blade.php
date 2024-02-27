@@ -708,7 +708,7 @@
                                     <p> Ваши друзья не опубликовали посты</p>
                                 @else
                                     @foreach($users as $key => $user)
-                                        @foreach($friendPosts as $ke => $post)
+                                        @foreach($friendPosts as $key => $post)
                                             @if($user['id'] === $post['user_id'])
                                                 <li>
                                                     <div class="timeline-time">
@@ -731,11 +731,11 @@
                                                             <span class="username">{{ $user['name'] }}</span>
                                                         </div>
                                                         <div class="timeline-content">
-                                                            <p>{{ $post['content'] }}</p>
+                                                            <p>{{ $post->content }}</p>
                                                         </div>
                                                         <div class="timeline-footer">
                                                             {{'id ' . $post->id}}
-                                                            <form action="{{ route('post') }}" method="post"
+                                                            <form action="{{ route('post.like') }}" method="post"
                                                                   id="formLike">
                                                                 @csrf
                                                                 <a href="javascript:;"
@@ -788,7 +788,7 @@
                                                                     </div>
                                                                 @endif
                                                             @endforeach
-                                                            <form action="{{ route('post') }}" method="post">
+                                                            <form action="{{ route('post.comment') }}" method="post">
                                                                 @csrf
                                                                 <div class="text-right">
                                                                     <input type="hidden" id="id"

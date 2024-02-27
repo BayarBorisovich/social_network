@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreatePostRequest;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
@@ -12,26 +13,22 @@ use Illuminate\Support\Facades\Auth;
 class PostController extends Controller
 {
 
-    public function getFormCreatPost()
+    public function getCreatPost()
     {
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        return view('creatPost');
+        return view('createPost');
     }
 
-    public function creatPost(Request $request)
+    public function createPost(CreatePostRequest $request)
     {
-        $request->validate([
-            'content' => 'required|string',
-        ]);
-
         Post::create([
             'user_id' => Auth::id(),
             'content' => $request['content'],
         ]);
 
-        return redirect('creatPost')->withSuccess('The post was created successfully');
+        return redirect()->back()->withSuccess('The post was created successfully');
     }
 
 
@@ -42,19 +39,15 @@ class PostController extends Controller
         }
 
         $users = User::all();
+
         $user = Auth::user();
 
-        $friends = User::find(Auth::id())->friends;
+        $friendPosts = $user->friendPosts;
 
-        $arrFriendId = [];
-        foreach ($friends as $key => $elem) {
-            $arrFriendId[] = $elem['friend_id'];
-        }
+        $likes = $user->userLike;
 
-        $friendPosts = Post::all()->whereIn('user_id', $arrFriendId);
-
-        $likes = UserPostLike::all()->where('user_id', Auth::id());
-
+//        $posts = Post::with('likes')->get();
+//        dd($posts);
         $like = [];
         foreach ($likes as $lik) {
             $like[$lik['post_id']] = $lik['post_id'];
@@ -69,10 +62,7 @@ class PostController extends Controller
 
     public function likePosts(Request $request)
     {
-        if (isset($request->comment)) {
-            return $this->creatComment($request);
-        }
-        User::find(Auth::id())->post()->toggle($request->post_id);
+        User::find(Auth::id())->likes()->toggle($request->post_id);
 
         return redirect()->back();
     }
@@ -80,11 +70,13 @@ class PostController extends Controller
     public function creatComment(Request $request)
     {
         if (isset($request->comment)) {
+
             Comment::create([
                 'post_id' => $request->post_id,
                 'comment' => $request->comment,
                 'user_id' => Auth::id(),
             ]);
+
             return redirect()->back();
         }
         return $this->likePosts($request);
@@ -93,11 +85,6 @@ class PostController extends Controller
 
     public function deletePost(Request $request)
     {
-        if (isset($request->update)) {
-
-            return $this->updatePost($request);
-        }
-
         $post = Post::find($request->delete);
 
         $post->delete();
@@ -108,36 +95,22 @@ class PostController extends Controller
 
     public function updatePost(Request $request)
     {
-        if (isset($request->delete)) {
-            return $this->deletePost($request);
-        }
-        if (isset($request->post_id)) {
-            return $this->likePosts($request);
-        }
-        if (isset($request->update)) {
-            $post = Post::find($request->update);
+        $post = Post::find($request->update);
 
-            $post->update([
-                'content' => $request['content'],
-            ]);
+        $post->update([
+            'content' => $request->content,
+        ]);
 
-            return redirect()->route('main');
-        } else {
-            return $this->logout($request);
-        }
+        return redirect()->route('main');
 
     }
 
     public function logout(Request $request)
     {
-        if (isset($request->update)) {
-            return $this->updatePost($request);
-        }
-        if (isset($request->delete)) {
-            return $this->deletePost($request);
-        }
         Auth::logout();
+
         $request->session()->invalidate();
+
         $request->session()->regenerateToken();
 
         return redirect()->route('login');

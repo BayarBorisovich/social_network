@@ -231,7 +231,7 @@
 
 <div class="container">
     <div class="text-right">
-        <form method="post" action="{{ route('main') }}">
+        <form method="post" action="{{ route('logout') }}">
             @csrf
             <button type="submit" class="btn btn-primary">Logout</button>
         </form>
@@ -276,7 +276,7 @@
                                     <path
                                         d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7m0-18H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7m0-18v18"></path>
                                 </svg>
-                                <a class="pt-1px d-none d-md-block" href="{{ route('creatPost') }}">Creat Post</a>
+                                <a class="pt-1px d-none d-md-block" href="{{ route('post.create') }}">Creat Post</a>
                             </li>
                             <li class="header-link-item ml-3 pl-3 border-left d-flex align-items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -437,7 +437,7 @@
                                                 </svg>
                                             </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
-                                                <form action="{{ route('main') }}" method="post">
+                                                <form action="{{ route('post.delete') }}" method="post">
                                                     @csrf
                                                     <a class="dropdown-item d-flex align-items-center">
                                                         <input type="text" id="post_id" class="form-control"
@@ -449,7 +449,7 @@
                                                                value="Delete Post">
                                                     </a>
                                                 </form>
-                                                <form action="{{ route('main') }}" method="post">
+                                                <form action="{{ route('post.update') }}" method="post">
                                                     @csrf
                                                     <a class="dropdown-item d-flex align-items-center">
                                                         <input type="text" id="update" class="form-control"

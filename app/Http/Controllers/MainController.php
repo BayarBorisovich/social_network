@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class MainController extends Controller
 {
-    public function getForm()
+    public function getMain()
     {
         if (!Auth::check()) {
             return redirect()->route('login');

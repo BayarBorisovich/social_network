@@ -9,7 +9,7 @@ use Illuminate\View\View;
 
 class ImageController extends Controller
 {
-    public function getFormImages()
+    public function getImages()
     {
         if (!Auth::check()) {
             return redirect()->route('login');

@@ -466,16 +466,6 @@
                                                                        name="id"
                                                                        placeholder="id" hidden=""
                                                                        value="{{ $user->id }}">
-                                                                {{--                                                        <button type="submit"--}}
-                                                                {{--                                                                class="border-0 bg-transparent">--}}
-                                                                {{--                                                            @if(!isset($friendsId[$user->id]))--}}
-                                                                {{--                                                                <i class="btn btn-primary"--}}
-                                                                {{--                                                                   aria-hidden="true" id="disLike">Add to friends</i>--}}
-                                                                {{--                                                            @else--}}
-                                                                {{--                                                                <i class="btn btn-success"--}}
-                                                                {{--                                                                   aria-hidden="true" id="like">friend</i>--}}
-                                                                {{--                                                            @endif--}}
-                                                                {{--                                                        </button>--}}
                                                                 @if(!isset($friendsId[$user->id]))
                                                                     <input type="submit"
                                                                            class="btn btn-primary"

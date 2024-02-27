@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegistrateRequest;
 use App\Models\Message;
 use App\Models\Post;
 use App\Models\User;
@@ -19,19 +21,8 @@ class UserController extends Controller
         return view('registrate');
     }
 
-    public function postRegistrate(Request $request)
+    public function postRegistrate(RegistrateRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'surname' => 'required|string',
-            'patronymic' => 'required|string',
-            'email' => 'required|string|email|unique:users',
-            'password' => 'required|string', //confirmed
-            'phone' => 'required|string|max:14',
-            'date_of_birth' => 'required|date',
-            'gender' => 'required|string',
-            'about_of_me' => 'string|nullable',
-        ]);
         $data = $request->all();
         $check = $this->create($data);
 
@@ -60,13 +51,8 @@ class UserController extends Controller
         return view('login');
     }
 
-    public function postLogin(Request $request)
+    public function postLogin(LoginRequest $request)
     {
-        $request->validate([
-            'email' => ['required'],
-            'password' => ['required'], //confirmed
-        ]);
-
         if (!Auth::attempt($request->only('email', 'password'))) {
             throw Validationexception::withMessages([
                 'email' => 'These credentials do not match our records.'
@@ -77,7 +63,7 @@ class UserController extends Controller
 
     }
 
-    public function getFormUpdateUser()
+    public function getUpdateUser()
     {
         $user = Auth::user();
         return view('updateUser', compact('user'));
@@ -105,27 +91,29 @@ class UserController extends Controller
     }
 
 
-    public function getFormUsers()
+    public function getAllUsers()
     {
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        $friends = User::find(Auth::id())->friends;
 
-        $myFriends = Friend::where('friend_id', Auth::id())->get();
+        $id = Auth::id();
+
+        $friends = User::find($id)->friends;
+
+        $myFriends = Friend::where('friend_id', $id)->get();
 
         $friendsId = [];
         foreach ($friends as $friend) {
-            $friendsId[$friend['friend_id']] = $friend['friend_id'];
+            $friendsId[$friend->id] = $friend->id;
+
         }
 
         foreach ($myFriends as $myFriend) {
-            $friendsId[$myFriend['user_id']] = $myFriend['user_id'];
+            $friendsId[$myFriend->user_id] = $myFriend->user_id;
         }
 
         $users = User::all();
-
-        $id = Auth::id();
 
         return view('user', compact('users', 'friendsId', 'id'));
     }
@@ -141,29 +129,31 @@ class UserController extends Controller
 
     }
 
-    public function getFormFriends()
+    public function getFriends()
     {
         if (!Auth::check()) {
             return redirect()->route('login');
         }
+        $id = Auth::id();
 
-        $friends = User::find(Auth::id())->friends;
+        $friends = User::find($id)->friends;
 
-        $myFriends = Friend::where('friend_id', Auth::id())->get();
+        $myFriends = Friend::where('friend_id', $id)->get();
 
         $arrFriendId = [];
         foreach ($friends as $friend) {
-            $arrFriendId[] = $friend['friend_id'];
+            $arrFriendId[] = $friend->id;
 
         }
+
         foreach ($myFriends as $myFriend) {
-            $arrFriendId[] = $myFriend['user_id'];
+            $arrFriendId[] = $myFriend->user_id;
         }
 
         $user = Auth::user();
 
         $friends = User::all()->find($arrFriendId);
-//        dd($friends);
+
         return view('friends', compact('user', 'friends'));
     }
 
@@ -208,10 +198,11 @@ class UserController extends Controller
         $friends = User::find($userId)->friends;
 
         $arrFriendId = [];
-        foreach ($friends as $key => $elem) {
-            $arrFriendId[] = $elem['friend_id'];
+        foreach ($friends as $key => $friend) {
+            $arrFriendId[] = $friend->id;
 
         }
+
         $user = User::find($userId);
 
         $friends = User::all()->find($arrFriendId);
@@ -229,7 +220,7 @@ class UserController extends Controller
             Message::create([
                 'content' => $request->textMessage,
                 'sender_id' => Auth::id(),
-                'receiver_id' => $userId,
+                'receiver_id' => $request->receiver_id,
             ]);
 
             return redirect()->route('messages', compact('userId'));
@@ -261,4 +252,15 @@ class UserController extends Controller
 
         return view('messages', compact('sender', 'receiver', 'messages', 'userId'));
     }
+
+//    public function createMessages(Request $request)
+//    {
+//        Message::create([
+//            'content' => $request->textMessage,
+//            'sender_id' => Auth::id(),
+//            'receiver_id' => $request->receiver_id,
+//        ]);
+//
+//        return redirect()->route('messages', compact('userId'));
+//    }
 }

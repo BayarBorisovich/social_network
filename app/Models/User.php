@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -50,10 +51,6 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    public function friends(): HasMany
-    {
-        return $this->hasMany(Friend::class);
-    }
     public function messages(): HasMany
     {
         return $this->hasMany(Message::class);
@@ -66,9 +63,25 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Image::class);
     }
-
-    public function post(): BelongsToMany
+    public function post(): HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
+    public function userLike(): HasMany
+    {
+        return $this->hasMany(UserPostLike::class);
+    }
+    public function likes(): BelongsToMany
     {
         return $this->belongsToMany(Post::class, 'user_post_likes', 'user_id', 'post_id');
+    }
+    public function friends()
+    {
+        return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id');
+    }
+
+    public function friendPosts(): HasManyThrough
+    {
+        return $this->hasManyThrough(Post::class, Friend::class, 'user_id', 'user_id', 'id', 'friend_id');
     }
 }

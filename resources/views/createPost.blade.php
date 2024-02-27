@@ -127,7 +127,7 @@
 </head>
 <body>
 <div class="container light-style flex-grow-1 container-p-y">
-    <form action="{{ route('creatPost') }}" method="post">
+    <form action="{{ route('post.create') }}" method="post">
         @csrf
         <h4 class="font-weight-bold py-3 mb-4">
             Creat Post

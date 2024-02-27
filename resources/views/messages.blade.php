@@ -123,7 +123,7 @@
                         </div>
                         <div class="flex-grow-0 py-3 px-4 border-top">
                             <div class="input-group">
-                                <form action="{{ route('messages', $receiver->id) }}" method="post">
+                                <form action="{{ route('messages', $userId) }}" method="post">
                                     @csrf
                                     <input type="text" class="form-control" name="textMessage"
                                            placeholder="Type your message">
