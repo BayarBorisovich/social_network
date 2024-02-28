@@ -21,4 +21,5 @@ class UserPostLike extends Model
     {
         return $this->belongsTo(Post::class);
     }
+
 }

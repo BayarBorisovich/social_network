@@ -430,7 +430,9 @@
                     <div class="btn btn-outline-warning">
                         <a href="{{ route('main') }}">In Profile</a>
                     </div>
-
+                    <div class="text-right">
+                        <a class="btn btn-success" href="{{ url()->previous() }}" role="button">Back</a>
+                    </div>
                     <div class="tab-content p-0">
 
                         <div class="tab-pane fade in active show" id="profile-friends">

@@ -427,7 +427,9 @@
         <div class="row">
             <div class="col-md-12">
                 <div id="content" class="content content-full-width">
-
+                    <div class="text-right">
+                        <a class="btn btn-success" href="{{ url()->previous() }}" role="button">Back</a>
+                    </div>
                     <div class="profile">
                         <div class="profile-header">
 
@@ -484,7 +486,7 @@
                                                                     alt
                                                                     class="media-object img-circle">
                                                             </a>
-                                                            {{ $friend->id }}
+                                                            {{--                                                            {{ $friend->id }}--}}
                                                             <div class="media-body valign-middle">
                                                                 <a href="{{ route('mainUser', $friend) }}"
                                                                    class="btn btn-xs btn-yellow">{{ $friend->name }}</a>

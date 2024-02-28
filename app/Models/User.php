@@ -51,11 +51,12 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
     public function messages(): HasMany
     {
-        return $this->hasMany(Message::class);
+        return $this->hasMany(Message::class, 'sender_id');
     }
-    public function comments(): HasMany
+    public function comment(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
@@ -67,14 +68,18 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Post::class);
     }
-    public function userLike(): HasMany
+
+
+    public function usersLike(): HasMany // достаем лайки
     {
         return $this->hasMany(UserPostLike::class);
     }
-    public function likes(): BelongsToMany
+
+    public function likeIt(): BelongsToMany // ставим лайки
     {
         return $this->belongsToMany(Post::class, 'user_post_likes', 'user_id', 'post_id');
     }
+
     public function friends()
     {
         return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id');

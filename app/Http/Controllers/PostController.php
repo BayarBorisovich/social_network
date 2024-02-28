@@ -38,48 +38,31 @@ class PostController extends Controller
             return redirect()->route('login');
         }
 
-        $users = User::all();
-
         $user = Auth::user();
 
-        $friendPosts = $user->friendPosts;
+        $friendPosts = $user->friendPosts()->with('author.comment')->get();
 
-        $likes = $user->userLike;
+        return view('post', compact('friendPosts',  'user'));
 
-//        $posts = Post::with('likes')->get();
-//        dd($posts);
-        $like = [];
-        foreach ($likes as $lik) {
-            $like[$lik['post_id']] = $lik['post_id'];
-        }
-        $comments = Comment::all();
-
-        return view('post', compact('friendPosts', 'users', 'user', 'like', 'comments'));
-
-        //        dd($user->post->contains(5));
     }
 
 
     public function likePosts(Request $request)
     {
-        User::find(Auth::id())->likes()->toggle($request->post_id);
+        User::find(Auth::id())->likeIt()->toggle($request->post_id);
 
         return redirect()->back();
     }
 
     public function creatComment(Request $request)
     {
-        if (isset($request->comment)) {
+        Comment::create([
+            'post_id' => $request->post_id,
+            'comment' => $request->comment,
+            'user_id' => Auth::id(),
+        ]);
 
-            Comment::create([
-                'post_id' => $request->post_id,
-                'comment' => $request->comment,
-                'user_id' => Auth::id(),
-            ]);
-
-            return redirect()->back();
-        }
-        return $this->likePosts($request);
+        return redirect()->back();
     }
 
 
@@ -98,7 +81,7 @@ class PostController extends Controller
         $post = Post::find($request->update);
 
         $post->update([
-            'content' => $request->content,
+            'content' => $request['content'],
         ]);
 
         return redirect()->route('main');

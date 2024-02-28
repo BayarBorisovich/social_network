@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Friend extends Model
 {
@@ -20,8 +21,10 @@ class Friend extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function friend()
+    public function ImAFriend(): BelongsToMany
     {
-        return $this->belongsTo(User::class, 'friend_id');
+        return $this->belongsToMany(User::class, 'friends', 'friend_id', 'user_id');
+
     }
+
 }

@@ -132,6 +132,9 @@
         <h4 class="font-weight-bold py-3 mb-4">
             Creat Post
         </h4>
+        <div class="text-right">
+            <a class="btn btn-success" href="{{ url()->previous() }}" role="button">Back</a>
+        </div>
         <div class="row no-gutters row-bordered row-border-light">
             <div class="col-md-3 pt-0">
                 <div class="list-group list-group-flush account-settings-links">
