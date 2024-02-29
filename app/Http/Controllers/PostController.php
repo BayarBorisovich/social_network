@@ -7,13 +7,15 @@ use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\UserPostLike;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
 
-    public function getCreatPost()
+    public function getCreatPost(): View|RedirectResponse
     {
         if (!Auth::check()) {
             return redirect()->route('login');
@@ -21,7 +23,7 @@ class PostController extends Controller
         return view('createPost');
     }
 
-    public function createPost(CreatePostRequest $request)
+    public function createPost(CreatePostRequest $request): RedirectResponse
     {
         Post::create([
             'user_id' => Auth::id(),
@@ -32,7 +34,7 @@ class PostController extends Controller
     }
 
 
-    public function getPosts()
+    public function getPosts(): RedirectResponse|View
     {
         if (!Auth::check()) {
             return redirect()->route('login');
@@ -47,14 +49,14 @@ class PostController extends Controller
     }
 
 
-    public function likePosts(Request $request)
+    public function likePosts(Request $request): RedirectResponse
     {
         User::find(Auth::id())->likeIt()->toggle($request->post_id);
 
         return redirect()->back();
     }
 
-    public function creatComment(Request $request)
+    public function creatComment(Request $request): RedirectResponse
     {
         Comment::create([
             'post_id' => $request->post_id,
@@ -66,7 +68,7 @@ class PostController extends Controller
     }
 
 
-    public function deletePost(Request $request)
+    public function deletePost(Request $request): RedirectResponse
     {
         $post = Post::find($request->delete);
 
@@ -76,7 +78,7 @@ class PostController extends Controller
     }
 
 
-    public function updatePost(Request $request)
+    public function updatePost(Request $request): RedirectResponse
     {
         $post = Post::find($request->update);
 
@@ -88,7 +90,7 @@ class PostController extends Controller
 
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request): RedirectResponse
     {
         Auth::logout();
 

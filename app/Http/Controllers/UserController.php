@@ -8,7 +8,9 @@ use App\Models\Message;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Friend;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -21,7 +23,7 @@ class UserController extends Controller
         return view('registrate');
     }
 
-    public function postRegistrate(RegistrateRequest $request)
+    public function postRegistrate(RegistrateRequest $request): RedirectResponse
     {
         $data = $request->all();
         $check = $this->create($data);
@@ -51,7 +53,7 @@ class UserController extends Controller
         return view('login');
     }
 
-    public function postLogin(LoginRequest $request)
+    public function postLogin(LoginRequest $request): RedirectResponse
     {
         if (!Auth::attempt($request->only('email', 'password'))) {
             throw Validationexception::withMessages([
@@ -63,13 +65,13 @@ class UserController extends Controller
 
     }
 
-    public function getUpdateUser()
+    public function getUpdateUser(): View
     {
         $user = Auth::user();
         return view('updateUser', compact('user'));
     }
 
-    public function updateUser(Request $request)
+    public function updateUser(Request $request): RedirectResponse
     {
         if (!Auth::check()) {
             return redirect()->route('login');
@@ -91,7 +93,7 @@ class UserController extends Controller
     }
 
 
-    public function getAllUsers()
+    public function getAllUsers(): RedirectResponse|View
     {
         if (!Auth::check()) {
             return redirect()->route('login');
@@ -118,7 +120,7 @@ class UserController extends Controller
         return view('user', compact('users', 'friendsId', 'id'));
     }
 
-    public function addFriend(Request $request)
+    public function addFriend(Request $request): RedirectResponse
     {
         Friend::create([
             'user_id' => Auth::id(),
@@ -129,7 +131,7 @@ class UserController extends Controller
 
     }
 
-    public function getFriends()
+    public function getFriends(): RedirectResponse|View
     {
         if (!Auth::check()) {
             return redirect()->route('login');
@@ -157,33 +159,24 @@ class UserController extends Controller
         return view('friends', compact('user', 'friends'));
     }
 
-    public function deletingFromFriends(Request $request)
+    public function deletingFromFriends(Request $request): RedirectResponse
     {
         $userId = Auth::id();
 
-        $friends = Friend::where('user_id', $userId)->where('friend_id', $request['friend_id'])->get();
+        $friends = Friend::where('user_id', $userId)->where('friend_id', $request->friend_id)->first();
 
-        $imAFriends = Friend::where('user_id', $request['friend_id'])->where('friend_id', $userId)->get();
+        $imAFriends = Friend::where('user_id', $request['friend_id'])->where('friend_id', $userId)->first();
 
-//        $friends = User::find($userId)->friends()->where('friend_id', $request->friend_id)->get();
-//
-//        $imAFriends = Friend::find($userId)->ImAFriend()->where('user_id', $request->friend_id)->get();
-
-        if (count($friends) > 0) {
-
-            foreach ($friends as $friend) {
-                $friend->delete();
-            }
-
+        if (!empty($friends)) {
+            $friends->delete();
         } else {
-            foreach ($imAFriends as $imAFriend) {
-                $imAFriend->delete();
-            }
+            $imAFriends->delete();
         }
+
         return redirect()->back();
     }
 
-    public function getTheUsersHomePage($friendId)
+    public function getTheUsersHomePage($friendId): RedirectResponse|View
     {
         if (!Auth::check()) {
             return redirect()->route('login');
@@ -196,7 +189,7 @@ class UserController extends Controller
         return view('mainPageUser', compact('user', 'myPosts', 'friendId'));
     }
 
-    public function getFormUsersFriends(int $userId)
+    public function getFormUsersFriends(int $userId): RedirectResponse|View
     {
         if (!Auth::check()) {
             return redirect()->route('login');
@@ -210,7 +203,7 @@ class UserController extends Controller
 
     }
 
-    public function getMessages( int $userId)
+    public function getMessages( int $userId): RedirectResponse|View
     {
         if (!Auth::check()) {
             return redirect()->route('login');
@@ -239,16 +232,14 @@ class UserController extends Controller
         return view('messages', compact('sender', 'receiver', 'messages', 'userId'));
     }
 
-    public function createMessages(Request $request)
+    public function createMessages(Request $request): RedirectResponse
     {
-        dd($request);
-
         Message::create([
             'content' => $request->textMessage,
             'sender_id' => Auth::id(),
             'receiver_id' => $request->receiver_id,
         ]);
 
-        return redirect()->route('messages');
+        return redirect()->back();
     }
 }

@@ -41,7 +41,6 @@ Route::post('/login', [UserController::class, 'postLogin']);
 Route::get('/friends', [UserController::class, 'getFriends'])->name('friends');
 Route::post('/friends', [UserController::class, 'deletingFromFriends']);
 
-
 Route::get('/usersFriends/{userId}', [UserController::class, 'getFormUsersFriends'])->name('usersFriends');
 
 Route::get('/updateUser', [UserController::class, 'getUpdateUser'])->name('updateUser');
@@ -52,8 +51,6 @@ Route::post('/allUser', [UserController::class, 'addFriend']);
 
 Route::get('/mainUser/{friendId}', [UserController::class, 'getTheUsersHomePage'])->name('mainUser');
 
-
-//Route::match(['get', 'post'],'/messages/{userId}', [UserController::class, 'getFormMessages'])->name('messages');
 Route::get('/messages/{userId}', [UserController::class, 'getMessages'])->name('messages');
 Route::post('/messages/create', [UserController::class, 'createMessages'])->name('messages.create');
 

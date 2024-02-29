@@ -63,12 +63,12 @@
 </head>
 <body>
 <main class="content">
-    <form action="{{ route('messages', $userId) }}" method="post">
-        @method('get')
+    <form action="{{ route('messages.create') }}" method="post">
+        @csrf
         <div class="container p-0">
             <h1 class="h3 mb-3">Messages</h1>
             <div class="text-right">
-                <a class="btn btn-success" href="{{ url()->previous(), $userId }}" role="button">Back</a>
+{{--                <a class="btn btn-success" href="{{ route('mainUser') }}" role="button">Back</a>--}}
             </div>
             <div class="card">
                 <div class="row g-0">
@@ -113,7 +113,8 @@
                                                         class="text-muted small text-nowrap mt-2">{{ $message ? $message->created_at->diffForHumans() : '' }}</div>
                                                 </div>
                                                 <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
-                                                    <div class="font-weight-bold mb-1">{{ $message->author->name }}</div>
+                                                    <div
+                                                        class="font-weight-bold mb-1">{{ $message->author->name }}</div>
                                                     {{ $message->content }}
                                                 </div>
                                             </div>
@@ -126,20 +127,17 @@
                         </div>
                         <div class="flex-grow-0 py-3 px-4 border-top">
                             <div class="input-group">
-                                <form action="{{ route('messages.create', $userId) }}" method="post">
-                                    @csrf
-                                    <input type="text" class="form-control" name="textMessage"
-                                           placeholder="Type your message">
-                                    <input type="text" id="receiver_id" class="form-control"
-                                           name="receiver_id"
-                                           placeholder="receiver_id" hidden=""
-                                           value="{{ $userId }}">
-                                    <input type="submit"
-                                           class="btn btn-primary"
-                                           value="Send">
-                                    {{--                                    <button type="submit" name=_method" value="post" id="save-task">Send</button>--}}
+                                <input type="text" class="form-control" name="textMessage"
+                                       placeholder="Type your message">
+                                <input type="text" id="receiver_id" class="form-control"
+                                       name="receiver_id"
+                                       placeholder="receiver_id" hidden=""
+                                       value="{{ $receiver->id }}">
+                                <input type="submit"
+                                       class="btn btn-primary"
+                                       value="Send">
+                                {{--                                    <button type="submit" name=_method" value="post" id="save-task">Send</button>--}}
 
-                                </form>
                             </div>
                         </div>
                     </div>
