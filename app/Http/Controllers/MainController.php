@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
-use App\Models\Image;
 use App\Models\Post;
 use App\Models\UserPostLike;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +23,7 @@ class MainController extends Controller
             $like[$lik['post_id']] = $lik['post_id'];
         }
 
-        return view('main', compact('user', 'myPosts', 'like'));
+        return view('index.main', compact('user', 'myPosts', 'like'));
     }
 
 

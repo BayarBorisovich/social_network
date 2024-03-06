@@ -18,9 +18,9 @@ class PostController extends Controller
     public function getCreatPost(): View|RedirectResponse
     {
         if (!Auth::check()) {
-            return redirect()->route('login');
+            return redirect()->route('user.login');
         }
-        return view('createPost');
+        return view('post.createPost');
     }
 
     public function createPost(CreatePostRequest $request): RedirectResponse
@@ -37,14 +37,14 @@ class PostController extends Controller
     public function getPosts(): RedirectResponse|View
     {
         if (!Auth::check()) {
-            return redirect()->route('login');
+            return redirect()->route('user.login');
         }
 
         $user = Auth::user();
 
         $friendPosts = $user->friendPosts()->with('author.comment')->get();
 
-        return view('post', compact('friendPosts',  'user'));
+        return view('post.post', compact('friendPosts',  'user'));
 
     }
 
@@ -98,6 +98,6 @@ class PostController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect()->route('login');
+        return redirect()->route('user.login');
     }
 }

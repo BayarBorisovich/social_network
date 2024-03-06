@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 
 
 //Route::get('/', function () {
-//    return view('app');
+//    return view('layouts.app');
 //});
 
 Route::get('/main', [MainController::class, 'getMain'])->name('main');
@@ -68,4 +68,8 @@ Route::post('/logout', [PostController::class, 'logout'])->name('logout');
 
 
 
-
+//
+//
+//Auth::routes();
+//
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

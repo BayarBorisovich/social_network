@@ -5,10 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegistrateRequest;
 use App\Models\Message;
-use App\Models\Post;
 use App\Models\User;
 use App\Models\Friend;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -20,7 +18,7 @@ class UserController extends Controller
 {
     public function getFormRegistrate(): View
     {
-        return view('registrate');
+        return view('user.registrate');
     }
 
     public function postRegistrate(RegistrateRequest $request): RedirectResponse
@@ -28,7 +26,7 @@ class UserController extends Controller
         $data = $request->all();
         $check = $this->create($data);
 
-        return redirect()->route('login');
+        return redirect()->route('user.login');
 
     }
 
@@ -50,7 +48,7 @@ class UserController extends Controller
 
     public function getFormLogin(): View
     {
-        return view('login');
+        return view('user.login');
     }
 
     public function postLogin(LoginRequest $request): RedirectResponse
@@ -68,7 +66,7 @@ class UserController extends Controller
     public function getUpdateUser(): View
     {
         $user = Auth::user();
-        return view('updateUser', compact('user'));
+        return view('user.updateUser', compact('user'));
     }
 
     public function updateUser(Request $request): RedirectResponse
@@ -89,14 +87,14 @@ class UserController extends Controller
             'about_of_me' => $request->about_of_me,
         ]);
 
-        return redirect()->route('updateUser');
+        return redirect()->back();
     }
 
 
     public function getAllUsers(): RedirectResponse|View
     {
         if (!Auth::check()) {
-            return redirect()->route('login');
+            return redirect()->route('user.login');
         }
 
         $id = Auth::id();
@@ -117,7 +115,7 @@ class UserController extends Controller
 
         $users = User::all();
 
-        return view('user', compact('users', 'friendsId', 'id'));
+        return view('user.user', compact('users', 'friendsId', 'id'));
     }
 
     public function addFriend(Request $request): RedirectResponse
@@ -127,14 +125,14 @@ class UserController extends Controller
             'friend_id' => $request['id'],
         ]);
 
-        return redirect()->route('user');
+        return redirect()->route('user.user');
 
     }
 
     public function getFriends(): RedirectResponse|View
     {
         if (!Auth::check()) {
-            return redirect()->route('login');
+            return redirect()->route('user.login');
         }
         $id = Auth::id();
 
@@ -156,7 +154,7 @@ class UserController extends Controller
 
         $friends = User::all()->find($arrFriendId);
 
-        return view('friends', compact('user', 'friends'));
+        return view('user.friends', compact('user', 'friends'));
     }
 
     public function deletingFromFriends(Request $request): RedirectResponse
@@ -179,34 +177,34 @@ class UserController extends Controller
     public function getTheUsersHomePage($friendId): RedirectResponse|View
     {
         if (!Auth::check()) {
-            return redirect()->route('login');
+            return redirect()->route('user.login');
         }
 
         $user = User::find($friendId);
 
         $myPosts = $user->post;
 
-        return view('mainPageUser', compact('user', 'myPosts', 'friendId'));
+        return view('user.mainPageUser', compact('user', 'myPosts', 'friendId'));
     }
 
     public function getFormUsersFriends(int $userId): RedirectResponse|View
     {
         if (!Auth::check()) {
-            return redirect()->route('login');
+            return redirect()->route('user.login');
         }
 
         $user = User::find($userId);
 
         $friends = User::find($userId)->friends;
 
-        return view('usersFriends', compact('user', 'friends', 'userId'));
+        return view('user.usersFriends', compact('user', 'friends', 'userId'));
 
     }
 
     public function getMessages( int $userId): RedirectResponse|View
     {
         if (!Auth::check()) {
-            return redirect()->route('login');
+            return redirect()->route('user.login');
         }
 
         $sender = Auth::user();
@@ -229,7 +227,7 @@ class UserController extends Controller
         $messages = $collect->sortBy('created_at');
 
 
-        return view('messages', compact('sender', 'receiver', 'messages', 'userId'));
+        return view('user.messages', compact('sender', 'receiver', 'messages', 'userId'));
     }
 
     public function createMessages(Request $request): RedirectResponse

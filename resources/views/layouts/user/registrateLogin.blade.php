@@ -4,26 +4,9 @@
         <meta charset="utf-8">
         <title>  </title>
     </head>
-    <body>
-        <h1 class="login">Login</h1>
-        <form action="" method="post">
 
-            @csrf
+    @yield('content')
 
-            <label for="email">Email:</label>
-            @error('email')
-            <p class="error">{{$message}}</p>
-            @enderror
-            <input type="email" id="email" name="email" value="{{old('email')}}" placeholder="email" required>
-
-
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" placeholder="password" >
-
-            <input type="submit" value="Log In">
-            <a href="{{ route('registrate') }}" class="registrate">Registrate</a>
-        </form>
-    </body>
 </html>
 
 <style>
@@ -56,6 +39,7 @@
         box-sizing: border-box;
         margin-bottom: 16px;
     }
+    .login,
     .registrate,
     input[type="submit"] {
         background-color: #4CAF50;
@@ -69,9 +53,6 @@
 
     input[type="submit"]:hover {
         background-color: #45a049;
-    }
-    .login{
-       color: black;
     }
     .error{
         color: red;

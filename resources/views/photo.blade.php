@@ -374,7 +374,7 @@
                 <div class="profile-header-info">
                     <h4 class="m-t-sm">Clyde Stanley</h4>
                     <p class="m-b-sm">UXUI + Frontend Developer</p>
-                    <a href="{{ route('main') }}" class="btn btn-outline-warning">In Profile</a>
+                    <a href="{{ route('index') }}" class="btn btn-outline-warning">In Profile</a>
                 </div>
             </div>
             <ul class="profile-header-tab nav nav-tabs">
