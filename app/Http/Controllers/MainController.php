@@ -15,15 +15,18 @@ class MainController extends Controller
             return redirect()->route('login');
         }
         $user = Auth::user();
+//        $myPosts = Post::all()->where('user_id', Auth::id());
+
+        return view('index.main', compact('user'));
+    }
+
+    public function getJsonMain()
+    {
         $myPosts = Post::all()->where('user_id', Auth::id());
-        $likes = UserPostLike::all()->where('user_id', Auth::id());
 
-        $like = [];
-        foreach ($likes as $lik) {
-            $like[$lik['post_id']] = $lik['post_id'];
-        }
+        $posts = json_encode($myPosts);
 
-        return view('index.main', compact('user', 'myPosts', 'like'));
+        return $posts;
     }
 
 

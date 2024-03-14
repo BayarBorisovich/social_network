@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateCommentRequest;
 use App\Http\Requests\CreatePostRequest;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
-use App\Models\UserPostLike;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,75 +18,87 @@ class PostController extends Controller
     public function getCreatPost(): View|RedirectResponse
     {
         if (!Auth::check()) {
-            return redirect()->route('user.login');
+            return redirect()->route('login');
         }
         return view('post.createPost');
     }
 
-    public function createPost(CreatePostRequest $request): RedirectResponse
+    public function createPost(CreatePostRequest $request)
     {
         Post::create([
             'user_id' => Auth::id(),
             'content' => $request['content'],
         ]);
 
-        return redirect()->back()->withSuccess('The post was created successfully');
+        return response([]);
     }
 
 
     public function getPosts(): RedirectResponse|View
     {
         if (!Auth::check()) {
-            return redirect()->route('user.login');
+            return redirect()->route('login');
         }
 
         $user = Auth::user();
 
-        $friendPosts = $user->friendPosts()->with('author.comment')->get();
-
-        return view('post.post', compact('friendPosts',  'user'));
+        return view('post.post', compact('user'));
 
     }
 
-
-    public function likePosts(Request $request): RedirectResponse
+    public function getJsonPosts()
     {
-        User::find(Auth::id())->likeIt()->toggle($request->post_id);
+        $user = Auth::user();
 
-        return redirect()->back();
+        $friendPosts = $user->friendPosts()->with('comment.author', 'author')->get();
+
+        $like = $user->usersLike;
+
+        $arr = [
+            'posts' => $friendPosts,
+            'like' => $like
+        ];
+
+        $posts = json_encode($arr);
+
+        return $posts;
     }
 
-    public function creatComment(Request $request): RedirectResponse
+
+    public function likePosts(int $postId)
     {
+        User::find(Auth::id())->likeIt()->toggle($postId);
+
+        return response([]);
+    }
+
+    public function creatComment(CreateCommentRequest $request, int $postId)
+    {
+        $request->validated();
         Comment::create([
-            'post_id' => $request->post_id,
+            'post_id' => $postId,
             'comment' => $request->comment,
             'user_id' => Auth::id(),
         ]);
 
-        return redirect()->back();
+        return response([]);
     }
 
 
-    public function deletePost(Request $request): RedirectResponse
+    public function deletePost(Post $post)
     {
-        $post = Post::find($request->delete);
-
         $post->delete();
-
-        return redirect()->route('main');
+        return $post;
     }
 
 
-    public function updatePost(Request $request): RedirectResponse
+    public function updatePost(Request $request, Post $post)
     {
-        $post = Post::find($request->update);
-
         $post->update([
             'content' => $request['content'],
         ]);
 
-        return redirect()->route('main');
+        return response([]);
 
     }
 
@@ -98,6 +110,6 @@ class PostController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect()->route('user.login');
+        return redirect()->route('login');
     }
 }

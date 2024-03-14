@@ -7,11 +7,23 @@ const app = createApp({});
 
 import ExampleComponent from './components/ExampleComponent.vue';
 import Posts from "./components/Posts.vue";
-
+import Main from "./components/Main.vue";
+import CreatePost from "./components/CreatePost.vue";
+import Friend from "./components/Friend.vue";
+import Users from "./components/Users.vue";
+import UsersHomePage from "./components/UsersHomePage.vue";
+import Messages from "./components/Messages.vue";
 
 
 app.component('example-component', ExampleComponent);
 app.component('component-posts', Posts);
+app.component('component-main', Main);
+app.component('create-component', CreatePost);
+app.component('friend-component', Friend);
+app.component('users-component', Users);
+app.component('users-home-page-component', UsersHomePage);
+app.component('messages-component', Messages);
+
 
 
 // Object.entries(import.meta.glob('./**/*.vue', { eager: true })).forEach(([path, definition]) => {

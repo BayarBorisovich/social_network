@@ -1,22 +1,13 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="en">
 <head>
     <meta charset="utf-8">
+
+
+    <title>POSTS</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'Main') }}</title>
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-
-    <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     {{--    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/fontawesome.min.css" rel="stylesheet">--}}
     <style type="text/css">
         body {
@@ -670,53 +661,18 @@
             color: #ff5b57 !important;
         }
 
-        /*#liked {*/
-        /*    color: red;*/
-        /*}*/
     </style>
 </head>
 <body>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
-
 <div id="app">
     @yield('content')
 </div>
-
-{{--<script>--}}
-{{--    if (window.history.replaceState) {--}}
-{{--        window.history.replaceState(null, null, window.location.href);--}}
-{{--    }--}}
-{{--</script>--}}
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript">
 
 </script>
-{{--<script>--}}
-{{--    $(document).ready(function () {--}}
-{{--        var likeButtons = document.querySelectorAll('.fa');--}}
-
-{{--        likeButtons.forEach(function (button) {--}}
-{{--            button.addEventListener('click', function () {--}}
-{{--                this.classList.toggle('fa-heart');--}}
-{{--                this.classList.toggle('fa-heart-o');--}}
-{{--            });--}}
-{{--        });--}}
-
-{{--        $("#formLike").on('submit', function (event) {--}}
-{{--            event.preventDefault();--}}
-{{--            $.ajax({--}}
-{{--                type: "POST",--}}
-{{--                url: '/post',--}}
-{{--                dataType: 'html',--}}
-{{--                data: $(this).serialize(),--}}
-{{--                success: function () {--}}
-{{--                    console.log('done');--}}
-{{--                }--}}
-{{--            });--}}
-{{--        });--}}
-{{--    });--}}
-{{--</script>--}}
 </body>
 </html>

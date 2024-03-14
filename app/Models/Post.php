@@ -20,7 +20,7 @@ class Post extends Model
         'content',
     ];
 
-    protected $withCount = ['like']; // считает лайки постов
+    protected $withCount = ['like', 'comment']; // считает лайки постов
 
     public function user(): BelongsTo
     {

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateMessageRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegistrateRequest;
 use App\Models\Message;
 use App\Models\User;
 use App\Models\Friend;
+use http\Env\Response;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -26,7 +28,7 @@ class UserController extends Controller
         $data = $request->all();
         $check = $this->create($data);
 
-        return redirect()->route('user.login');
+        return redirect()->route('login');
 
     }
 
@@ -94,9 +96,32 @@ class UserController extends Controller
     public function getAllUsers(): RedirectResponse|View
     {
         if (!Auth::check()) {
-            return redirect()->route('user.login');
+            return redirect()->route('login');
         }
+//        $id = Auth::id();
+//
+//        $friends = User::find($id)->friends;
+//
+//        $myFriends = Friend::where('friend_id', $id)->get();
+//
+//        $friendsId = [];
+//        foreach ($friends as $friend) {
+//            $friendsId[$friend->id] = $friend->id;
+//
+//        }
+//
+//        foreach ($myFriends as $myFriend) {
+//            $friendsId[$myFriend->user_id] = $myFriend->user_id;
+//        }
+//
+//        $users = User::all();
 
+
+        return view('user.user');
+    }
+
+    public function getJsonUsers()
+    {
         $id = Auth::id();
 
         $friends = User::find($id)->friends;
@@ -115,25 +140,39 @@ class UserController extends Controller
 
         $users = User::all();
 
-        return view('user.user', compact('users', 'friendsId', 'id'));
+        $allUsers = [
+            'users' => $users,
+            'friendIds' => $friendsId
+        ];
+
+        $users = json_encode($allUsers);
+
+        return $users;
     }
 
-    public function addFriend(Request $request): RedirectResponse
+    public function addFriend(int $userId)
     {
         Friend::create([
             'user_id' => Auth::id(),
-            'friend_id' => $request['id'],
+            'friend_id' => $userId,
         ]);
 
-        return redirect()->route('user.user');
+        return response([]);
 
     }
 
     public function getFriends(): RedirectResponse|View
     {
         if (!Auth::check()) {
-            return redirect()->route('user.login');
+            return redirect()->route('login');
         }
+        $user = Auth::user();
+
+        return view('user.friends', compact('user'));
+    }
+
+    public function getJsonFriends()
+    {
         $id = Auth::id();
 
         $friends = User::find($id)->friends;
@@ -149,21 +188,20 @@ class UserController extends Controller
         foreach ($imAFriends as $imAFriend) {
             $arrFriendId[] = $imAFriend->id;
         }
-
-        $user = Auth::user();
-
         $friends = User::all()->find($arrFriendId);
 
-        return view('user.friends', compact('user', 'friends'));
+        $friends = json_encode($friends);
+
+        return $friends;
     }
 
-    public function deletingFromFriends(Request $request): RedirectResponse
+    public function deletingFromFriends(int $friendId)
     {
         $userId = Auth::id();
 
-        $friends = Friend::where('user_id', $userId)->where('friend_id', $request->friend_id)->first();
+        $friends = Friend::where('user_id', $userId)->where('friend_id', $friendId)->first();
 
-        $imAFriends = Friend::where('user_id', $request['friend_id'])->where('friend_id', $userId)->first();
+        $imAFriends = Friend::where('user_id', $friendId)->where('friend_id', $userId)->first();
 
         if (!empty($friends)) {
             $friends->delete();
@@ -171,13 +209,13 @@ class UserController extends Controller
             $imAFriends->delete();
         }
 
-        return redirect()->back();
+        return response([]);
     }
 
     public function getTheUsersHomePage($friendId): RedirectResponse|View
     {
         if (!Auth::check()) {
-            return redirect()->route('user.login');
+            return redirect()->route('login');
         }
 
         $user = User::find($friendId);
@@ -190,7 +228,7 @@ class UserController extends Controller
     public function getFormUsersFriends(int $userId): RedirectResponse|View
     {
         if (!Auth::check()) {
-            return redirect()->route('user.login');
+            return redirect()->route('login');
         }
 
         $user = User::find($userId);
@@ -204,40 +242,42 @@ class UserController extends Controller
     public function getMessages( int $userId): RedirectResponse|View
     {
         if (!Auth::check()) {
-            return redirect()->route('user.login');
+            return redirect()->route('login');
         }
 
         $sender = Auth::user();
-        $myMessages = $sender->messages()->with('author')->get();
+        $myMessages = $sender->messages()->with('author')->where('receiver_id', $userId)->get();
 
         $receiver = User::find($userId);
-        $iNeedMessages = $receiver->messages()->with('author')->get();
+        $iNeedMessages = $receiver->messages()->with('author')->where('receiver_id', Auth::id())->get();
 
-        $arrMessages = [];
+        $messages = [];
         foreach ($myMessages as $myMessage) {
-            $arrMessages[] = $myMessage;
+            $messages[] = $myMessage;
         }
 
         foreach ($iNeedMessages as $iNeedMessage) {
-            $arrMessages[] = $iNeedMessage;
+            $messages[] = $iNeedMessage;
         }
 
-        $collect = collect($arrMessages);
+        $messages = json_encode($messages);
 
-        $messages = $collect->sortBy('created_at');
-
-
-        return view('user.messages', compact('sender', 'receiver', 'messages', 'userId'));
+        return view('user.messages', compact('sender', 'receiver', 'messages'));
     }
 
-    public function createMessages(Request $request): RedirectResponse
+    public function getJsonMessages()
+    {
+
+    }
+
+    public function createMessages(CreateMessageRequest $request, int $id)
     {
         Message::create([
             'content' => $request->textMessage,
             'sender_id' => Auth::id(),
-            'receiver_id' => $request->receiver_id,
+            'receiver_id' => $id,
         ]);
 
-        return redirect()->back();
+        return response([]);
     }
 }

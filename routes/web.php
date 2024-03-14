@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Route;
 //});
 
 Route::get('/main', [MainController::class, 'getMain'])->name('main');
+Route::get('/main/json', [MainController::class, 'getJsonMain']);
 Route::post('/main', [PostController::class, 'likePosts']);
 
 Route::get('/image', [ImageController::class, 'getImages'])->name('image');
@@ -39,7 +40,8 @@ Route::get('/login', [UserController::class, 'getFormLogin'])->name('login');
 Route::post('/login', [UserController::class, 'postLogin']);
 
 Route::get('/friends', [UserController::class, 'getFriends'])->name('friends');
-Route::post('/friends', [UserController::class, 'deletingFromFriends']);
+Route::get('/friends/json', [UserController::class, 'getJsonFriends']);
+Route::post('/friends/{friendId}', [UserController::class, 'deletingFromFriends']);
 
 Route::get('/usersFriends/{userId}', [UserController::class, 'getFormUsersFriends'])->name('usersFriends');
 
@@ -47,21 +49,23 @@ Route::get('/updateUser', [UserController::class, 'getUpdateUser'])->name('updat
 Route::post('/updateUser', [UserController::class, 'updateUser']);
 
 Route::get('/allUser', [UserController::class, 'getAllUsers'])->name('user');
-Route::post('/allUser', [UserController::class, 'addFriend']);
+Route::get('/allUser/json', [UserController::class, 'getJsonUsers']);
+Route::post('/allUser/{userId}', [UserController::class, 'addFriend']);
 
 Route::get('/mainUser/{friendId}', [UserController::class, 'getTheUsersHomePage'])->name('mainUser');
 
 Route::get('/messages/{userId}', [UserController::class, 'getMessages'])->name('messages');
-Route::post('/messages/create', [UserController::class, 'createMessages'])->name('messages.create');
+Route::post('/messages/create/{id}', [UserController::class, 'createMessages']);
 
 Route::group(['prefix' => 'post'], function (){
     Route::get('/', [PostController::class, 'getPosts'])->name('post');
-    Route::post('/like', [PostController::class, 'likePosts'])->name('post.like');
-    Route::post('/comment', [PostController::class, 'creatComment'])->name('post.comment');
+    Route::get('/json', [PostController::class, 'getJsonPosts']);
+    Route::post('/like/{postId}', [PostController::class, 'likePosts'])->name('post.like');
+    Route::post('/comment/{postId}', [PostController::class, 'creatComment'])->name('post.comment');
     Route::get('/create', [PostController::class, 'getCreatPost'])->name('post.create');
-    Route::post('/create', [PostController::class, 'createPost'])->name('post.create');
-    Route::post('/delete', [PostController::class, 'deletePost'])->name('post.delete');
-    Route::post('/update', [PostController::class, 'updatePost'])->name('post.update');
+    Route::post('/create', [PostController::class, 'createPost']);
+    Route::post('/delete/{post}', [PostController::class, 'deletePost'])->name('post.delete');
+    Route::post('/update/{post}', [PostController::class, 'updatePost'])->name('post.update');
 });
 
 Route::post('/logout', [PostController::class, 'logout'])->name('logout');

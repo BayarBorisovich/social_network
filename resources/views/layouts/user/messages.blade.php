@@ -7,6 +7,7 @@
     <title>Messages</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <style type="text/css">
         body {
             margin-top: 20px;
@@ -61,7 +62,19 @@
         }
     </style>
 </head>
+<body>
+<main class="content">
+    <div id="app">
+    @yield('content')
+    </div>
 
-@yield('content')
+</main>
+<script>
+</script>
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript">
 
+</script>
+</body>
 </html>

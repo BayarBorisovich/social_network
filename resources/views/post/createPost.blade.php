@@ -3,8 +3,7 @@
 @section('content')
 
     <div class="container light-style flex-grow-1 container-p-y">
-        <form action="{{ route('post.create') }}" method="post">
-            @csrf
+        <form action="{{ route('post.create') }}" method="get">
             <h4 class="font-weight-bold py-3 mb-4">
                 Creat Post
             </h4>
@@ -23,30 +22,8 @@
                     <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt
                          class="d-block ui-w-80">
                 </div>
-                @if(Session::has('success'))
-                    <div class="alert alert-success">
-                        {{Session::get('success')}}
-                    </div>
-                @endif
-
-                <hr class="border-light m-0">
-                <div class="card-body">
-                    <div class="form-group">
-                        <label class="form-label">New post</label>
-                        @error('content')
-                        <p class="error">{{$message}}</p>
-                        @enderror
-                        <input type="text" id="content" class="form-control mb-1"
-                               name="content"
-                               placeholder="content"
-                               value="">
-                    </div>
-                </div>
             </div>
-            <div class="text-right mt-3">
-                <input type="submit" class="btn btn-primary"
-                       value="Creat">
-            </div>
+            <create-component> </create-component>
         </form>
     </div>
 
