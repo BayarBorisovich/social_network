@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateMessageRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegistrateRequest;
+use App\Mail\EmailConfirmation;
 use App\Models\Message;
 use App\Models\User;
 use App\Models\Friend;
@@ -14,6 +15,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
@@ -40,11 +43,14 @@ class UserController extends Controller
             'surname' => $data['surname'],
             'patronymic' => $data['patronymic'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            $password = Str::random(8),
+            'password' => Hash::make($password),
+            Mail::to($data['email'])->send(new EmailConfirmation($password)),
             'phone' => $data['phone'],
             'date_of_birth' => $data['date_of_birth'],
             'gender' => $data['gender'],
             'about_of_me' => $data['about_of_me'],
+
         ]);
     }
 

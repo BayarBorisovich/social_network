@@ -11,6 +11,7 @@ class UserController
     public function getJsonUsers()
     {
         $id = Auth::id();
+        dd($id);
 
         $friends = User::find($id)->friends;
 

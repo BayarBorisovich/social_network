@@ -2,11 +2,14 @@
 
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegistrateController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\SendEmailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,10 +73,5 @@ Route::group(['prefix' => 'post'], function (){
 
 Route::post('/logout', [PostController::class, 'logout'])->name('logout');
 
+Route::get('/mail',  [MailController::class, 'basic_email']);
 
-
-//
-//
-//Auth::routes();
-//
-//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

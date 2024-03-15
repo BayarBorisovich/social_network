@@ -19,5 +19,5 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 
-Route::get('/allUser', [UserController::class, 'getJsonUsers']);
+Route::get('/allUser', [UserController::class, 'getJsonUsers'])->middleware('auth:sanctum');
 Route::get('/post/json', [PostController::class, 'getJsonPosts']);
