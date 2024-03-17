@@ -1,6 +1,7 @@
 <x-mail::message>
 # Introduction
 
+{{--  Password:  {{ $password }}--}}
   Password:  {{ $password }}
 
 <x-mail::button :url="$url">

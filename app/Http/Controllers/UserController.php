@@ -9,7 +9,6 @@ use App\Mail\EmailConfirmation;
 use App\Models\Message;
 use App\Models\User;
 use App\Models\Friend;
-use http\Env\Response;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -29,7 +28,7 @@ class UserController extends Controller
     public function postRegistrate(RegistrateRequest $request): RedirectResponse
     {
         $data = $request->all();
-        $check = $this->create($data);
+        $this->create($data);
 
         return redirect()->route('login');
 
@@ -245,7 +244,7 @@ class UserController extends Controller
 
     }
 
-    public function getMessages( int $userId): RedirectResponse|View
+    public function getMessages(int $userId): RedirectResponse|View
     {
         if (!Auth::check()) {
             return redirect()->route('login');

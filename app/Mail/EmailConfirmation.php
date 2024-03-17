@@ -16,7 +16,7 @@ class EmailConfirmation extends Mailable
 
     public $password;
 
-    public $url = "http://localhost/login";
+    public string $url = "http://localhost/login";
 
     /**
      * Create a new message instance.
@@ -33,7 +33,7 @@ class EmailConfirmation extends Mailable
      *
      * @return \Illuminate\Mail\Mailables\Envelope
      */
-    public function envelope()
+    public function envelope(): Envelope
     {
         return new Envelope(
             subject: 'Email Confirmation',
@@ -45,7 +45,7 @@ class EmailConfirmation extends Mailable
      *
      * @return \Illuminate\Mail\Mailables\Content
      */
-    public function content()
+    public function content(): Content
     {
         return new Content(
             markdown: 'emails',
@@ -57,7 +57,7 @@ class EmailConfirmation extends Mailable
      *
      * @return array
      */
-    public function attachments()
+    public function attachments(): array
     {
         return [];
     }

@@ -17,12 +17,12 @@ class MailController extends Controller
     {
         $email = 'positronx@gmail.com';
 
-        $maildata = [
+        $mailData = [
             'title' => 'Laravel Mail Sending Example with Markdown',
             'url' => 'http://localhost/main'
         ];
 
-        Mail::to($email)->send(new EmailConfirmation($maildata));
+        Mail::to($email)->send(new EmailConfirmation($mailData));
 
         dd("Mail has been sent successfully");
 
