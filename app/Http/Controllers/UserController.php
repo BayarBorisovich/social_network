@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Str;
 use App\Http\Requests\CreateMessageRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegistrateRequest;
-use App\Mail\EmailConfirmation;
 use App\Models\Message;
 use App\Models\User;
 use App\Models\Friend;
@@ -14,9 +14,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
+use PhpAmqpLib\Message\AMQPMessage;
 
 class UserController extends Controller
 {
@@ -28,30 +28,47 @@ class UserController extends Controller
     public function postRegistrate(RegistrateRequest $request): RedirectResponse
     {
         $data = $request->all();
-        $this->create($data);
-
-        return redirect()->route('login');
-
-    }
-
-    public function create($data)
-    {
-        return User::create([
+        $password = Str::random(8);
+        User::create([
             '_token' => $data['_token'],
             'name' => $data['name'],
             'surname' => $data['surname'],
             'patronymic' => $data['patronymic'],
             'email' => $data['email'],
-            $password = Str::random(8),
             'password' => Hash::make($password),
-            Mail::to($data['email'])->send(new EmailConfirmation($password)),
             'phone' => $data['phone'],
             'date_of_birth' => $data['date_of_birth'],
             'gender' => $data['gender'],
             'about_of_me' => $data['about_of_me'],
 
         ]);
+
+        $connection = new AMQPStreamConnection('rabbitmq', 5672, 'rmuser', 'rmpassword');
+        $channel = $connection->channel();
+
+        $channel->queue_declare('hello', false, true, false, false);
+
+        $mailData = [
+            'password' => $password,
+            'email' => $data['email'],
+            'url' => 'http://localhost/login'
+        ];
+
+        $data = json_encode($mailData);
+
+        $msg = new AMQPMessage($data);
+        $channel->basic_publish($msg, '', 'hello');
+
+        echo " [x] the password has been sent'\n";
+
+        $channel->close();
+        $connection->close();
+
+        return redirect()->route('login');
+
     }
+
+
 
     public function getFormLogin(): View
     {

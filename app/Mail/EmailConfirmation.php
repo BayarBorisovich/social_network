@@ -16,7 +16,7 @@ class EmailConfirmation extends Mailable
 
     public $password;
 
-    public string $url = "http://localhost/login";
+//    public string $url = "http://localhost/login";
 
     /**
      * Create a new message instance.

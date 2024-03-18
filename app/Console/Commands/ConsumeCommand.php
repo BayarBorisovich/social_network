@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Mail\EmailConfirmation;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Mail;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Symfony\Component\Console\Command\Command as CommandAlias;
 
@@ -38,7 +40,12 @@ class ConsumeCommand extends Command
         echo " [*] Waiting for messages. To exit press CTRL+C\n";
 
         $callback = function ($msg) {
-            echo ' [x] Received ', $msg->body, "\n";
+            $data = json_decode($msg->body, true);
+
+            Mail::to($data['email'])->send(new EmailConfirmation($data));
+
+//            echo ' [x] Received ', $msg->body, "\n";
+            print_r($data);
         };
 
         $channel->basic_consume('hello', '', false, true, false, false, $callback);
