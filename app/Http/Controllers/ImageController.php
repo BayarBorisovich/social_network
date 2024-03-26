@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ImageRequest;
 use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,22 +16,14 @@ class ImageController extends Controller
             return redirect()->route('login');
         }
 
-        return view('image');
+        return view('image.upload');
     }
 
-    public function postImage(Request $request)
+    public function postImage(ImageRequest $request)
     {
-
-        $request->validate([
-            'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
-
-        ]);
-
-
         $name = $request->file('image')->getClientOriginalName();
 
-
-        $path = $request->file('image')->store('public/photo');
+        $path = $request->file('image')->storeAs( 'photo', $name, 'public');
 
         Image::create([
             'name' => $name,
@@ -38,10 +31,7 @@ class ImageController extends Controller
             'user_id' => Auth::id(),
         ]);
 
-        return view('image', compact('path'));
-
-//        return redirect('image')->withSuccess('The image has been uploaded successfully');
-
+        return view('image.upload', compact('path'));
     }
     public function getPhoto()
     {
@@ -51,6 +41,6 @@ class ImageController extends Controller
 
         $imageAll = Image::all()->where('user_id', Auth::id());
 
-        return view('photo', compact('imageAll'));
+        return view('image.photo', compact('imageAll'));
     }
 }
