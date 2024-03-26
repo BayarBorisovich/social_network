@@ -1,8 +1,8 @@
 <x-mail::message>
 # Introduction
 
-{{--  Password:  {{ $password }}--}}
-  Password:  {{ $password['password'] }}
+  Content:  {{ $password['user'] }}
+  Password:  {{ $password['content'] }}
 
 <x-mail::button :url="$password['url']">
 Перейдите по ссылке

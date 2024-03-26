@@ -28,7 +28,7 @@ class RegistrateRequest extends FormRequest
             'surname' => 'required|string',
             'patronymic' => 'required|string',
             'email' => 'required|string|email|unique:users',
-//            'password' => 'required|string', //confirmed
+            'password' => 'required|string', //confirmed
             'phone' => 'required|string|max:14',
             'date_of_birth' => 'required|date',
             'gender' => 'required|string',

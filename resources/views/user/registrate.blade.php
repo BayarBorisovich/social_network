@@ -31,11 +31,11 @@
         @enderror
         <input type="email" id="email" name="email" value="{{old('email')}}" placeholder="email" required>
 
-{{--        <label for="password">Password:</label>--}}
-{{--        @error('password')--}}
-{{--        <p class="error">{{$message}}</p>--}}
-{{--        @enderror--}}
-{{--        <input type="password" id="password" name="password" placeholder="password">--}}
+        <label for="password">Password:</label>
+        @error('password')
+        <p class="error">{{$message}}</p>
+        @enderror
+        <input type="password" id="password" name="password" placeholder="password">
 
         {{--    @error('password_confirmation') {{$message}} @enderror--}}
         {{--    <label for="password_confirmation">Confirm Password:</label>--}}

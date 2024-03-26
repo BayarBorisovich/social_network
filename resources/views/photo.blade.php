@@ -374,7 +374,7 @@
                 <div class="profile-header-info">
                     <h4 class="m-t-sm">Clyde Stanley</h4>
                     <p class="m-b-sm">UXUI + Frontend Developer</p>
-                    <a href="{{ route('index') }}" class="btn btn-outline-warning">In Profile</a>
+                    <a href="{{ route('main') }}" class="btn btn-outline-warning">In Profile</a>
                 </div>
             </div>
             <ul class="profile-header-tab nav nav-tabs">
@@ -401,7 +401,7 @@
                                     @foreach($imageAll as $image)
                                         <li>
                                             {{ $image->id }}
-                                            <a href="#"><img src="{{ asset($image->patch) }}" alt=""
+                                            <a href="#"><img src="{{ asset("/storage/" . $image->patch) }}" alt=""
                                                              class="img-portrait"/></a>
                                         </li>
                                     @endforeach

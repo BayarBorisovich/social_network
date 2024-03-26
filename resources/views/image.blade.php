@@ -373,7 +373,7 @@
             <div class="profile-header-info">
                 <h4 class="m-t-sm">Clyde Stanley</h4>
                 <p class="m-b-sm">UXUI + Frontend Developer</p>
-                <a href="{{ route('index') }}" class="btn btn-outline-warning">In Profile</a>
+                <a href="{{ route('main') }}" class="btn btn-outline-warning">In Profile</a>
             </div>
         </div>
     </div>
@@ -404,6 +404,9 @@
                 </form>
             </div>
         </div>
+        @isset($path)
+            <img class="img-fluid" src="{{ asset('/storage/' . $path) }}" alt="">
+        @endisset
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>

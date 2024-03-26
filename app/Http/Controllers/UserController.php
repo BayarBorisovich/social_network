@@ -2,6 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Console\Commands\ConsumeCommand;
+use App\Mail\EmailConfirmation;
+use App\Services\RabbitService;
+use App\Services\UserService;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use App\Http\Requests\CreateMessageRequest;
 use App\Http\Requests\LoginRequest;
@@ -20,22 +26,32 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class UserController extends Controller
 {
+    private UserService $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     public function getFormRegistrate(): View
     {
         return view('user.registrate');
     }
 
+    /**
+     * @throws \Exception
+     */
     public function postRegistrate(RegistrateRequest $request): RedirectResponse
     {
         $data = $request->all();
-        $password = Str::random(8);
-        User::create([
+
+        $user = User::create([
             '_token' => $data['_token'],
             'name' => $data['name'],
             'surname' => $data['surname'],
             'patronymic' => $data['patronymic'],
             'email' => $data['email'],
-            'password' => Hash::make($password),
+            'password' => Hash::make($data['password']),
             'phone' => $data['phone'],
             'date_of_birth' => $data['date_of_birth'],
             'gender' => $data['gender'],
@@ -43,26 +59,35 @@ class UserController extends Controller
 
         ]);
 
-        $connection = new AMQPStreamConnection('rabbitmq', 5672, 'rmuser', 'rmpassword');
-        $channel = $connection->channel();
-
-        $channel->queue_declare('hello', false, true, false, false);
-
         $mailData = [
-            'password' => $password,
+            'password' => $data['password'],
             'email' => $data['email'],
             'url' => 'http://localhost/login'
         ];
 
-        $data = json_encode($mailData);
+//        $rabbitmq = new RabbitService('rabbitmq', 5672, 'rmuser', 'rmpassword');
+//
+//        $queue = 'test';
+//
+//        $rabbitmq->publich($mailData, $queue);
+//
+//        $callback = function ($msg) {
+//
+//            $data = json_decode($msg->body, true);
+//
+//            Mail::to($data['email'])->send(new EmailConfirmation($data));
+//
+//            print_r($data);
+//        };
+//
+//        $rabbitmq->consume($callback, $queue);
 
-        $msg = new AMQPMessage($data);
-        $channel->basic_publish($msg, '', 'hello');
 
-        echo " [x] the password has been sent'\n";
+        if (isset($user)) {
+            event(new Registered($user));
 
-        $channel->close();
-        $connection->close();
+            return redirect()->route('verification.notice') ;
+        }
 
         return redirect()->route('login');
 
@@ -120,25 +145,6 @@ class UserController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-//        $id = Auth::id();
-//
-//        $friends = User::find($id)->friends;
-//
-//        $myFriends = Friend::where('friend_id', $id)->get();
-//
-//        $friendsId = [];
-//        foreach ($friends as $friend) {
-//            $friendsId[$friend->id] = $friend->id;
-//
-//        }
-//
-//        foreach ($myFriends as $myFriend) {
-//            $friendsId[$myFriend->user_id] = $myFriend->user_id;
-//        }
-//
-//        $users = User::all();
-
-
         return view('user.user');
     }
 
@@ -197,20 +203,7 @@ class UserController extends Controller
     {
         $id = Auth::id();
 
-        $friends = User::find($id)->friends;
-
-        $imAFriends = Friend::find($id)->ImAFriend;
-
-        $arrFriendId = [];
-        foreach ($friends as $friend) {
-            $arrFriendId[] = $friend->id;
-
-        }
-
-        foreach ($imAFriends as $imAFriend) {
-            $arrFriendId[] = $imAFriend->id;
-        }
-        $friends = User::all()->find($arrFriendId);
+        $friends = $this->userService->friends($id);
 
         $friends = json_encode($friends);
 

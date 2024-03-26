@@ -4,16 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateCommentRequest;
 use App\Http\Requests\CreatePostRequest;
+use App\Mail\EmailConfirmation;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
+use App\Services\RabbitService;
+use App\Services\UserService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class PostController extends Controller
 {
+    private UserService $userService;
+    private RabbitService $rabbitService;
+
+    public function __construct(UserService $userService, RabbitService $rabbitService)
+    {
+        $this->userService = $userService;
+        $this->rabbitService = $rabbitService;
+    }
 
     public function getCreatPost(): View|RedirectResponse
     {
@@ -23,12 +35,26 @@ class PostController extends Controller
         return view('post.createPost');
     }
 
+    /**
+     * @throws \Exception
+     */
     public function createPost(CreatePostRequest $request)
     {
+        $user = Auth::user();
+
         Post::create([
-            'user_id' => Auth::id(),
+            'user_id' => $user->id,
             'content' => $request['content'],
         ]);
+
+        $queue = 'post';
+
+        $data = [
+            'content' => $request['content'],
+            'id' => $user->id,
+        ];
+
+        $this->rabbitService->publich($data, $queue);
 
         return response([]);
     }

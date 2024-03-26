@@ -38,7 +38,9 @@ class ImageController extends Controller
             'user_id' => Auth::id(),
         ]);
 
-        return redirect('image')->withSuccess('The image has been uploaded successfully');
+        return view('image', compact('path'));
+
+//        return redirect('image')->withSuccess('The image has been uploaded successfully');
 
     }
     public function getPhoto()

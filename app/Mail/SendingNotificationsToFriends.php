@@ -3,28 +3,29 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class EmailConfirmation extends Mailable
+class SendingNotificationsToFriends extends Mailable
 {
     use Queueable, SerializesModels;
 
-
-    public $password;
-
-//    public string $url = "http://localhost/login";
+    public $data;
+    public $url = "http://localhost/main";
+    public $name;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct( $password)
+    public function __construct($data, $name)
     {
-        $this->password = $password;
+        $this->data = $data;
+        $this->name = $name;
     }
 
     /**
@@ -32,10 +33,10 @@ class EmailConfirmation extends Mailable
      *
      * @return \Illuminate\Mail\Mailables\Envelope
      */
-    public function envelope(): Envelope
+    public function envelope()
     {
         return new Envelope(
-            subject: 'Email Confirmation',
+            subject: 'Sending Notifications To Friends',
         );
     }
 
@@ -44,10 +45,10 @@ class EmailConfirmation extends Mailable
      *
      * @return \Illuminate\Mail\Mailables\Content
      */
-    public function content(): Content
+    public function content()
     {
         return new Content(
-            markdown: 'emails',
+            markdown: 'sendingANotification',
         );
     }
 
@@ -56,7 +57,7 @@ class EmailConfirmation extends Mailable
      *
      * @return array
      */
-    public function attachments(): array
+    public function attachments()
     {
         return [];
     }
