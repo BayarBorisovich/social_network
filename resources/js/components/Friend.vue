@@ -55,7 +55,7 @@ export default {
         getFriends() {
             axios.get('/friends/json')
                 .then(result => {
-                    this.friends = result.data
+                    this.friends = result.data.friends
                     this.quantity = Object.keys(this.friends).length
                 })
         },

@@ -14,7 +14,9 @@
             <div class="col-12 grid-margin">
                 <div class="profile-header">
                     <div class="cover">
-                        <div class="gray-shade"></div>
+                        <div class="gray-shade">
+                            <weather-component></weather-component>
+                        </div>
                         <figure>
                             <img src="https://bootdey.com/img/Content/bg1.jpg" class="img-fluid"
                                  alt="profile cover">
@@ -185,8 +187,8 @@
                     <component-main></component-main>
                 </div>
             </div>
-
         </div>
     </div>
+
 </div>
 @endsection

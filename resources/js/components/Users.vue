@@ -66,8 +66,8 @@ export default {
         getUsers() {
             axios.get('/allUser/json')
                 .then(result => {
-                    this.users = result.data.users
-                    this.friendIds = result.data.friendIds
+                    this.users = result.data.users.users
+                    this.friendIds = result.data.users.friendIds
                     this.quantity = Object.keys(this.users).length
                 })
         },

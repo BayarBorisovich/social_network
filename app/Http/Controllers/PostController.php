@@ -4,17 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateCommentRequest;
 use App\Http\Requests\CreatePostRequest;
-use App\Mail\EmailConfirmation;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
 use App\Services\RabbitService;
 use App\Services\UserService;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 
 class PostController extends Controller
 {
@@ -72,7 +72,7 @@ class PostController extends Controller
 
     }
 
-    public function getJsonPosts()
+    public function getJsonPosts(): JsonResponse
     {
         $user = Auth::user();
 
@@ -85,9 +85,7 @@ class PostController extends Controller
             'like' => $like
         ];
 
-        $posts = json_encode($arr);
-
-        return $posts;
+        return response()->json(['posts' => $arr]);
     }
 
 
@@ -98,7 +96,7 @@ class PostController extends Controller
         return response([]);
     }
 
-    public function creatComment(CreateCommentRequest $request, int $postId)
+    public function creatComment(CreateCommentRequest $request, int $postId): Response
     {
         $request->validated();
         Comment::create([
@@ -111,14 +109,14 @@ class PostController extends Controller
     }
 
 
-    public function deletePost(Post $post)
+    public function deletePost(Post $post): Response
     {
         $post->delete();
-        return $post;
+        return response([]);
     }
 
 
-    public function updatePost(Request $request, Post $post)
+    public function updatePost(Request $request, Post $post): Response
     {
         $post->update([
             'content' => $request['content'],

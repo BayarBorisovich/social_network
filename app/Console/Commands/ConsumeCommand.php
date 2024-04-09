@@ -36,7 +36,7 @@ class ConsumeCommand extends Command
      * @return int
      * @throws \Exception
      */
-    public function handle(UserService $userService, RabbitService $rabbitService)
+    public function handle(UserService $userService, RabbitService $rabbitService): void
     {
         $queue = 'post';
 
@@ -57,6 +57,5 @@ class ConsumeCommand extends Command
         };
 
         $rabbitService->consume($callback, $queue);
-
     }
 }

@@ -7,6 +7,7 @@ use App\Mail\EmailConfirmation;
 use App\Services\RabbitService;
 use App\Services\UserService;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use App\Http\Requests\CreateMessageRequest;
@@ -58,30 +59,6 @@ class UserController extends Controller
             'about_of_me' => $data['about_of_me'],
 
         ]);
-
-        $mailData = [
-            'password' => $data['password'],
-            'email' => $data['email'],
-            'url' => 'http://localhost/login'
-        ];
-
-//        $rabbitmq = new RabbitService('rabbitmq', 5672, 'rmuser', 'rmpassword');
-//
-//        $queue = 'test';
-//
-//        $rabbitmq->publich($mailData, $queue);
-//
-//        $callback = function ($msg) {
-//
-//            $data = json_decode($msg->body, true);
-//
-//            Mail::to($data['email'])->send(new EmailConfirmation($data));
-//
-//            print_r($data);
-//        };
-//
-//        $rabbitmq->consume($callback, $queue);
-
 
         if (isset($user)) {
             event(new Registered($user));
@@ -148,22 +125,15 @@ class UserController extends Controller
         return view('user.user');
     }
 
-    public function getJsonUsers()
+    public function getJsonUsers(): JsonResponse
     {
         $id = Auth::id();
 
-        $friends = User::find($id)->friends;
-
-        $myFriends = Friend::where('friend_id', $id)->get();
+        $friends = $this->userService->friends($id);
 
         $friendsId = [];
         foreach ($friends as $friend) {
-            $friendsId[$friend->id] = $friend->id;
-
-        }
-
-        foreach ($myFriends as $myFriend) {
-            $friendsId[$myFriend->user_id] = $myFriend->user_id;
+            $friendsId[] = $friend->id;
         }
 
         $users = User::all();
@@ -173,9 +143,7 @@ class UserController extends Controller
             'friendIds' => $friendsId
         ];
 
-        $users = json_encode($allUsers);
-
-        return $users;
+        return response()->json(['users' => $allUsers]);
     }
 
     public function addFriend(int $userId)
@@ -199,29 +167,27 @@ class UserController extends Controller
         return view('user.friends', compact('user'));
     }
 
-    public function getJsonFriends()
+    public function getJsonFriends(): JsonResponse
     {
         $id = Auth::id();
 
         $friends = $this->userService->friends($id);
 
-        $friends = json_encode($friends);
-
-        return $friends;
+        return response()->json(['friends' => $friends]);
     }
 
     public function deletingFromFriends(int $friendId)
     {
         $userId = Auth::id();
 
-        $friends = Friend::where('user_id', $userId)->where('friend_id', $friendId)->first();
+        $friend = Friend::where('user_id', $userId)->where('friend_id', $friendId)->first();
 
-        $imAFriends = Friend::where('user_id', $friendId)->where('friend_id', $userId)->first();
+        $imAFriend = Friend::where('user_id', $friendId)->where('friend_id', $userId)->first();
 
-        if (!empty($friends)) {
-            $friends->delete();
+        if (!empty($friend)) {
+            $friend->delete();
         } else {
-            $imAFriends->delete();
+            $imAFriend->delete();
         }
 
         return response([]);

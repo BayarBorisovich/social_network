@@ -25,9 +25,6 @@
                     {{ post.like_count }}
                     <a href="javascript:;"
                        class="m-r-15 text-inverse-lighter">
-<!--                        <button type="submit" @click.prevent="changeId(post.id)" v-model="isLiked" class="border-0 bg-transparent mb-3">-->
-<!--                            <i :class="isId(post.id) ? 'd-none': 'fa fa-heart-o'" aria-hidden="true"></i>-->
-<!--                        </button>-->
                         <button @click.prevent="addLike(post.id)" type="submit"
                                 class="border-0 bg-transparent mb-3">
                                 <i :class="isThereALike(post.id) ? 'fa fa-heart' : 'fa fa-heart-o' " aria-hidden="true"></i>
@@ -102,7 +99,7 @@ export default {
         getFriendPosts() {
             axios.get('/post/json')
                 .then(result => {
-                    this.posts = result.data.posts
+                    this.posts = result.data.posts.posts // posts это ключ в json
                     this.like = result.data.like
                 })
         },

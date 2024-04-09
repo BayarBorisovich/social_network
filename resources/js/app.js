@@ -13,6 +13,7 @@ import Friend from "./components/Friend.vue";
 import Users from "./components/Users.vue";
 import UsersHomePage from "./components/UsersHomePage.vue";
 import Messages from "./components/Messages.vue";
+import Weather from "./components/weather.vue";
 
 
 app.component('example-component', ExampleComponent);
@@ -23,6 +24,7 @@ app.component('friend-component', Friend);
 app.component('users-component', Users);
 app.component('users-home-page-component', UsersHomePage);
 app.component('messages-component', Messages);
+app.component('weather-component', Weather);
 
 
 

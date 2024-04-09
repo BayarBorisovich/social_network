@@ -46,6 +46,7 @@ Route::post('/email/verification-notification', function (Request $request) {
 
 Route::get('/main', [MainController::class, 'getMain'])->name('main');
 Route::get('/main/json', [MainController::class, 'getJsonMain']);
+Route::get('/weather', [MainController::class, 'showTheWeather']);
 Route::post('/main', [PostController::class, 'likePosts']);
 
 Route::get('/image', [ImageController::class, 'getImages'])->name('image');
