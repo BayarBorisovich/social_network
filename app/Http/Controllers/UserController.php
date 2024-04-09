@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Console\Commands\ConsumeCommand;
+use App\Http\Requests\InformationRequest;
 use App\Mail\EmailConfirmation;
+use App\Models\AdditionalInformation;
+use App\Models\Information;
 use App\Services\RabbitService;
 use App\Services\UserService;
 use Illuminate\Auth\Events\Registered;
@@ -49,27 +52,15 @@ class UserController extends Controller
         $user = User::create([
             '_token' => $data['_token'],
             'name' => $data['name'],
-            'surname' => $data['surname'],
-            'patronymic' => $data['patronymic'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'phone' => $data['phone'],
-            'date_of_birth' => $data['date_of_birth'],
-            'gender' => $data['gender'],
-            'about_of_me' => $data['about_of_me'],
-
         ]);
 
-        if (isset($user)) {
-            event(new Registered($user));
-
-            return redirect()->route('verification.notice') ;
-        }
+        event(new Registered($user));
 
         return redirect()->route('login');
 
     }
-
 
 
     public function getFormLogin(): View
@@ -92,36 +83,52 @@ class UserController extends Controller
     public function getUpdateUser(): View
     {
         $user = Auth::user();
+
         return view('user.updateUser', compact('user'));
     }
 
     public function updateUser(Request $request): RedirectResponse
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-
-        $user = Auth::user();
-
-        $user->update([
+        Auth::user()->update([
             'name' => $request->name,
-            'surname' => $request->surname,
-            'patronymic' => $request->patronymic,
             'email' => $request->email,
-            'phone' => $request->phone,
-            'date_of_birth' => $request->date_of_birth,
-            'about_of_me' => $request->about_of_me,
         ]);
 
-        return redirect()->back();
+        return redirect()->back()->withSuccess('the changes were successful');
+    }
+
+    public function createInformation(InformationRequest $request): RedirectResponse
+    {
+        $user = Auth::user()->information;
+
+        if (!empty($user)) {
+            $user->update([
+                'user_id' => Auth::id(),
+                'surname' => $request->surname,
+                'patronymic' => $request->patronymic,
+                'telephone' => $request->telephone,
+                'city' => $request->city,
+                'about_me' => $request->about_me,
+            ]);
+
+            return redirect()->back()->withSuccess('the changes were successful');
+        }
+
+        Information::create([
+            'user_id' => Auth::id(),
+            'surname' => $request->surname,
+            'patronymic' => $request->patronymic,
+            'telephone' => $request->telephone,
+            'city' => $request->city,
+            'about_me' => $request->about_me,
+        ]);
+
+        return redirect()->back()->withSuccess('the changes were successful');
     }
 
 
     public function getAllUsers(): RedirectResponse|View
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
         return view('user.user');
     }
 
@@ -159,9 +166,6 @@ class UserController extends Controller
 
     public function getFriends(): RedirectResponse|View
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
         $user = Auth::user();
 
         return view('user.friends', compact('user'));
@@ -195,10 +199,6 @@ class UserController extends Controller
 
     public function getTheUsersHomePage($friendId): RedirectResponse|View
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-
         $user = User::find($friendId);
 
         $myPosts = $user->post;
@@ -208,10 +208,6 @@ class UserController extends Controller
 
     public function getFormUsersFriends(int $userId): RedirectResponse|View
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-
         $user = User::find($userId);
 
         $friends = User::find($userId)->friends;
@@ -222,10 +218,6 @@ class UserController extends Controller
 
     public function getMessages(int $userId): RedirectResponse|View
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-
         $sender = Auth::user();
         $myMessages = $sender->messages()->with('author')->where('receiver_id', $userId)->get();
 

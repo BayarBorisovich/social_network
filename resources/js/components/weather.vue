@@ -11,6 +11,9 @@
             </div>
         </div>
         <div class="date">{{ weather ? weather.name : '-' }}</div>
+        <div :class="weather ? 'd-none' : 'alert alert-warning'" role="alert">
+            <h5>to view the weather in your city, specify your city in the information!</h5>
+        </div>
     </article>
 </template>
 
@@ -174,6 +177,9 @@ p {
 .image {
     height: 300%;
 }
+    #info {
+        color: #34ce57;
+    }
 
 }
 </style>

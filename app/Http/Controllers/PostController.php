@@ -87,15 +87,6 @@ class PostController extends Controller
 
         return response()->json(['posts' => $arr]);
     }
-
-
-    public function likePosts(int $postId)
-    {
-        User::find(Auth::id())->likeIt()->toggle($postId);
-
-        return response([]);
-    }
-
     public function creatComment(CreateCommentRequest $request, int $postId): Response
     {
         $request->validated();

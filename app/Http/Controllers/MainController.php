@@ -24,9 +24,6 @@ class MainController extends Controller
 
     public function getMain(): View|Factory|Application|RedirectResponse
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
         $user = Auth::user();
 
         return view('index.main', compact('user'));
@@ -35,7 +32,10 @@ class MainController extends Controller
     public function getJsonMain(): JsonResponse
     {
         $myPosts = Post::all()->where('user_id', Auth::id());
-        $weather = $this->weatherForecastServices->getWeatherForecast('Chita');
+
+        $city = Auth::user()->information->city;
+
+        $weather = $this->weatherForecastServices->getWeatherForecast($city);
 
 
         return response()->json([
@@ -43,13 +43,4 @@ class MainController extends Controller
             'weather' => $weather,
         ]);
     }
-
-    public function showTheWeather()
-    {
-        $data = $this->weatherForecastServices->getWeatherForecast('Chita');
-
-        return $data;//['weather'][0]['main'];
-
-    }
-
 }

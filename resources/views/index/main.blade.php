@@ -169,7 +169,7 @@
                         </div>
                         <div class="mt-3">
                             <label class="tx-11 font-weight-bold mb-0 text-uppercase">Lives:</label>
-                            <p class="text-muted">Chita, Russia</p>
+                            <p class="text-muted">{{ $user->information ? $user->information->city : '-' }}</p>
                         </div>
                         <div class="mt-3">
                             <label class="tx-11 font-weight-bold mb-0 text-uppercase">{{ $user->email }}:</label>
