@@ -91,7 +91,7 @@ export default {
 
     methods: {
         createMessages(id) {
-            axios.post(`/messages/create/${id}`, {textMessage: this.textMessage})
+            axios.post(`/message/create/${id}`, {textMessage: this.textMessage})
                 .then(result => {
                     console.log(id)
                     window.location.reload()

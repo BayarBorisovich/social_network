@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container">
-    <form action="{{ route('mainUser', $friendId) }}" method="get">
+    <form action="{{ route('user-profile', $friendId) }}" method="get">
         <div class="profile-page tx-13">
             <div class="row">
                 <div class="col-12 grid-margin">
@@ -41,7 +41,7 @@
                                         <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
                                         <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                                     </svg>
-                                    <a class="pt-1px d-none d-md-block" href="{{ route('usersFriends', $user->id) }}">Friends<span
+                                    <a class="pt-1px d-none d-md-block" href="{{ route('user-profile.friends', $user->id) }}">Friends<span
                                             class="text-muted tx-12"></span></a>
                                 </li>
                                 <li class="header-link-item ml-3 pl-3 border-left d-flex align-items-center">

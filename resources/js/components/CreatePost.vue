@@ -34,7 +34,7 @@ export default {
 
     methods: {
         createPost() {
-            axios.post('/post/create', {content: this.content})
+            axios.post('/posts/create', {content: this.content})
                 .then(result => {
                     this.content = null
                     this.errors = null

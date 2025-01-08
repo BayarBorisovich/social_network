@@ -23,9 +23,11 @@ class DatabaseSeeder extends Seeder
 //             'name' => 'Test User',
 //             'email' => 'test@example.com',
 //         ]);
-        User::factory(10)->create();
-        Friend::factory(5)->create();
-        Post::factory(10)->create();
+        $this->call([
+            UserSeeder::class,
+            FriendSeeder::class,
+            PostSeeder::class,
+        ]);
 
     }
 }

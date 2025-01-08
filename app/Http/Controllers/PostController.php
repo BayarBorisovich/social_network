@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateCommentRequest;
 use App\Http\Requests\CreatePostRequest;
-use App\Models\Comment;
 use App\Models\Post;
-use App\Models\User;
 use App\Services\RabbitService;
-use App\Services\UserService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -18,113 +14,74 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
-    private UserService $userService;
     private RabbitService $rabbitService;
 
-    public function __construct(UserService $userService, RabbitService $rabbitService)
+    public function __construct(RabbitService $rabbitService)
     {
-        $this->userService = $userService;
         $this->rabbitService = $rabbitService;
     }
 
-    public function getCreatPost(): View|RedirectResponse
+    public function showCreatePosts(): View|RedirectResponse
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
         return view('post.createPost');
     }
 
-    /**
-     * @throws \Exception
-     */
-    public function createPost(CreatePostRequest $request)
+    public function create(CreatePostRequest $request)
     {
+        $data = $request->validated();
         $user = Auth::user();
 
-        Post::create([
+        $post = Post::query()->create([
             'user_id' => $user->id,
-            'content' => $request['content'],
+            'content' => $data['content'],
         ]);
 
-        $queue = 'post';
+        try {
+            $this->rabbitService->publish([
+                'content' => $post->content,
+                'id' => $user->id,
+            ], 'post');
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to publish message'], 500);
+        }
 
-        $data = [
-            'content' => $request['content'],
-            'id' => $user->id,
-        ];
-
-        $this->rabbitService->publich($data, $queue);
-
-        return response([]);
+        return response()->json(['message' => 'Post created successfully']);
     }
 
 
-    public function getPosts(): RedirectResponse|View
+    public function showFormFriendsPosts(): RedirectResponse|View
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-
         $user = Auth::user();
 
         return view('post.post', compact('user'));
 
     }
 
-    public function getJsonPosts(): JsonResponse
+    public function getFriendsPosts(): JsonResponse
     {
         $user = Auth::user();
 
         $friendPosts = $user->friendPosts()->with('comment.author', 'author')->get();
+        $likes = $user->usersLike;
 
-        $like = $user->usersLike;
-
-        $arr = [
+        return response()->json([
             'posts' => $friendPosts,
-            'like' => $like
-        ];
-
-        return response()->json(['posts' => $arr]);
-    }
-    public function creatComment(CreateCommentRequest $request, int $postId): Response
-    {
-        $request->validated();
-        Comment::create([
-            'post_id' => $postId,
-            'comment' => $request->comment,
-            'user_id' => Auth::id(),
+            'likes' => $likes,
         ]);
-
-        return response([]);
     }
 
-
-    public function deletePost(Post $post): Response
+    public function delete(Post $post): Response
     {
         $post->delete();
         return response([]);
     }
 
-
-    public function updatePost(Request $request, Post $post): Response
+    public function update(Request $request, Post $post): Response
     {
         $post->update([
             'content' => $request['content'],
         ]);
 
         return response([]);
-
-    }
-
-    public function logout(Request $request): RedirectResponse
-    {
-        Auth::logout();
-
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
-        return redirect()->route('login');
     }
 }

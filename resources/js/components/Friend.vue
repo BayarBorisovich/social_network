@@ -53,7 +53,7 @@ export default {
 
     methods: {
         getFriends() {
-            axios.get('/friends/json')
+            axios.get('/friends')
                 .then(result => {
                     this.friends = result.data.friends
                     this.quantity = Object.keys(this.friends).length
@@ -61,7 +61,7 @@ export default {
         },
 
         deleteFriend(id) {
-            axios.post(`/friends/${id}`)
+            axios.post(`/friends/delete/${id}`)
                 .then(result => {
                     this.getFriends()
                     console.log(result)
@@ -69,7 +69,7 @@ export default {
         },
 
         href(id) {
-            window.location.replace(`http://localhost/mainUser/${id}`)
+            window.location.replace(`http://localhost/user-profile/${id}`)
         }
 
     }

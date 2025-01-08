@@ -85,7 +85,7 @@ export default {
     data() {
         return {
             posts: null,
-            like: null,
+            likes: null,
             post_id: null,
             comment: null,
         }
@@ -97,11 +97,15 @@ export default {
 
     methods: {
         getFriendPosts() {
-            axios.get('/post/json')
+            axios.get('/posts/friends')
                 .then(result => {
-                    this.posts = result.data.posts.posts // posts это ключ в json
-                    this.like = result.data.like
+                    console.log(result.data)
+                    this.posts = result.data.posts // posts это ключ в json
+                    this.likes = result.data.likes
                 })
+                .catch(error => {
+                    console.error('Error fetching friend posts:', error);
+                });
         },
 
         changePostId(id) {
@@ -109,7 +113,7 @@ export default {
         },
 
         addLike(id) {
-            axios.post(`/post/like/${id}`)
+            axios.post(`/posts/like/${id}`)
                 .then(result => {
                     this.getFriendPosts()
                 })
@@ -117,7 +121,7 @@ export default {
 
         addComment(id) {
             this.post_id = null
-            axios.post(`/post/comment/${id}`, {comment: this.comment})
+            axios.post(`/comments/${id}`, {comment: this.comment})
                 .then(result => {
                     this.comment = null
                     this.getFriendPosts()

@@ -21,7 +21,7 @@ class RabbitService
         );
     }
 
-    public function publich($data, $queue): void
+    public function publish($data, $queue): void
     {
         $connection = $this->connection();
         $channel = $connection->channel();

@@ -1,12 +1,9 @@
-
 import './bootstrap';
 import { createApp } from 'vue';
 
 
-const app = createApp({});
-
-import ExampleComponent from './components/ExampleComponent.vue';
 import Posts from "./components/Posts.vue";
+
 import Main from "./components/Main.vue";
 import CreatePost from "./components/CreatePost.vue";
 import Friend from "./components/Friend.vue";
@@ -15,8 +12,8 @@ import UsersHomePage from "./components/UsersHomePage.vue";
 import Messages from "./components/Messages.vue";
 import Weather from "./components/weather.vue";
 
+const app = createApp({});
 
-app.component('example-component', ExampleComponent);
 app.component('component-posts', Posts);
 app.component('component-main', Main);
 app.component('create-component', CreatePost);

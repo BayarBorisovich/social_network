@@ -23,7 +23,7 @@
                          class="d-block ui-w-80">
                 </div>
             </div>
-            <create-component> </create-component>
+            <create-component></create-component>
         </form>
     </div>
 

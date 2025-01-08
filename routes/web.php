@@ -1,17 +1,20 @@
 <?php
 
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ImageController;
-use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\RegistrateController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FriendController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-
-use App\Http\Controllers\SendEmailController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,11 +27,13 @@ use App\Http\Controllers\SendEmailController;
 |
 */
 Route::middleware('guest')->group(function () {
-    Route::get('/registrate', [UserController::class, 'getFormRegistrate'])->name('registrate');
-    Route::post('/registrate', [UserController::class, 'postRegistrate']);
-    Route::get('/login', [UserController::class, 'getFormLogin'])->name('login');
-    Route::post('/login', [UserController::class, 'postLogin']);
+    Route::get('/register', [RegisterController::class, 'showRegister'])->name('register');
+    Route::post('/register', [RegisterController::class, 'register'])->name('register');
+    Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
+    Route::post('/login', [LoginController::class, 'login'])->name('login');
 });
+
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
     Route::get('/email/verify', function () {
@@ -51,42 +56,55 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('verified')->group(function () {
 
+        Route::group(['prefix' => 'profile'], function () {
+            Route::get('/', [ProfileController::class, 'showProfileForm'])->name('profile');
+            Route::post('/update', [ProfileController::class, 'updateProfile'])->name('addUpdateUser');
+            Route::post('/information', [ProfileController::class, 'updateOrCreateInformation'])->name('updateUserInformation');
+
+        });
+
+        Route::group(['prefix' => 'friends'], function () {
+            Route::get('/showForm', [FriendController::class, 'showFormFriends'])->name('friends');
+            Route::get('/', [FriendController::class, 'getFriends']);
+            Route::post('/add/{userId}', [FriendController::class, 'addFriend']);
+            Route::post('/delete{friendId}', [FriendController::class, 'deleteFriend']);
+        });
+
+        Route::group(['prefix' => 'message'], function () {
+            Route::get('/{userId}', [MessageController::class, 'getMessages'])->name('messages');
+            Route::post('/create/{id}', [MessageController::class, 'createMessages']);
+        });
+
+        Route::group(['prefix' => 'user-profile'], function () {
+            Route::get('/{friendId}', [UserProfileController::class, 'getTheUsersHomePage'])->name('user-profile');
+            Route::get('/friends/{userId}', [UserProfileController::class, 'getFormUsersFriends'])->name('user-profile.friends');
+        });
+
+        Route::group(['prefix' => 'comments'], function () {
+            Route::post('/{postId}', [CommentController::class, 'creatComment'])->name('post.comment');
+        });
+
         Route::get('/image', [ImageController::class, 'getImages'])->name('image');
         Route::post('/image', [ImageController::class, 'postImage']);
 
         Route::get('/photo', [ImageController::class, 'getPhoto'])->name('photo');
 
-        Route::get('/friends', [UserController::class, 'getFriends'])->name('friends');
-        Route::get('/friends/json', [UserController::class, 'getJsonFriends']);
-        Route::post('/friends/{friendId}', [UserController::class, 'deletingFromFriends']);
-
-        Route::get('/usersFriends/{userId}', [UserController::class, 'getFormUsersFriends'])->name('usersFriends');
-
-        Route::get('/user/update', [UserController::class, 'getUpdateUser'])->name('updateUser');
-        Route::post('/user/update', [UserController::class, 'updateUser'])->name('addUpdateUser');
-        Route::post('/user/update/information', [UserController::class, 'createInformation'])->name('updateUserInformation');
-
-        Route::get('/allUser', [UserController::class, 'getAllUsers'])->name('user');
-        Route::get('/allUser/json', [UserController::class, 'getJsonUsers']);
-        Route::post('/allUser/{userId}', [UserController::class, 'addFriend']);
-
-        Route::get('/mainUser/{friendId}', [UserController::class, 'getTheUsersHomePage'])->name('mainUser');
-
-        Route::get('/messages/{userId}', [UserController::class, 'getMessages'])->name('messages');
-        Route::post('/messages/create/{id}', [UserController::class, 'createMessages']);
-
-        Route::group(['prefix' => 'post'], function (){
-            Route::get('/', [PostController::class, 'getPosts'])->name('post');
-            Route::get('/json', [PostController::class, 'getJsonPosts']);
-            Route::post('/like/{postId}', [PostController::class, 'likePosts'])->name('post.like');
-            Route::post('/comment/{postId}', [PostController::class, 'creatComment'])->name('post.comment');
-            Route::get('/create', [PostController::class, 'getCreatPost'])->name('post.create');//->middleware('verified');
-            Route::post('/create', [PostController::class, 'createPost']);
-            Route::post('/delete/{post}', [PostController::class, 'deletePost'])->name('post.delete');
-            Route::post('/update/{post}', [PostController::class, 'updatePost'])->name('post.update');
+        Route::group(['prefix' => 'users'], function () {
+            Route::get('/showForm', [UserController::class, 'showFormsUsers'])->name('user');
+            Route::get('/', [UserController::class, 'getUsers']);
         });
 
-        Route::post('/logout', [PostController::class, 'logout'])->name('logout');
+        Route::group(['prefix' => 'posts'], function (){
+            Route::get('/', [PostController::class, 'showFormFriendsPosts'])->name('post');
+            Route::get('/friends', [PostController::class, 'getFriendsPosts']);
+
+            Route::post('/like/{postId}', [PostController::class, 'likePosts'])->name('post.like');
+
+            Route::get('/showCreate', [PostController::class, 'showCreatePosts'])->name('post.create');//->middleware('verified');
+            Route::post('/create', [PostController::class, 'create']);
+            Route::post('/delete/{post}', [PostController::class, 'delete'])->name('post.delete');
+            Route::post('/update/{post}', [PostController::class, 'update'])->name('post.update');
+        });
 
         Route::get('/mail',  [MailController::class, 'basic_email']);
 

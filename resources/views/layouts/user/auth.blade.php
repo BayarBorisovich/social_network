@@ -40,7 +40,7 @@
         margin-bottom: 16px;
     }
     .login,
-    .registrate,
+    .register,
     input[type="submit"] {
         background-color: #4CAF50;
         color: #fff;

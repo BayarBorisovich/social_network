@@ -115,6 +115,7 @@ export default {
         getMyPosts() {
             axios.get('/main/json')
                 .then(result => {
+                    console.log('aaaaaaaaaaa')
                     console.log(result.data)
                     this.posts = result.data.posts
                     this.weather = result.data.weather
@@ -122,7 +123,7 @@ export default {
         },
 
         deletePosts(id) {
-            axios.post(`/post/delete/${id}`)
+            axios.post(`/posts/delete/${id}`)
                 .then(result => {
                     this.getMyPosts()
                 })
@@ -130,7 +131,7 @@ export default {
 
         updatePosts(id) {
             this.post_id = null
-            axios.post(`/post/update/${id}`, {content: this.content})
+            axios.post(`/posts/update/${id}`, {content: this.content})
                 .then(result => {
                     this.getMyPosts()
                 })

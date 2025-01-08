@@ -20,15 +20,9 @@ class UserFactory extends Factory
         return [
             '_token' => Str::random(10),
             'name' => fake()->name(),
-            'surname' => fake()->lastName(),
-            'patronymic' => fake()->firstName(),
             'email' => fake()->unique()->safeEmail(),
 //            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'password' => is_integer(12345678),
-            'phone' => fake()->phoneNumber(),
-            'date_of_birth' => fake()->dateTimeThisYear(),
-            'gender' => fake()->lastName(),
-            'about_of_me' => fake()->text(),
         ];
     }
 
