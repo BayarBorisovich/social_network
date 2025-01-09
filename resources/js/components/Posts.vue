@@ -120,12 +120,16 @@ export default {
         },
 
         addComment(id) {
-            this.post_id = null
-            axios.post(`/comments/${id}`, {comment: this.comment})
+            this.post_id = null;
+            axios.post(`/comments/${id}`, { comment: this.comment })
                 .then(result => {
-                    this.comment = null
-                    this.getFriendPosts()
+                    console.log(result.data.message)
+                    this.comment = null;
+                    this.getFriendPosts();
                 })
+                .catch(error => {
+                    console.error('Error adding comment:', error);
+                });
         },
 
         isThereALike(id) {

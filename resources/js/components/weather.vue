@@ -25,49 +25,25 @@ export default {
 
     data() {
         return {
-            posts: null,
-            content: null,
-            post_id: null,
             weather: null,
         }
     },
 
     mounted() {
-        this.getMyPosts()
+        this.getWeather()
     },
 
     methods: {
-        getMyPosts() {
-            axios.get('/main/json')
+        getWeather() {
+            axios.get('/main/weather')
                 .then(result => {
-                    console.log(result.data)
-                    this.posts = result.data.posts
                     this.weather = result.data.weather
+                    console.log(this.weather)
+                    console.log(result.data.message)
                 })
-        },
-
-        deletePosts(id) {
-            axios.post(`/post/delete/${id}`)
-                .then(result => {
-                    this.getMyPosts()
-                })
-        },
-
-        updatePosts(id) {
-            this.post_id = null
-            axios.post(`/post/update/${id}`, {content: this.content})
-                .then(result => {
-                    this.getMyPosts()
-                })
-        },
-
-        changePostId(id, content) {
-            this.post_id = id
-            this.content = content
-        },
-
-        isId(id) {
-            return this.post_id === id
+                .catch(error => {
+                    console.error('Error get weather:', error);
+                });
         },
     }
 }

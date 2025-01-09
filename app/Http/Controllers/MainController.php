@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
 use App\Services\WeatherForecastServices;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -10,8 +9,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
-
 
 class MainController extends Controller
 {
@@ -22,25 +19,20 @@ class MainController extends Controller
         $this->weatherForecastServices = $weatherForecastServices;
     }
 
-    public function getMain(): View|Factory|Application|RedirectResponse
+    public function showMainPaigeForm(): View|Factory|Application|RedirectResponse
     {
-        $user = Auth::user();
-
-        return view('index.main', compact('user'));
+        return view('index.main', ['user' => Auth::user()]);
     }
 
-    public function getJsonMain(): JsonResponse
+    public function getWeather(): JsonResponse
     {
-        $myPosts = Post::all()->where('user_id', Auth::id());
+        try {
+            $city = Auth::user()->information->city;
+            $weather = $this->weatherForecastServices->getWeatherForecast($city);
 
-        $city = Auth::user()->information->city;
-
-        $weather = $this->weatherForecastServices->getWeatherForecast($city);
-
-
-        return response()->json([
-            'posts' => $myPosts,
-            'weather' => $weather,
-        ]);
+            return response()->json(['message' => 'success', 'weather' => $weather]);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()]);
+        }
     }
 }

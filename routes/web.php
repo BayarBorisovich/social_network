@@ -28,14 +28,15 @@ use Illuminate\Support\Facades\Route;
 */
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisterController::class, 'showRegister'])->name('register');
-    Route::post('/register', [RegisterController::class, 'register'])->name('register');
+    Route::post('/register', [RegisterController::class, 'register']);
     Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
-    Route::post('/login', [LoginController::class, 'login'])->name('login');
+    Route::post('/login', [LoginController::class, 'login']);
 });
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
+
     Route::get('/email/verify', function () {
         return view('verify-email');
     })->name('verification.notice');
@@ -50,16 +51,17 @@ Route::middleware('auth')->group(function () {
         return back()->with('message', 'Verification link sent!');
     })->name('verification.send')->middleware(['throttle:6,1']);
 
-    Route::get('/main', [MainController::class, 'getMain'])->name('main');
-    Route::get('/main/json', [MainController::class, 'getJsonMain']);
-
+    Route::group(['prefix' => 'main'], function () {
+        Route::get('/', [MainController::class, 'showMainPaigeForm'])->name('main');
+        Route::get('/weather', [MainController::class, 'getWeather']);
+    });
 
     Route::middleware('verified')->group(function () {
 
         Route::group(['prefix' => 'profile'], function () {
             Route::get('/', [ProfileController::class, 'showProfileForm'])->name('profile');
-            Route::post('/update', [ProfileController::class, 'updateProfile'])->name('addUpdateUser');
-            Route::post('/information', [ProfileController::class, 'updateOrCreateInformation'])->name('updateUserInformation');
+            Route::post('/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
+            Route::post('/information', [ProfileController::class, 'updateOrCreateInformation'])->name('profile.information.update');
 
         });
 
@@ -95,15 +97,18 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::group(['prefix' => 'posts'], function (){
+            Route::get('/showCreate', [PostController::class, 'showCreatePosts'])->name('post.create');//->middleware('verified');
+            Route::post('/create', [PostController::class, 'create']);
+            Route::post('/delete/{post}', [PostController::class, 'delete'])->name('post.delete');
+            Route::post('/update/{post}', [PostController::class, 'update'])->name('post.update');
+
+            Route::get('/my-posts', [PostController::class, 'getMyPosts']);
+
             Route::get('/', [PostController::class, 'showFormFriendsPosts'])->name('post');
             Route::get('/friends', [PostController::class, 'getFriendsPosts']);
 
             Route::post('/like/{postId}', [PostController::class, 'likePosts'])->name('post.like');
 
-            Route::get('/showCreate', [PostController::class, 'showCreatePosts'])->name('post.create');//->middleware('verified');
-            Route::post('/create', [PostController::class, 'create']);
-            Route::post('/delete/{post}', [PostController::class, 'delete'])->name('post.delete');
-            Route::post('/update/{post}', [PostController::class, 'update'])->name('post.update');
         });
 
         Route::get('/mail',  [MailController::class, 'basic_email']);

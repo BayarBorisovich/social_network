@@ -9,7 +9,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
@@ -26,7 +25,7 @@ class PostController extends Controller
         return view('post.createPost');
     }
 
-    public function create(CreatePostRequest $request)
+    public function create(CreatePostRequest $request): JsonResponse
     {
         $data = $request->validated();
         $user = Auth::user();
@@ -45,16 +44,36 @@ class PostController extends Controller
             return response()->json(['error' => 'Failed to publish message'], 500);
         }
 
-        return response()->json(['message' => 'Post created successfully']);
+        return response()->json(['message' => 'Post created successfully'], 200);
     }
 
 
+    public function delete(Post $post): JsonResponse
+    {
+        try {
+            $post->delete();
+            return response()->json(['message' => 'Post deleted successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to delete post'], 500);
+        }
+    }
+
+    public function update(Request $request, Post $post): JsonResponse
+    {
+        try {
+            $post->update([
+                'content' => $request['content'],
+            ]);
+
+            return response()->json(['message' => 'Post updated successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to update post'], 500);
+        }
+    }
+
     public function showFormFriendsPosts(): RedirectResponse|View
     {
-        $user = Auth::user();
-
-        return view('post.post', compact('user'));
-
+        return view('post.post', ['user' => Auth::user()]);
     }
 
     public function getFriendsPosts(): JsonResponse
@@ -70,18 +89,10 @@ class PostController extends Controller
         ]);
     }
 
-    public function delete(Post $post): Response
+    public function getMyPosts(): JsonResponse
     {
-        $post->delete();
-        return response([]);
-    }
-
-    public function update(Request $request, Post $post): Response
-    {
-        $post->update([
-            'content' => $request['content'],
+        return response()->json([
+            'posts' => Auth::user()->posts,
         ]);
-
-        return response([]);
     }
 }

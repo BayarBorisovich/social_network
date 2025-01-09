@@ -8,20 +8,20 @@ use Illuminate\Http\RedirectResponse;
 
 class UserProfileController
 {
-    public function getTheUsersHomePage($friendId): RedirectResponse|View
+    public function getTheUsersHomePage(int $friendId): RedirectResponse|View
     {
-        $user = User::find($friendId);
+        $user = User::query()->findOrFail($friendId);
 
-        $myPosts = $user->post;
+        $myPosts = $user->posts;
 
         return view('user.mainPageUser', compact('user', 'myPosts', 'friendId'));
     }
 
     public function getFormUsersFriends(int $userId): RedirectResponse|View
     {
-        $user = User::find($userId);
+        $user = User::query()->findOrFail($userId);
 
-        $friends = User::find($userId)->friends;
+        $friends = User::query()->find($userId)->friends;
 
         return view('user.usersFriends', compact('user', 'friends', 'userId'));
 

@@ -103,7 +103,6 @@ export default {
             posts: null,
             content: null,
             post_id: null,
-            weather: null,
         }
     },
 
@@ -113,12 +112,9 @@ export default {
 
     methods: {
         getMyPosts() {
-            axios.get('/main/json')
+            axios.get('/posts/my-posts')
                 .then(result => {
-                    console.log('aaaaaaaaaaa')
-                    console.log(result.data)
                     this.posts = result.data.posts
-                    this.weather = result.data.weather
                 })
         },
 
@@ -126,15 +122,23 @@ export default {
             axios.post(`/posts/delete/${id}`)
                 .then(result => {
                     this.getMyPosts()
+                    console.log(result.data.message)
                 })
+                .catch(error => {
+                    console.error('Error deleting post:', error);
+                });
         },
 
         updatePosts(id) {
             this.post_id = null
             axios.post(`/posts/update/${id}`, {content: this.content})
                 .then(result => {
+                    console.log(result.data.message)
                     this.getMyPosts()
                 })
+                .catch(error => {
+                    console.error('Error updating post:', error);
+                });
         },
 
         changePostId(id, content) {

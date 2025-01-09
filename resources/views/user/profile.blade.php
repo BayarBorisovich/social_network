@@ -30,7 +30,12 @@
                                     {{Session::get('success')}}
                                 </div>
                             @endif
-                            <form action="{{ route('addUpdateUser') }}" method="post">
+                            @if(Session::has('errors'))
+                                <div class="alert alert-warning">
+                                    {{Session::get('errors')}}
+                                </div>
+                            @endif
+                            <form action="{{ route('profile.update') }}" method="post">
                                 @csrf
                                 <h3 class="mb-3">Data</h3>
                                 <div class="row mb-3">
@@ -60,7 +65,7 @@
                             </form>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('updateUserInformation') }}" method="post">
+                            <form action="{{ route('profile.information.update') }}" method="post">
                                 @csrf
                                 <h3 class="mb-3">Information</h3>
                                 <div class="row mb-3">
